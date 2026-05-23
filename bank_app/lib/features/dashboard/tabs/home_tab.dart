@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../notifications/notifications_screen.dart';
+import '../../cards/card_details_screen.dart';
+import '../../transfers/transfer_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -288,6 +291,19 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             onTapUp: (_) {
               setState(() => _pressedAction = -1);
               HapticFeedback.lightImpact();
+              if (i == 0) {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const TransferScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
+              }
             },
             onTapCancel: () => setState(() => _pressedAction = -1),
             child: Column(
@@ -546,7 +562,14 @@ class _NotificationButtonState extends State<_NotificationButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_) => setState(() => _pressed = false),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const NotificationsScreen(),
+          ),
+        );
+      },
       onTapCancel: () => setState(() => _pressed = false),
       child: AnimatedScale(
         scale: _pressed ? 0.92 : 1.0,
@@ -616,7 +639,25 @@ class _BankCardState extends State<_BankCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) => setState(() => _hovered = true),
-      onTapUp: (_) => setState(() => _hovered = false),
+      onTapUp: (_) {
+        setState(() => _hovered = false);
+        HapticFeedback.selectionClick();
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                CardDetailsScreen(
+              cardType: widget.type,
+              last4: widget.last4,
+              balance: widget.balance,
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+        );
+      },
       onTapCancel: () => setState(() => _hovered = false),
       child: AnimatedOpacity(
         opacity: widget.isPrimary ? 1.0 : (_hovered ? 1.0 : 0.70),

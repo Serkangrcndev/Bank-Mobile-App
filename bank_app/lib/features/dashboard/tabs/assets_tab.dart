@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../notifications/notifications_screen.dart';
+import '../../assets/asset_detail_screen.dart';
 
 class AssetsTab extends StatefulWidget {
   const AssetsTab({super.key});
@@ -339,6 +341,19 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
             onTapUp: (_) {
               setState(() => _pressedAsset = -1);
               HapticFeedback.selectionClick();
+              if (item.title == 'Crypto') {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AssetDetailScreen(coin: 'BTC/USDT'),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
+              }
             },
             onTapCancel: () => setState(() => _pressedAsset = -1),
             child: AnimatedContainer(
@@ -579,7 +594,14 @@ class _NotificationButtonState extends State<_NotificationButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_) => setState(() => _pressed = false),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const NotificationsScreen(),
+          ),
+        );
+      },
       onTapCancel: () => setState(() => _pressed = false),
       child: AnimatedScale(
         scale: _pressed ? 0.92 : 1.0,

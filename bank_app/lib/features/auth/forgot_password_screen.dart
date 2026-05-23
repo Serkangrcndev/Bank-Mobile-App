@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import 'otp_verification_screen.dart';
 
 /// Forgot Password screen.
 ///
@@ -111,23 +112,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
   void _onSubmit() {
     HapticFeedback.lightImpact();
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: trigger password reset flow
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xFF1F1F1F),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          content: Row(
-            children: [
-              const Icon(Icons.check_circle_outline,
-                  color: AppColors.brandLime, size: 18),
-              const SizedBox(width: 10),
-              Text(
-                'Instructions sent to ${_emailCtrl.text}',
-                style: AppTextStyles.labelMd(color: Colors.white),
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              OtpVerificationScreen(email: _emailCtrl.text),
+          transitionsBuilder:
+              (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
               ),
-            ],
-          ),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 500),
         ),
       );
     }

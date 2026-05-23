@@ -4,6 +4,7 @@ import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../auth/login_screen.dart';
+import '../notifications/notifications_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -684,7 +685,14 @@ class _NotificationButtonState extends State<_NotificationButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_) => setState(() => _pressed = false),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const NotificationsScreen(),
+          ),
+        );
+      },
       onTapCancel: () => setState(() => _pressed = false),
       child: AnimatedScale(
         scale: _pressed ? 0.92 : 1.0,

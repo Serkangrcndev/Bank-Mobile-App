@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'core/theme/app_theme.dart';
-import 'features/auth/login_screen.dart';
+import 'features/auth/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class BankApp extends StatelessWidget {
       title: 'Fintech',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
