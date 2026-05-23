@@ -9,6 +9,7 @@
   <img src="https://img.shields.io/badge/Dart-2.17+-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart Badge">
   <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-green?style=for-the-badge&logo=android" alt="Platforms Badge">
 </p>
+<img width="1439" height="698" alt="image" src="https://github.com/user-attachments/assets/8ad27a14-8003-4c14-ac71-df2854359f10" />
 
 ---
 
