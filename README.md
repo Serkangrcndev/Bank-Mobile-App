@@ -1,12 +1,34 @@
-# FINTECH ELITE - Premium Mobil Bankacılık ve Yatırım Uygulaması
+<h1 align="center">⚡ FINTECH ELITE ⚡</h1>
+<p align="center">
+  <b>Next-Generation Mobil Wealth &amp; Yatırım Terminali</b><br>
+  <i>Flutter ile sıfırdan inşa edilmiş, kurumsal düzeyde (institutional-grade) yüksek sadakatli finans terminali.</i>
+</p>
 
-Fintech Elite, Flutter kullanılarak geliştirilmiş, yüksek görselliğe, gelişmiş mikro animasyonlara ve üst düzey kullanıcı deneyimine (UX) sahip premium bir mobil bankacılık, varlık yönetimi ve yatırım terminali uygulamasıdır. Proje, modern finansal arayüz trendleri, neon detaylar, cammorfik (glassmorphic) bileşenler ve kesintisiz ekran geçişleri temel alınarak inşa edilmiştir.
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.0.0+-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter Badge">
+  <img src="https://img.shields.io/badge/Dart-2.17+-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart Badge">
+  <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-green?style=for-the-badge&logo=android" alt="Platforms Badge">
+</p>
 
 ---
 
-## Proje Mimarisi ve Klasör Yapısı
+## 🛠 TEKNİK ÖZELLİKLER TABLOSU
 
-Uygulama, ölçeklenebilirliği ve sürdürülebilirliği artırmak amacıyla **Feature-Based (Özellik Tabanlı)** klasör yapısı kullanılarak tasarlanmıştır. Çekirdek stil tanımlamaları (`core/theme`) tek bir noktada toplanırken, her bir işlevsel modül kendi içinde izole edilmiştir:
+```text
+┌────────────────────────────────────────────────────────┐
+│  MİMARİ YAPISI : Feature-Based Modular (Özellik Bazlı) │
+│  TASARIM DİLİ  : Prestige Dark & Neo-Lime Accent (HSL) │
+│  GRAFİK MOTORU : Özel CustomPaint Bezier Matematik     │
+│  DONANIM ENTEG.: Fiziksel Haptik Geri Bildirim Sistemi │
+│  AKICILIK      : Custom PageRoute & Kademeli Girişler  │
+└────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🏗 DETAYLI PROJE KLASÖR YAPISI
+
+Projenin sürdürülebilir olması adına, tüm bileşenler, ekranlar ve iş mantığı özellik gruplarına göre izole edilmiştir.
 
 ```text
 lib/
@@ -40,65 +62,63 @@ lib/
 
 ---
 
-## Öne Çıkan Özellikler ve Ekran Akışları
+## 💎 ULTRA HIGH-FIDELITY BİLEŞENLER VE EKRAN DETAYLARI
 
-### 1. Giriş ve Güvenlik Akışı (Authentication & Security)
-* **Splash Screen (`splash_screen.dart`):** Uygulama açılışında arka planda yavaşça büyüyen ve opaklaşan dairesel neon parıltı efekti (`_GlowEffect`) ile başlar. Cubic-bezier eğrisiyle gecikmeli olarak kayan logoların ardından, custom-drawn parlak yükleme barı çalışır ve pürüzsüz bir `FadeTransition` ile giriş ekranına aktarır.
-* **Giriş Ekranı (`login_screen.dart`):** Şık input kutuları ve şifre gizle/göster kontrolleri barındırır.
-* **OTP Doğrulama (`otp_verification_screen.dart`):** Şifremi unuttum akışında yer alan 6 haneli OTP doğrulama ekranıdır. Kutular arası otomatik odaklanma (forward/backward focus), panodan kopyalanan kodu doğrudan yapıştırma dinleyicisi (clipboard listener), neon lime odaklanma çerçeveleri ve 30 saniyelik "Resend" zamanlayıcısı içerir.
-* **Yeni Şifre Oluşturma (`reset_password_screen.dart`):** Şifrenin karmaşıklığını (Weak, Fair, Good, Strong) harf, sayı ve özel karakter testleriyle gerçek zamanlı analiz eden 4 aşamalı dinamik şifre gücü göstergesi sunar.
+Uygulamanın her pikseli ve geçişi, en üst segment finansal mobil uygulamaların arayüzleri analiz edilerek tasarlanmıştır.
 
-### 2. Dashboard ve Modüler Tab Sistemi
-* **Dashboard Shell (`dashboard_screen.dart`):** Uygulamanın ana iskeletidir. Arkası bulanıklaştırılmış (backdrop filter) premium yüzen Bottom Navigation Bar'ı barındırır ve sekmeler arası pürüzsüz geçişleri yönetir.
-* **Home Sekmesi (`home_tab.dart`):**
-  * Kademeli giriş (Staggered Entrance) animasyonları.
-  * Halka parıltılı ve 45 derece çizgili tekrarlayan desene sahip interaktif iki adet banka kartı (Debit/Credit).
-  * Hızlı eylemler ("Send", "Receive", "Swap", "More"). "Send" butonu doğrudan gelişmiş transfer ekranına bağlanmıştır.
-* **Yatırım ve Trade Terminali (`swap_tab.dart`):**
-  * Portföy değerini `$0.00`'dan başlayarak `$2,459,103.88` değerine doğru simüle eden 2 saniyelik animasyonlu sayaç.
-  * Touch olayını (parmak hareketini) takip eden dikey kesikli kılavuz çizgisi (scrubber) ve o andaki değeri yansıtan dinamik veri kutucuğu içeren custom-drawn Bezier grafik arayüzü.
-  * Hızlı alım/satım (BUY/SELL) emir paneli ve işlem günlüğü.
-* **Varlıklar ve Wealth Sekmesi (`assets_tab.dart`):** Toplam zenginlik dağılımı, zaman aralığı butonları, custom bezier çizgi grafiği ve Crypto/Stocks/Cash detaylı bento kart listesi.
-* **Profil ve KYC Düzenleme (`profile_tab.dart`):** Absolute konumlandırılmış input etiketleri, telefon numarası için özelleştirilmiş ülke kod kutusu ve profil fotoğraf güncelleme yapısı.
+### 🌟 1. İnteraktif 3D Kart Kontrol Paneli (`CardDetailsScreen`)
+* **3D Tilt Efekti:** Kullanıcı parmağını kart üzerinde hareket ettirdiğinde, dokunuş koordinatlarına göre kart 3 boyutlu olarak `Matrix4` transformasyonuyla eğilir. Parmak bırakıldığında pürüzsüzce eski konumuna döner.
+* **Süzülme Fiziği:** Kart ekran üzerinde asılı duruyormuş gibi sürekli olarak yumuşak bir sinüzoidal süzülme animasyonu oynatır.
+* **Mastercard Grid Çizimi:** Tamamen kod tabanlı `CustomPainter` ile çizilmiş 45 derece çizgili desenler ve üst üste binen transparan marka halkaları.
+* **Akıllı Limit Slider:** İlerleme durumuna göre dinamik parıltı (neon glow) yayan ve sürükleme esnasında limit değerini milisaniyelik gecikme olmadan güncelleyen özelleştirilmiş `Slider`.
 
-### 3. Derinlemesine Etkileşim ve Donanım Entegrasyonları
-* **3D Tilt Kart Ayarları (`card_details_screen.dart`):**
-  * Kart bileşeni sürekli süzülme fiziği (sinusoidal float animation) ile havada yüzer.
-  * Kart üzerine basılı tutulup parmak kaydırıldığında, parmağın pozisyonuna göre 3 boyutlu eğilme (3D Tilt Transform) efekti gerçekleşir.
-  * Kart ayarları bento kutularındaki switch'ler özel animasyonlu toggle widget'ları ile değiştirilmiştir.
-  * Aylık limit ayarı neon lime gölgeli ilerleme gösteren bir slider ile yönetilir.
-* **Özel Klavyeli Para Transferi (`transfer_screen.dart`):**
-  * Sistem klavyesinden bağımsız, haptik geri bildirimli 3x4 özel sayısal sanal klavye tasarlanmıştır.
-  * Tutar girildikçe miktar göstergesi ölçeklenme (scale) animasyonuyla tepki verir.
-  * "Confirm Transfer" tıklandığında buton yükleme moduna geçer ve işlem tamamlandığında `heavyImpact` haptik titreşimi ile buton neon yeşile bürünüp içinde checkmark animasyonu oynatılırken, butondan dışarıya doğru ekranı kaplayan devasa bir radial dalga (Ripple Effect) yayılır.
-* **Bildirim Merkezi (`notifications_screen.dart`):** "All Activity", "Security", "Transactions" ve "Promotions" kategorilerine göre filtreleme imkanı, okunmamış bildirimler için sol kenarda dikey renkli şeritler ve tümünü temizleme aksiyonu.
+### ⚡ 2. Özel Keypad ve Prestige Ripple Transfer Akışı (`TransferScreen`)
+* **Dahili Sanal Klavye:** İşletim sisteminin klavyesine ihtiyaç duymadan çalışan, her basışta hafif fiziksel geri bildirim (`lightImpact`) veren 3x4 özel sayısal tuş takımı.
+* **Dinamik Ölçeklenme:** Girilen tutarın uzunluğuna ve basılan tuşa göre anlık esneme ve küçülüp büyüme (`ScaleTransition`) animasyonu.
+* **Prestige Onay Animasyonu:** Transfer onaylandığında butonda dönen loader belirir, işlem tamamlandığında `heavyImpact` ile buton neon lime yeşiline boyanır, dairesel başarı checkmark'ı çizilir ve butondan dışarıya doğru tüm ekranı saniyeler içinde kaplayıp kaybolan devasa bir parıltılı halka dalgası (`Ripple Effect`) yayılır.
+
+### 📊 3. Kusursuz Custom-Paint Bezier Grafikler (`SwapTab` & `AssetDetailScreen`)
+* **Spline Interpolation:** Verilen veri noktalarını keskin köşeler olmadan pürüzsüz bezier eğrilerine dönüştüren gelişmiş `Path.cubicTo` hesaplamaları.
+* **Dinamik Takipçi (Scrubber):** Grafiğe dokunulduğunda parmağın altındaki değeri okuyan kesikli dikey kılavuz çizgisi ve ekran sınırlarına çarpmadan hareket eden dinamik bilgi balonu (`Floating Tooltip`).
+* **Degrade Dolgu:** Grafiğin altındaki alanı azalan opaklıkla dolduran lime neon gradyan maskesi.
+
+### 🔒 4. Güvenlik ve Kimlik Doğrulama Akışları
+* **Splash Screen (`splash_screen.dart`):** Radial yeşil parıltılı ambient backing ve kademeli yukarı kayarak belirme animasyonları.
+* **OTP Ekranı (`otp_verification_screen.dart`):** Kutular arası otomatik geçiş, clipboard'dan 6 haneli kodu doğrudan yakalayıp doldurma yeteneği ve odaklanılan kutunun neon parlaması.
+* **Şifre Gücü Analizörü (`reset_password_screen.dart`):** Şifrenin zorluğunu gerçek zamanlı doğrulayan 4 barlı dinamik güç göstergesi.
 
 ---
 
-## Tasarım ve Animasyon Prensipleri
+## 🎨 PREMİUM TASARIM DİLİ VE METRİKLERİ
 
-* **Renk Paleti:** Arka planlarda mutlak siyah (`#000000`) ve çok koyu gri tonları (`#0C0C0C`, `#131313`) tercih edilirken, birincil vurgu rengi olarak yüksek kontrastlı neon lime yeşili (`#C3F400` / `#D8FF00`) kullanılmıştır.
-* **Backdrop Blur:** Cam paneller ve alt aksiyon barlarında `BackdropFilter` kullanılarak arkadaki içeriği buzlu gösteren premium cammorfik görünüm sağlanmıştır.
-* **Haptik Geri Bildirimler:** Buton tıklamalarında `lightImpact`, limit güncellemelerinde `selectionClick` ve kritik onay anlarında `heavyImpact` fiziksel titreşimleri kullanılarak fiziksel dünya ile etkileşim hissiyatı güçlendirilmiştir.
-* **Custom Painters:** Grafik eğrileri ve logolar, SVG kütüphanelerine bağımlılığı azaltmak ve performansı en üst seviyeye taşımak amacıyla tamamen Flutter'ın `CustomPainter` API'si ile sıfırdan çizilmiştir.
+> Projenin tüm görsel unsurları en üst düzey sadakat seviyesini korumak için tasarlanmıştır.
+
+* **HSL Tabanlı Renk Sistemi:** Arka planlarda derin uzay siyahı (`#000000`) ve antrasit tonları tercih edilirken, vurgu alanlarında kurumsal neon yeşil (`#C3F400` / `#D8FF00`) kullanılarak maksimum kontrast ve okunabilirlik yakalanmıştır.
+* **Buzlu Cam (Cammorfizm) Efekti:** Sayfa geçişleri ve alt aksiyon barlarında `BackdropFilter` ile arkadaki dinamik öğeleri buzlu gösteren premium katmanlar oluşturulmuştur.
+* **Haptik Dokunsal Geri Bildirim:** Kullanıcı etkileşiminin her adımında (Slider kaydırmaları, tuş takımı basışları, işlem onayları) farklı şiddette haptik motor (`lightImpact`, `mediumImpact`, `heavyImpact`) tetiklemeleri yapılmıştır.
 
 ---
 
-## Kurulum ve Çalıştırma
+## 🚀 KURULUM VE ÇALIŞTIRMA TALİMATLARI
 
-### Gereksinimler
-* Flutter SDK (>= 3.0.0)
-* Android Studio veya VS Code (Dart & Flutter eklentileri yüklü)
-* Android Emulator (Önerilen: RAM >= 4GB, Page Size 16KB desteği için `VM heap size >= 512MB` ayarlanmış imaj) veya fiziksel cihaz.
+### Ön Gereksinimler
+* Flutter SDK (sürüm `>= 3.0.0`)
+* Dart SDK (sürüm `>= 2.17.0`)
+* Android Emulator (Tavsiye edilen: Android 13+ AVD, Minimum RAM: `4096MB`, VM Heap Size: `512MB` bellek sınırlarından kaynaklı çökmeleri engellemek için) veya Fiziksel Test Cihazı.
 
-### Adımlar
-1. Depoyu yerel makinenize klonlayın.
-2. Proje dizininde bağımlılıkları yükleyin:
+### Çalıştırma Adımları
+
+1. Proje bağımlılıklarını indirin:
    ```bash
    flutter pub get
    ```
-3. Uygulamayı debug modunda başlatın:
+
+2. Kod analizlerini kontrol edin ve herhangi bir hata/uyarı olmadığından emin olun:
+   ```bash
+   flutter analyze
+   ```
+
+3. Uygulamayı cihazınızda çalıştırın:
    ```bash
    flutter run
    ```
-
