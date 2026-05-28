@@ -96,7 +96,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.surface.withOpacity(0.8),
+        backgroundColor: AppColors.surface.withValues(alpha: 0.8),
         elevation: 0,
         toolbarHeight: 64,
         surfaceTintColor: Colors.transparent,
@@ -148,7 +148,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primaryFixed.withOpacity(0.025),
+                color: AppColors.primaryFixed.withValues(alpha: 0.025),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
@@ -228,7 +228,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                 ..rotateX(_tiltX)
                 ..rotateY(_tiltY);
             } else {
-              transformMatrix.translate(0.0, _floatAnim.value, 0.0);
+              transformMatrix.translateByDouble(0.0, _floatAnim.value, 0.0, 1.0);
             }
 
             return Transform(
@@ -244,16 +244,16 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
             decoration: BoxDecoration(
               color: AppColors.cardBg,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.12)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: 0.5),
                   blurRadius: 25,
                   spreadRadius: 2,
                   offset: const Offset(0, 10),
                 ),
                 BoxShadow(
-                  color: AppColors.primaryFixed.withOpacity(0.05),
+                  color: AppColors.primaryFixed.withValues(alpha: 0.05),
                   blurRadius: 40,
                   spreadRadius: -5,
                 ),
@@ -280,8 +280,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.white.withOpacity(0.08),
-                          Colors.white.withOpacity(0.0),
+                          Colors.white.withValues(alpha: 0.08),
+                          Colors.white.withValues(alpha: 0.0),
                         ],
                       ),
                     ),
@@ -350,7 +350,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                 children: [
                                   Text(
                                     'CARD HOLDER',
-                                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.5)).copyWith(
+                                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                                       fontSize: 8,
                                       letterSpacing: 1.0,
                                     ),
@@ -370,7 +370,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                 children: [
                                   Text(
                                     'EXPIRY',
-                                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.5)).copyWith(
+                                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                                       fontSize: 8,
                                       letterSpacing: 1.0,
                                     ),
@@ -407,9 +407,9 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
       width: 44,
       height: 32,
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerHigh.withOpacity(0.4),
+        color: AppColors.surfaceContainerHigh.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.primaryFixed.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primaryFixed.withValues(alpha: 0.2)),
       ),
       child: Stack(
         children: [
@@ -421,7 +421,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.primaryFixed.withOpacity(0.15),
+                  AppColors.primaryFixed.withValues(alpha: 0.15),
                   Colors.transparent,
                 ],
               ),
@@ -442,8 +442,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               return Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: AppColors.primaryFixed.withOpacity(0.3), width: 0.5),
-                    right: BorderSide(color: AppColors.primaryFixed.withOpacity(0.3), width: 0.5),
+                    bottom: BorderSide(color: AppColors.primaryFixed.withValues(alpha: 0.3), width: 0.5),
+                    right: BorderSide(color: AppColors.primaryFixed.withValues(alpha: 0.3), width: 0.5),
                   ),
                 ),
               );
@@ -467,7 +467,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               height: 26,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primaryFixed.withOpacity(0.75),
+                color: AppColors.primaryFixed.withValues(alpha: 0.75),
               ),
             ),
           ),
@@ -478,8 +478,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               height: 26,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.15),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                color: Colors.white.withValues(alpha: 0.15),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
               ),
             ),
           ),
@@ -552,7 +552,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryFixed.withOpacity(0.15),
+                    color: AppColors.primaryFixed.withValues(alpha: 0.15),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -603,7 +603,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
           color: isPressed ? const Color(0xFF393939) : AppColors.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isPressed ? AppColors.primaryFixed.withOpacity(0.3) : Colors.white.withOpacity(0.05),
+            color: isPressed ? AppColors.primaryFixed.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.05),
           ),
         ),
         child: Row(
@@ -638,7 +638,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.7)),
+                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.7)),
                   ),
                 ],
               ),
@@ -680,7 +680,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               color: value ? Colors.black : AppColors.onSurfaceVariant,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 2,
                   offset: const Offset(0, 1),
                 ),
@@ -701,10 +701,10 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 15,
           ),
         ],
@@ -722,7 +722,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                 children: [
                   Text(
                     'MONTHLY LIMIT',
-                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.6)).copyWith(
+                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
                       letterSpacing: 1.5,
                       fontWeight: FontWeight.bold,
                     ),
@@ -742,7 +742,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                       const SizedBox(width: 6),
                       Text(
                         '/ \$10,000',
-                        style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant.withOpacity(0.4)),
+                        style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant.withValues(alpha: 0.4)),
                       ),
                     ],
                   ),
@@ -751,9 +751,9 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryFixed.withOpacity(0.1),
+                  color: AppColors.primaryFixed.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryFixed.withOpacity(0.2)),
+                  border: Border.all(color: AppColors.primaryFixed.withValues(alpha: 0.2)),
                 ),
                 child: Text(
                   '$percentage%',
@@ -785,7 +785,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primaryFixed.withOpacity(0.4),
+                        color: AppColors.primaryFixed.withValues(alpha: 0.4),
                         blurRadius: 10,
                       ),
                     ],
@@ -803,7 +803,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
               activeTrackColor: Colors.transparent, // handeled by custom visual track above
               inactiveTrackColor: Colors.transparent,
               thumbColor: AppColors.primaryFixed,
-              overlayColor: AppColors.primaryFixed.withOpacity(0.12),
+              overlayColor: AppColors.primaryFixed.withValues(alpha: 0.12),
               thumbShape: const RoundSliderThumbShape(
                 enabledThumbRadius: 10,
                 elevation: 4,
@@ -863,7 +863,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
           decoration: BoxDecoration(
             color: AppColors.surfaceContainerLow,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.05)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
           ),
           child: Column(
             children: List.generate(activities.length, (i) {
@@ -872,7 +872,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
 
               return Container(
                 decoration: BoxDecoration(
-                  border: isLast ? null : Border(bottom: BorderSide(color: Colors.white.withOpacity(0.05))),
+                  border: isLast ? null : Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -895,7 +895,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                             decoration: BoxDecoration(
                               color: AppColors.surfaceContainerHigh,
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Colors.white.withOpacity(0.05)),
+                              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                             ),
                             child: Icon(
                               icon,
@@ -919,7 +919,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                 const SizedBox(height: 4),
                                 Text(
                                   meta,
-                                  style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.6)),
+                                  style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)),
                                 ),
                               ],
                             ),
@@ -939,7 +939,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                               const SizedBox(height: 4),
                               Text(
                                 'APPROVED',
-                                style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.4)).copyWith(
+                                style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.4)).copyWith(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -965,7 +965,7 @@ class _CardPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.015)
+      ..color = Colors.white.withValues(alpha: 0.015)
       ..strokeWidth = 1.0;
 
     const double spacing = 12.0;

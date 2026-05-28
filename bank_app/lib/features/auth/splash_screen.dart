@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
-import 'login_screen.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -92,13 +91,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       _entranceCtrl.forward();
     });
 
-    // Automatically navigate to LoginScreen after 3.5 seconds
+    // Automatically navigate to OnboardingScreen after 3.5 seconds
     Future.delayed(const Duration(milliseconds: 3500), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const LoginScreen(),
+                const OnboardingScreen(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return FadeTransition(
                 opacity: CurvedAnimation(
@@ -157,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                               border: Border.all(color: AppColors.outlineVariant),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primaryFixed.withOpacity(0.1),
+                                  color: AppColors.primaryFixed.withValues(alpha: 0.1),
                                   blurRadius: 40,
                                   spreadRadius: 5,
                                 ),
@@ -345,7 +344,7 @@ class _LoadingBarState extends State<_LoadingBar> with SingleTickerProviderState
           decoration: BoxDecoration(
             color: AppColors.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(9999),
-            border: Border.all(color: AppColors.outlineVariant.withOpacity(0.3)),
+            border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.3)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(9999),
@@ -389,7 +388,7 @@ class _LoadingBarPainter extends CustomPainter {
 
     // Subtle glow overlay
     final shadowPaint = Paint()
-      ..color = AppColors.primaryFixed.withOpacity(0.5)
+      ..color = AppColors.primaryFixed.withValues(alpha: 0.5)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
     canvas.drawRRect(
       RRect.fromRectAndRadius(

@@ -174,7 +174,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
             height: 300,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.primaryFixed.withOpacity(0.015),
+              color: AppColors.primaryFixed.withValues(alpha: 0.015),
             ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
@@ -191,7 +191,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
             height: 300,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.primaryFixed.withOpacity(0.01),
+              color: AppColors.primaryFixed.withValues(alpha: 0.01),
             ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
@@ -206,7 +206,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
             // ── TopAppBar
             SliverAppBar(
               pinned: true,
-              backgroundColor: AppColors.background.withOpacity(0.8),
+              backgroundColor: AppColors.background.withValues(alpha: 0.8),
               elevation: 0,
               toolbarHeight: 64,
               surfaceTintColor: Colors.transparent,
@@ -306,7 +306,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.primaryFixed.withOpacity(0.1),
+                color: AppColors.primaryFixed.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -392,7 +392,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                             boxShadow: active
                                 ? [
                                     BoxShadow(
-                                      color: AppColors.primaryFixed.withOpacity(0.3),
+                                      color: AppColors.primaryFixed.withValues(alpha: 0.3),
                                       blurRadius: 10,
                                       spreadRadius: 1,
                                     )
@@ -544,7 +544,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
               color: const Color(0xFF0C0C0C),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isPressed ? AppColors.primaryFixed.withOpacity(0.5) : const Color(0xFF1F1F1F),
+                color: isPressed ? AppColors.primaryFixed.withValues(alpha: 0.5) : const Color(0xFF1F1F1F),
                 width: 1,
               ),
             ),
@@ -587,9 +587,9 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF1A1A1A).withOpacity(0.7),
+            color: const Color(0xFF1A1A1A).withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1),
           ),
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -622,7 +622,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                           decoration: BoxDecoration(
                             color: AppColors.surfaceContainer,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white.withOpacity(0.1)),
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                           ),
                           alignment: Alignment.center,
                           child: Text(
@@ -697,7 +697,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primaryFixed.withOpacity(0.3),
+                                color: AppColors.primaryFixed.withValues(alpha: 0.3),
                                 blurRadius: 20,
                               ),
                             ],
@@ -769,7 +769,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
               const SizedBox(height: 12),
               Text(
                 'Estimated spread: 0.002% • Instant Settlement',
-                style: AppTextStyles.labelSm(color: AppColors.secondary.withOpacity(0.6)).copyWith(fontSize: 10, fontStyle: FontStyle.italic),
+                style: AppTextStyles.labelSm(color: AppColors.secondary.withValues(alpha: 0.6)).copyWith(fontSize: 10, fontStyle: FontStyle.italic),
               ),
             ],
           ),
@@ -814,7 +814,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         color: AppColors.cardBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Column(
         children: [
@@ -823,7 +823,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: Colors.white.withOpacity(0.05), width: 1),
+                bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1),
               ),
             ),
             child: Row(
@@ -846,7 +846,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.white.withOpacity(0.05), width: 1),
+                    bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1),
                   ),
                 ),
                 child: Row(
@@ -858,8 +858,8 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: log.isBuy == null
-                            ? Colors.white.withOpacity(0.05)
-                            : (log.isBuy! ? AppColors.primaryFixed.withOpacity(0.1) : AppColors.error.withOpacity(0.1)),
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : (log.isBuy! ? AppColors.primaryFixed.withValues(alpha: 0.1) : AppColors.error.withValues(alpha: 0.1)),
                       ),
                       child: Icon(
                         log.isBuy == null
@@ -1068,7 +1068,7 @@ class _AdvancedChartPainter extends CustomPainter {
 
     // Draw Grid Lines (horizontal)
     final gridPaint = Paint()
-      ..color = Colors.white.withOpacity(0.06)
+      ..color = Colors.white.withValues(alpha: 0.06)
       ..strokeWidth = 1;
     for (int i = 0; i <= 4; i++) {
       final y = size.height * i / 4;
@@ -1117,8 +1117,8 @@ class _AdvancedChartPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primaryFixed.withOpacity(0.20),
-            AppColors.primaryFixed.withOpacity(0.0),
+            AppColors.primaryFixed.withValues(alpha: 0.20),
+            AppColors.primaryFixed.withValues(alpha: 0.0),
           ],
         ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
         ..style = PaintingStyle.fill;
@@ -1138,12 +1138,12 @@ class _AdvancedChartPainter extends CustomPainter {
     if (drawProgress >= 0.25) {
       final p1 = Offset(250 * scaleX, 140 * scaleY);
       canvas.drawCircle(p1, 3, Paint()..color = AppColors.primaryFixed);
-      canvas.drawCircle(p1, pulseRadius, Paint()..color = AppColors.primaryFixed.withOpacity(0.15)..style = PaintingStyle.stroke..strokeWidth = 1.5);
+      canvas.drawCircle(p1, pulseRadius, Paint()..color = AppColors.primaryFixed.withValues(alpha: 0.15)..style = PaintingStyle.stroke..strokeWidth = 1.5);
     }
     if (drawProgress >= 0.55) {
       final p2 = Offset(550 * scaleX, 80 * scaleY);
       canvas.drawCircle(p2, 3, Paint()..color = AppColors.primaryFixed);
-      canvas.drawCircle(p2, pulseRadius, Paint()..color = AppColors.primaryFixed.withOpacity(0.15)..style = PaintingStyle.stroke..strokeWidth = 1.5);
+      canvas.drawCircle(p2, pulseRadius, Paint()..color = AppColors.primaryFixed.withValues(alpha: 0.15)..style = PaintingStyle.stroke..strokeWidth = 1.5);
     }
     if (drawProgress >= 1.0) {
       final p3 = Offset(1000 * scaleX, 30 * scaleY);
@@ -1158,7 +1158,7 @@ class _AdvancedChartPainter extends CustomPainter {
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            AppColors.primaryFixed.withOpacity(0.8),
+            AppColors.primaryFixed.withValues(alpha: 0.8),
             Colors.transparent,
           ],
         ).createShader(Rect.fromLTWH(touchX!, 0, 1, size.height))

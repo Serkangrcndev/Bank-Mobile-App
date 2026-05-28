@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../notifications/notifications_screen.dart';
+import '../../settings/settings_screen.dart';
+import '../../auth/login_screen.dart';
+import '../../support/support_screen.dart';
+import '../../kyc/kyc_verification_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -16,29 +21,12 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
   late final AnimationController _entranceCtrl;
   late final List<Animation<double>> _fadeAnims;
   late final List<Animation<Offset>> _slideAnims;
-  static const int _sectionCount = 5;
-
-  // ── Pulsing green dot animation ───────────────────────────────────────────
-  late final AnimationController _pulseCtrl;
-  late final Animation<double> _pulseAnim;
-
-  // ── Form Controllers ──────────────────────────────────────────────────────
-  final _nameCtrl = TextEditingController(text: 'Alexander James Mercer');
-  final _emailCtrl = TextEditingController(text: 'a.mercer@fintech-elite.io');
-  final _phoneCtrl = TextEditingController(text: '555-019-8372');
-  final _addressCtrl = TextEditingController(text: '4820 Skyline Blvd, Suite 400, Neo-SF, CA 94101');
-
-  // ── Focus Nodes ───────────────────────────────────────────────────────────
-  final _nameFocus = FocusNode();
-  final _emailFocus = FocusNode();
-  final _phoneFocus = FocusNode();
-  final _addressFocus = FocusNode();
+  static const int _sectionCount = 4;
 
   @override
   void initState() {
     super.initState();
 
-    // Entrance
     _entranceCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
@@ -56,19 +44,12 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
     _slideAnims = List.generate(_sectionCount, (i) {
       final start = i * 0.12;
       final end = (start + 0.45).clamp(0.0, 1.0);
-      return Tween<Offset>(begin: const Offset(0, 0.15), end: Offset.zero)
+      return Tween<Offset>(begin: const Offset(0, 0.10), end: Offset.zero)
           .animate(CurvedAnimation(
         parent: _entranceCtrl,
         curve: Interval(start, end, curve: Curves.easeOutCubic),
       ));
     });
-
-    // Pulse dot
-    _pulseCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    )..repeat(reverse: true);
-    _pulseAnim = Tween<double>(begin: 0.3, end: 1.0).animate(_pulseCtrl);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _entranceCtrl.forward());
   }
@@ -76,15 +57,6 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
   @override
   void dispose() {
     _entranceCtrl.dispose();
-    _pulseCtrl.dispose();
-    _nameCtrl.dispose();
-    _emailCtrl.dispose();
-    _phoneCtrl.dispose();
-    _addressCtrl.dispose();
-    _nameFocus.dispose();
-    _emailFocus.dispose();
-    _phoneFocus.dispose();
-    _addressFocus.dispose();
     super.dispose();
   }
 
@@ -93,131 +65,222 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
         child: SlideTransition(position: _slideAnims[i], child: child),
       );
 
+  void _navigateToSettings() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const SettingsScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _navigateToSupport() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const SupportScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _navigateToKyc() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const KycVerificationScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _handleSignOut() {
+    HapticFeedback.heavyImpact();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text('Sign Out', style: AppTextStyles.headlineMd()),
+        content: Text(
+          'Are you sure you want to log out of your elite session?',
+          style: AppTextStyles.bodyMd(color: AppColors.secondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: AppTextStyles.labelMd(color: AppColors.secondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // close dialog
+              Navigator.of(context).pushAndRemoveUntil(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+                (route) => false,
+              );
+            },
+            child: Text('Sign Out', style: AppTextStyles.labelMd(color: AppColors.error)),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        // ── TopAppBar
-        SliverAppBar(
-          pinned: true,
-          backgroundColor: AppColors.background,
-          elevation: 0,
-          toolbarHeight: 64,
-          surfaceTintColor: Colors.transparent,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
-            child: Container(
-              height: 1,
-              color: AppColors.surfaceContainerHighest,
-            ),
+    return Stack(
+      children: [
+        // ── Background Glows ──────────────────────────────────────────────────
+        Positioned(
+          top: -100,
+          left: -100,
+          width: 350,
+          height: 350,
+          child: _AmbientGlow(
+            color: AppColors.primaryFixed.withValues(alpha: 0.08),
+            delay: Duration.zero,
           ),
-          title: Text(
-            'FINTECH ELITE',
-            style: AppTextStyles.headlineMd().copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: -1.0,
-            ),
+        ),
+        Positioned(
+          bottom: 150,
+          right: -100,
+          width: 300,
+          height: 300,
+          child: _AmbientGlow(
+            color: AppColors.primaryFixed.withValues(alpha: 0.04),
+            delay: const Duration(seconds: 2),
           ),
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) => _AppBarIconButton(
-              icon: Icons.menu_rounded,
-              onTap: () => Scaffold.of(context).openDrawer(),
-            ),
-          ),
-          actions: [
-            _NotificationButton(),
-            const SizedBox(width: 8),
-          ],
         ),
 
-        // ── Scrollable Bento Layout
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-
-                // 1. Header & KYC Status Row
-                _staggered(0, _buildHeaderSection()),
-                const SizedBox(height: 24),
-
-                // 2. Avatar Card (Left Bento Box 1)
-                _staggered(1, _buildAvatarCard()),
-                const SizedBox(height: 16),
-
-                // 3. Security Card (Left Bento Box 2)
-                _staggered(2, _buildSecurityCard()),
-                const SizedBox(height: 24),
-
-                // 4. Form Fields Card (Right Bento Box)
-                _staggered(3, _buildFormCard()),
-                const SizedBox(height: 24),
-
-                // 5. Action Buttons (Save/Discard)
-                _staggered(4, _buildActionButtons()),
-
-                // Bottom padding to clear the persistent navbar
-                const SizedBox(height: 120),
+        // ── Main Content Scroll View ──────────────────────────────────────────
+        CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // ── TopAppBar
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: AppColors.background,
+              elevation: 0,
+              toolbarHeight: 64,
+              surfaceTintColor: Colors.transparent,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(1),
+                child: Container(
+                  height: 1,
+                  color: AppColors.surfaceContainerHighest,
+                ),
+              ),
+              title: Text(
+                'FINTECH ELITE',
+                style: AppTextStyles.headlineMd().copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -1.0,
+                ),
+              ),
+              centerTitle: true,
+              leading: Builder(
+                builder: (context) => _AppBarIconButton(
+                  icon: Icons.menu_rounded,
+                  onTap: () => Scaffold.of(context).openDrawer(),
+                ),
+              ),
+              actions: [
+                _NotificationButton(),
+                const SizedBox(width: 8),
               ],
             ),
-          ),
+
+            // ── Scrollable Bento Layout
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 24),
+
+                    // 1. Profile Header Section
+                    _staggered(0, _buildHeaderSection()),
+                    const SizedBox(height: 24),
+
+                    // 2. Account Tier Card
+                    _staggered(1, _buildTierCard()),
+                    const SizedBox(height: 28),
+
+                    // 3. Preferences Section
+                    _staggered(2, _buildPreferencesSection()),
+                    const SizedBox(height: 24),
+
+                    // 4. Logout Button
+                    _staggered(3, _LogoutButton(onTap: _handleSignOut)),
+
+                    // Bottom padding to clear the persistent navbar
+                    const SizedBox(height: 120),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  // ── Header & KYC Badge ─────────────────────────────────────────────────────
+  // ── Profile Header Section ──────────────────────────────────────────────────
   Widget _buildHeaderSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Profile Settings',
-          style: AppTextStyles.headlineXl(),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Manage your identity verification and contact details.',
-          style: AppTextStyles.bodyMd(color: AppColors.secondary),
+        _PulsingAvatar(
+          imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA3UtoRTSa6Su4JWkXG0dbxPsSeozWnlnWkhTCg8HSRqT7dM5r6wEfK3uetKxhucYkj1KW7GgShkMcLaugIqvsbtKEDr2CoyH6AMBaGBbSFvVoNC9MytOVJG0j8brK0SNPTD-1NCh4mKG92oJb8UiepleNxkrCbH-Bb-T6SFabkZ-kYTMGz6Arip-wkSsHiNbLqP7OuRQOTQilhqhJFnUC19px0uIdLdsy-gypFiXLV1AmJPyCcMgw3_i8ovIEMKdGyV-oFR0qztHMm',
+          onEditTap: () {
+            HapticFeedback.selectionClick();
+          },
         ),
         const SizedBox(height: 16),
+        Text(
+          'Alex Mercer',
+          style: AppTextStyles.headlineLgMobile(color: AppColors.primary).copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
 
-        // KYC Badge
+        // Elite Member Badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: AppColors.cardBg,
+            color: AppColors.surfaceContainerLow,
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: const Color(0xFF333333)),
+            border: Border.all(color: AppColors.surfaceContainerHighest),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(
-                Icons.verified_user_rounded,
+                Icons.verified_rounded,
                 color: AppColors.primaryFixed,
-                size: 24,
+                size: 16,
               ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'KYC STATUS',
-                    style: AppTextStyles.labelSm(color: AppColors.primaryFixed)
-                        .copyWith(letterSpacing: 1.5, height: 1.0),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Level 3 Verified',
-                    style: AppTextStyles.bodyMd(color: AppColors.primary)
-                        .copyWith(fontWeight: FontWeight.bold, height: 1.0),
-                  ),
-                ],
+              const SizedBox(width: 8),
+              Text(
+                'ELITE MEMBER',
+                style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.0,
+                ),
               ),
             ],
           ),
@@ -226,494 +289,551 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
     );
   }
 
-  // ── Avatar Card ────────────────────────────────────────────────────────────
-  Widget _buildAvatarCard() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333)),
-      ),
-      padding: const EdgeInsets.all(24),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Background Glow
-          Positioned(
-            top: -30,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryFixed.withOpacity(0.08),
+  // ── Account Tier Glassmorphic Card ──────────────────────────────────────────
+  Widget _buildTierCard() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surfaceContainerLow.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.08), width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.4),
+                blurRadius: 30,
+                offset: const Offset(0, 15),
               ),
-            ),
+              BoxShadow(
+                color: AppColors.primaryFixed.withValues(alpha: 0.05),
+                blurRadius: 40,
+                spreadRadius: -10,
+              ),
+            ],
           ),
-
-          // Main Column
-          Column(
+          padding: const EdgeInsets.all(24),
+          child: Stack(
             children: [
-              // Avatar Circle
-              GestureDetector(
-                onTap: () {},
+              // Radial blur inside card
+              Positioned(
+                top: -30,
+                right: -30,
                 child: Container(
-                  width: 128,
-                  height: 128,
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFF333333)),
+                    color: AppColors.primaryFixed.withValues(alpha: 0.05),
                   ),
-                  padding: const EdgeInsets.all(4),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(999),
-                    child: Image.network(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuAjfg2sC30yWHJQL4PQVPqtdHnCL8sasuBTxJL4KturJOj4uYNnbyRlKujh87jJJTP4cra-5XcR9Ef5KHUbdLzVDN840b3WsMyzThWje6Nn8H7JFQ6lRLxEloyPircUOfXQTWnHS9WnDnqRRTBGVl5cwLNK_zLRLJ5dC_Wwnr671pxKwQIVu8CsXAROy86U7_sLpgOQ_bNPl0qojILbvTt5zGwEwppXLl5YIyx040wqjXrExbiHIxQotAHb-x-xAI2PHQfTIdj8QS-h',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: AppColors.surfaceContainerHigh,
-                        child: const Icon(Icons.person, size: 48, color: AppColors.secondary),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'CURRENT TIER',
+                            style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6))
+                                .copyWith(letterSpacing: 1.0, fontSize: 11),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Volume Alpha',
+                            style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Name
-              Text(
-                'Alex Mercer',
-                style: AppTextStyles.headlineMd(color: AppColors.primary),
-              ),
-              const SizedBox(height: 6),
-
-              // Active Badge with Pulsing dot
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: const Color(0xFF333333)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FadeTransition(
-                      opacity: _pulseAnim,
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          color: AppColors.surfaceContainerHighest.withValues(alpha: 0.5),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.diamond_rounded,
                           color: AppColors.primaryFixed,
+                          size: 20,
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'ACTIVE ACCOUNT',
-                      style: AppTextStyles.labelSm(color: AppColors.secondary),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Update Photo Button
-              OutlinedButton.icon(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                  side: const BorderSide(color: Color(0xFF333333)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    ],
                   ),
-                  foregroundColor: AppColors.primary,
-                ),
-                icon: const Icon(Icons.upload_rounded, size: 18),
-                label: Text(
-                  'Update Photo',
-                  style: AppTextStyles.labelMd(),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ── Security Summary Card ──────────────────────────────────────────────────
-  Widget _buildSecurityCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333)),
-      ),
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          // Header
-          Row(
-            children: [
-              const Icon(
-                Icons.shield_outlined,
-                color: AppColors.secondary,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'SECURITY',
-                style: AppTextStyles.labelMd(color: AppColors.secondary)
-                    .copyWith(letterSpacing: 1.5),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Divider(color: Color(0xFF1A1A1A)),
-          const SizedBox(height: 12),
-
-          // 2FA Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '2FA App',
-                style: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryFixed.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  'Enabled',
-                  style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Last Login Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Last Login',
-                style: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant),
-              ),
-              Text(
-                'Today, 08:42',
-                style: AppTextStyles.labelSm(color: AppColors.secondary)
-                    .copyWith(fontFamily: 'JetBrains Mono'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ── Identity Details Form Card ─────────────────────────────────────────────
-  Widget _buildFormCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333)),
-      ),
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A1A1A),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFF333333)),
-                    ),
-                    child: const Icon(
-                      Icons.badge_outlined,
-                      color: AppColors.primaryFixed,
-                      size: 20,
-                    ),
+                  const SizedBox(height: 24),
+                  
+                  // Progress Bar Section
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Trading Fee Discount',
+                            style: AppTextStyles.labelSm(color: AppColors.secondary).copyWith(fontSize: 12),
+                          ),
+                          Text(
+                            '45%',
+                            style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      // Custom drawn progress bar
+                      Container(
+                        height: 6,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.4),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: FractionallySizedBox(
+                          widthFactor: 0.45,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryFixed,
+                              borderRadius: BorderRadius.circular(999),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primaryFixed.withValues(alpha: 0.5),
+                                  blurRadius: 8,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 16),
-                  Text(
-                    'Identity Details',
-                    style: AppTextStyles.headlineMd(color: AppColors.primary),
+                  const SizedBox(height: 16),
+                  
+                  // Next Tier
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Next Tier: Omega',
+                        style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.8)).copyWith(fontSize: 12),
+                      ),
+                      Text(
+                        '\$124K Vol Required',
+                        style: AppTextStyles.labelSm(color: AppColors.primary.withValues(alpha: 0.9)).copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const Icon(
-                Icons.edit_note_rounded,
-                color: Color(0xFF333333),
-                size: 24,
-              ),
             ],
           ),
-          const SizedBox(height: 28),
-
-          // Legal Full Name
-          _StitchFormField(
-            controller: _nameCtrl,
-            focusNode: _nameFocus,
-            labelText: 'Legal Full Name',
-            hintText: 'Government ID Name',
-            caption: 'Matches government ID',
-          ),
-          const SizedBox(height: 32),
-
-          // Email
-          _StitchFormField(
-            controller: _emailCtrl,
-            focusNode: _emailFocus,
-            labelText: 'Primary Email',
-            hintText: 'email@domain.com',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 32),
-
-          // Mobile Number
-          _StitchFormField(
-            controller: _phoneCtrl,
-            focusNode: _phoneFocus,
-            labelText: 'Mobile Number',
-            hintText: '555-019-8372',
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 32),
-
-          // Residential Address
-          _StitchFormField(
-            controller: _addressCtrl,
-            focusNode: _addressFocus,
-            labelText: 'Residential Address',
-            hintText: 'Street, Suite, State, ZIP',
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ── Action Buttons ─────────────────────────────────────────────────────────
-  Widget _buildActionButtons() {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Color(0xFF1A1A1A)),
         ),
       ),
-      padding: const EdgeInsets.only(top: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              setState(() {
-                _nameCtrl.text = 'Alexander James Mercer';
-                _emailCtrl.text = 'a.mercer@fintech-elite.io';
-                _phoneCtrl.text = '555-019-8372';
-                _addressCtrl.text = '4820 Skyline Blvd, Suite 400, Neo-SF, CA 94101';
-              });
-            },
-            child: Text(
-              'Discard Changes',
-              style: AppTextStyles.labelMd(color: const Color(0xFFA1A1A1)),
+    );
+  }
+
+  // ── Preferences Section ─────────────────────────────────────────────────────
+  Widget _buildPreferencesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            'PREFERENCES',
+            style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(width: 16),
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.mediumImpact();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Profile saved successfully!'),
-                  backgroundColor: AppColors.surfaceContainerHigh,
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-              decoration: BoxDecoration(
-                color: AppColors.primaryFixed,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryFixed.withAlpha(38), // 15%
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'Save Profile',
-                style: AppTextStyles.headlineMd(color: const Color(0xFF000000))
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 12),
+        _PreferenceTile(
+          icon: Icons.person_outline_rounded,
+          title: 'Personal Information',
+          subtitle: 'Update identity & contact details',
+          onTap: _navigateToSettings,
+        ),
+        const SizedBox(height: 8),
+        _PreferenceTile(
+          icon: Icons.verified_user_outlined,
+          title: 'Identity Verification',
+          subtitle: 'KYC — Unlock premium trading features',
+          onTap: _navigateToKyc,
+        ),
+        const SizedBox(height: 8),
+        _PreferenceTile(
+          icon: Icons.lock_outline_rounded,
+          title: 'Security & Biometrics',
+          subtitle: '2FA, Passkeys, Login history',
+          onTap: _navigateToSettings,
+        ),
+        const SizedBox(height: 8),
+        _PreferenceTile(
+          icon: Icons.notifications_active_outlined,
+          title: 'Notification Preferences',
+          subtitle: 'Alerts, Marketing, Price updates',
+          onTap: _navigateToSettings,
+        ),
+        const SizedBox(height: 8),
+        _PreferenceTile(
+          icon: Icons.help_outline_rounded,
+          title: 'Help & Support',
+          subtitle: 'FAQ, Contact Elite Desk',
+          onTap: _navigateToSupport,
+        ),
+      ],
     );
   }
 }
 
-// ── Stitch Form Field with overlapping label ───────────────────────────────
-class _StitchFormField extends StatefulWidget {
-  const _StitchFormField({
-    required this.controller,
-    required this.focusNode,
-    required this.labelText,
-    required this.hintText,
-    this.caption,
-    this.keyboardType = TextInputType.text,
+// ── Background Glow ──────────────────────────────────────────────────────────
+class _AmbientGlow extends StatefulWidget {
+  const _AmbientGlow({
+    required this.color,
+    required this.delay,
   });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final String labelText;
-  final String hintText;
-  final String? caption;
-  final TextInputType keyboardType;
+  final Color color;
+  final Duration delay;
 
   @override
-  State<_StitchFormField> createState() => _StitchFormFieldState();
+  State<_AmbientGlow> createState() => _AmbientGlowState();
 }
 
-class _StitchFormFieldState extends State<_StitchFormField> {
-  bool _isFocused = false;
+class _AmbientGlowState extends State<_AmbientGlow> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    widget.focusNode.addListener(_onFocusChange);
-  }
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    );
+    _animation = Tween<double>(begin: 0.7, end: 1.1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
 
-  @override
-  void dispose() {
-    widget.focusNode.removeListener(_onFocusChange);
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    setState(() {
-      _isFocused = widget.focusNode.hasFocus;
+    Future.delayed(widget.delay, () {
+      if (mounted) {
+        _controller.repeat(reverse: true);
+      }
     });
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: _isFocused ? AppColors.surface : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: _isFocused ? AppColors.primaryFixed : const Color(0xFF333333),
-                  width: 1.0,
-                ),
-              ),
-              child: Row(
-                children: [
-                  if (widget.keyboardType == TextInputType.phone)
-                    Container(
-                      height: 56,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A1A1A),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          bottomLeft: Radius.circular(8),
-                        ),
-                        border: Border(
-                          right: BorderSide(
-                            color: _isFocused ? AppColors.primaryFixed : const Color(0xFF333333),
-                          ),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '+1',
-                        style: AppTextStyles.labelMd(color: AppColors.secondary),
-                      ),
-                    ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: widget.controller,
-                      focusNode: widget.focusNode,
-                      keyboardType: widget.keyboardType,
-                      style: widget.keyboardType == TextInputType.phone
-                          ? AppTextStyles.labelMd(color: AppColors.primary).copyWith(fontFamily: 'JetBrains Mono')
-                          : (widget.labelText == 'Legal Full Name'
-                              ? AppTextStyles.bodyLg(color: AppColors.primary)
-                              : AppTextStyles.bodyMd(color: AppColors.primary)),
-                      decoration: InputDecoration(
-                        hintText: widget.hintText,
-                        hintStyle: AppTextStyles.bodyMd(color: AppColors.textMuted),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      ),
-                    ),
-                  ),
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _animation.value,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  widget.color,
+                  Colors.transparent,
                 ],
               ),
             ),
-            Positioned(
-              left: 12,
-              top: -8,
-              child: Container(
-                color: AppColors.cardBg,
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(
-                  widget.labelText,
-                  style: AppTextStyles.labelSm(
-                    color: _isFocused ? AppColors.primaryFixed : AppColors.secondary,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        if (widget.caption != null) ...[
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.info_outline_rounded, size: 14, color: Color(0xFF474746)),
-              const SizedBox(width: 4),
-              Text(
-                widget.caption!,
-                style: AppTextStyles.labelSm(color: const Color(0xFF474746)),
-              ),
-            ],
           ),
-        ],
-      ],
+        );
+      },
     );
   }
 }
 
-// ── Reusable Local Widgets ───────────────────────────────────────────────────
+// ── Pulsing Avatar Widget ────────────────────────────────────────────────────
+class _PulsingAvatar extends StatefulWidget {
+  const _PulsingAvatar({required this.imageUrl, required this.onEditTap});
+  final String imageUrl;
+  final VoidCallback onEditTap;
 
+  @override
+  State<_PulsingAvatar> createState() => _PulsingAvatarState();
+}
+
+class _PulsingAvatarState extends State<_PulsingAvatar> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat(reverse: true);
+
+    _glowAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _glowAnimation,
+      builder: (context, child) {
+        final glowVal = _glowAnimation.value;
+        return Container(
+          width: 96,
+          height: 96,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppColors.primaryFixed.withValues(alpha: 0.5 + 0.5 * glowVal),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryFixed.withValues(alpha: 0.15 + 0.15 * glowVal),
+                blurRadius: 15 * glowVal,
+                spreadRadius: 2 * glowVal,
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(4),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(999),
+                  child: Image.network(
+                    widget.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: AppColors.surfaceContainerHigh,
+                      child: const Icon(Icons.person, size: 40, color: AppColors.secondary),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: -2,
+                right: -2,
+                child: GestureDetector(
+                  onTap: widget.onEditTap,
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.surfaceContainerHighest,
+                        width: 1,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.edit_rounded,
+                      size: 14,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+// ── Reusable Preferences Tile ────────────────────────────────────────────────
+class _PreferenceTile extends StatefulWidget {
+  const _PreferenceTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  State<_PreferenceTile> createState() => _PreferenceTileState();
+}
+
+class _PreferenceTileState extends State<_PreferenceTile> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        HapticFeedback.lightImpact();
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.98 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: _pressed
+                ? AppColors.surfaceContainerHigh.withValues(alpha: 0.6)
+                : AppColors.surfaceContainerLow.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: _pressed
+                  ? AppColors.primaryFixed.withValues(alpha: 0.3)
+                  : Colors.white.withValues(alpha: 0.05),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.surfaceContainer.withValues(alpha: 0.6),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  widget.icon,
+                  color: AppColors.secondary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: AppTextStyles.bodyMd(color: AppColors.primary).copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.subtitle,
+                      style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.7)),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.secondary,
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Reusable Logout Button ───────────────────────────────────────────────────
+class _LogoutButton extends StatefulWidget {
+  const _LogoutButton({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  State<_LogoutButton> createState() => _LogoutButtonState();
+}
+
+class _LogoutButtonState extends State<_LogoutButton> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        HapticFeedback.heavyImpact();
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.98 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: _pressed ? AppColors.error.withValues(alpha: 0.08) : Colors.transparent,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: _pressed ? AppColors.error : AppColors.error.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.logout_rounded,
+                color: AppColors.error,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'LOGOUT',
+                style: AppTextStyles.labelMd(color: AppColors.error).copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Supporting Shared Header Widgets ──────────────────────────────────────────
 class _AppBarIconButton extends StatefulWidget {
   const _AppBarIconButton({required this.icon, required this.onTap});
   final IconData icon;
@@ -742,13 +862,10 @@ class _AppBarIconButtonState extends State<_AppBarIconButton> {
           margin: const EdgeInsets.all(8),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: _pressed
-                ? AppColors.surfaceContainerHighest
-                : Colors.transparent,
+            color: _pressed ? AppColors.surfaceContainerHighest : Colors.transparent,
             shape: BoxShape.circle,
           ),
-          child: Icon(widget.icon,
-              color: AppColors.onSurfaceVariant, size: 24),
+          child: Icon(widget.icon, color: AppColors.onSurfaceVariant, size: 24),
         ),
       ),
     );
@@ -785,13 +902,10 @@ class _NotificationButtonState extends State<_NotificationButton> {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: _pressed
-                    ? AppColors.surfaceContainerHighest
-                    : Colors.transparent,
+                color: _pressed ? AppColors.surfaceContainerHighest : Colors.transparent,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.notifications_outlined,
-                  color: AppColors.onSurfaceVariant, size: 24),
+              child: const Icon(Icons.notifications_outlined, color: AppColors.onSurfaceVariant, size: 24),
             ),
             Positioned(
               top: 8,
@@ -802,10 +916,7 @@ class _NotificationButtonState extends State<_NotificationButton> {
                 decoration: BoxDecoration(
                   color: AppColors.primaryFixed,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.background,
-                    width: 1.5,
-                  ),
+                  border: Border.all(color: AppColors.background, width: 1.5),
                 ),
               ),
             ),

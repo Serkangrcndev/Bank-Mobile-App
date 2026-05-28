@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../transfers/transaction_success_screen.dart';
 
 class AssetDetailScreen extends StatefulWidget {
   const AssetDetailScreen({super.key, required this.coin, this.isBuy});
@@ -149,21 +150,26 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
 
   void _onTradeAction(bool isBuy) {
     HapticFeedback.heavyImpact();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color(0xFF1F1F1F),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
-            const SizedBox(width: 10),
-            Text(
-              isBuy ? 'Buy order submitted for BTC' : 'Sell order submitted for BTC',
-              style: const TextStyle(color: Colors.white, fontFamily: 'Inter'),
-            ),
-          ],
+    
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final now = DateTime.now();
+    final formattedDate = '${months[now.month - 1]} ${now.day}, ${now.year} • ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+    final randomRef = 'ORD-${(now.millisecondsSinceEpoch ~/ 1000).toRadixString(16).toUpperCase()}';
+    
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => TransactionSuccessScreen(
+          title: isBuy ? 'Buy Order Executed' : 'Sell Order Executed',
+          amount: isBuy ? '0.0194 BTC' : '\$1,250.00',
+          recipient: isBuy ? 'Bitcoin (BTC)' : 'Cash Balance (USD)',
+          date: formattedDate,
+          referenceId: randomRef,
+          transactionFee: isBuy ? '0.00004 BTC' : '\$1.50',
         ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
@@ -397,7 +403,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
                             color: AppColors.primaryFixed,
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primaryFixed.withOpacity(0.8),
+                                color: AppColors.primaryFixed.withValues(alpha: 0.8),
                                 blurRadius: 10,
                                 spreadRadius: 2,
                               ),
@@ -416,10 +422,10 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
                           decoration: BoxDecoration(
                             color: const Color(0xFF1A1A1A),
                             borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: AppColors.primaryFixed.withOpacity(0.3)),
+                            border: Border.all(color: AppColors.primaryFixed.withValues(alpha: 0.3)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 blurRadius: 10,
                               ),
                             ],
@@ -494,7 +500,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
                   boxShadow: active
                       ? [
                           BoxShadow(
-                            color: AppColors.primaryFixed.withOpacity(0.4),
+                            color: AppColors.primaryFixed.withValues(alpha: 0.4),
                             blurRadius: 15,
                           ),
                         ]
@@ -723,7 +729,7 @@ class _GridDotsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.04)
+      ..color = Colors.white.withValues(alpha: 0.04)
       ..strokeWidth = 1.0;
 
     const double spacing = 20.0;
@@ -769,9 +775,9 @@ class _DetailChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFFCCFF00).withOpacity(0.25),
-          const Color(0xFFCCFF00).withOpacity(0.05),
-          const Color(0xFFCCFF00).withOpacity(0.0),
+          const Color(0xFFCCFF00).withValues(alpha: 0.25),
+          const Color(0xFFCCFF00).withValues(alpha: 0.05),
+          const Color(0xFFCCFF00).withValues(alpha: 0.0),
         ],
         stops: const [0.0, 0.5, 1.0],
       ).createShader(Rect.fromLTRB(0, sy(50), 0, h))

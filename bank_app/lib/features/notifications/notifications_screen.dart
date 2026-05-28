@@ -150,7 +150,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: AppColors.background.withOpacity(0.8),
+        backgroundColor: AppColors.background.withValues(alpha: 0.8),
         elevation: 0,
         toolbarHeight: 64,
         surfaceTintColor: Colors.transparent,
@@ -288,7 +288,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
                 height: 64,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primaryFixed.withOpacity(0.1),
+                  color: AppColors.primaryFixed.withValues(alpha: 0.1),
                 ),
                 child: const Icon(
                   Icons.notifications_off_outlined,
@@ -354,7 +354,7 @@ class _NotificationCardState extends State<_NotificationCard> {
             color: const Color(0xFF0C0C0C),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: _pressed ? AppColors.primaryFixed.withOpacity(0.5) : const Color(0xFF333333),
+              color: _pressed ? AppColors.primaryFixed.withValues(alpha: 0.5) : const Color(0xFF333333),
               width: 1,
             ),
           ),

@@ -239,7 +239,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primaryFixed.withOpacity(0.04),
+                    AppColors.primaryFixed.withValues(alpha: 0.04),
                     Colors.transparent,
                   ],
                 ),
@@ -332,7 +332,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
             border: Border.all(color: const Color(0xFF353535)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 blurRadius: 40,
                 spreadRadius: 4,
               ),
@@ -464,7 +464,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
         const SizedBox(height: 4),
         Text(
           widget.email,
-          style: AppTextStyles.labelSm(color: AppColors.primary.withOpacity(0.7)),
+          style: AppTextStyles.labelSm(color: AppColors.primary.withValues(alpha: 0.7)),
           textAlign: TextAlign.center,
         ),
       ],
@@ -493,18 +493,18 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
               boxShadow: _focusNodes[index].hasFocus
                   ? [
                       BoxShadow(
-                        color: AppColors.primaryFixed.withOpacity(0.15),
+                        color: AppColors.primaryFixed.withValues(alpha: 0.15),
                         blurRadius: 8,
                       )
                     ]
                   : [],
             ),
             alignment: Alignment.center,
-            child: RawKeyboardListener(
+            child: KeyboardListener(
               focusNode: FocusNode(), // Dummy key listener focus node
-              onKey: (event) {
+              onKeyEvent: (event) {
                 // If Backspace is pressed and field is empty, move back
-                if (event is RawKeyDownEvent &&
+                if (event is KeyDownEvent &&
                     event.logicalKey == LogicalKeyboardKey.backspace &&
                     _controllers[index].text.isEmpty &&
                     index > 0) {
@@ -559,7 +559,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
           child: Text(
             _canResend ? 'Resend Code' : 'Resend in ${_timerSeconds}s',
             style: AppTextStyles.labelSm(
-              color: _canResend ? AppColors.primaryFixed : AppColors.onSurfaceVariant.withOpacity(0.5),
+              color: _canResend ? AppColors.primaryFixed : AppColors.onSurfaceVariant.withValues(alpha: 0.5),
             ).copyWith(
               fontWeight: FontWeight.bold,
               decoration: _canResend ? TextDecoration.underline : TextDecoration.none,
@@ -593,8 +593,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primaryFixed.withOpacity(
-                    _verifyHovered ? 0.20 : 0.10,
+                  color: AppColors.primaryFixed.withValues(
+                    alpha: _verifyHovered ? 0.20 : 0.10,
                   ),
                   blurRadius: _verifyHovered ? 30 : 20,
                 ),

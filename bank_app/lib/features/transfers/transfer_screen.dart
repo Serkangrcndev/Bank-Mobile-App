@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import 'qr_scanner_screen.dart';
+import 'transaction_success_screen.dart';
 
 class TransferScreen extends StatefulWidget {
   const TransferScreen({super.key});
@@ -175,10 +176,32 @@ class _TransferScreenState extends State<TransferScreen>
       // Success feedback
       HapticFeedback.heavyImpact();
 
-      // Navigate back with success flag after check finishes drawing
+      // Navigate to success screen after check finishes drawing
       Future.delayed(const Duration(milliseconds: 1200), () {
         if (mounted) {
-          Navigator.of(context).pop(_amountStr);
+          final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          final now = DateTime.now();
+          final formattedDate = '${months[now.month - 1]} ${now.day}, ${now.year} • ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+          
+          final recipientName = _selectedContact != -1 ? _contacts[_selectedContact].$2 : 'Elena R.';
+          final randomRef = 'REF-${(now.millisecondsSinceEpoch ~/ 1000).toRadixString(16).toUpperCase()}';
+
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => TransactionSuccessScreen(
+                title: 'Transfer Successful',
+                amount: '\$$_amountStr',
+                recipient: recipientName,
+                date: formattedDate,
+                referenceId: randomRef,
+                transactionFee: '\$0.00',
+              ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              transitionDuration: const Duration(milliseconds: 400),
+            ),
+          );
         }
       });
     });
@@ -189,7 +212,7 @@ class _TransferScreenState extends State<TransferScreen>
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: AppColors.surface.withOpacity(0.8),
+        backgroundColor: AppColors.surface.withValues(alpha: 0.8),
         elevation: 0,
         toolbarHeight: 64,
         surfaceTintColor: Colors.transparent,
@@ -214,8 +237,25 @@ class _TransferScreenState extends State<TransferScreen>
         actions: [
           IconButton(
             icon: const Icon(Icons.qr_code_scanner_rounded, color: Colors.white),
-            onPressed: () {
+            onPressed: () async {
               HapticFeedback.selectionClick();
+              final result = await Navigator.of(context).push<String>(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => const QrScannerScreen(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+              );
+              if (result != null && mounted) {
+                final idx = _contacts.indexWhere((c) => c.$2 == result);
+                if (idx != -1) {
+                  setState(() {
+                    _selectedContact = idx;
+                  });
+                }
+              }
             },
           ),
           const SizedBox(width: 8),
@@ -235,7 +275,7 @@ class _TransferScreenState extends State<TransferScreen>
                   center: Alignment.topCenter,
                   radius: 1.0,
                   colors: [
-                    AppColors.primaryFixed.withOpacity(0.08),
+                    AppColors.primaryFixed.withValues(alpha: 0.08),
                     Colors.transparent,
                   ],
                 ),
@@ -291,10 +331,10 @@ class _TransferScreenState extends State<TransferScreen>
         decoration: BoxDecoration(
           color: const Color(0x661A1A1A),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.primaryFixed.withOpacity(0.12)),
+          border: Border.all(color: AppColors.primaryFixed.withValues(alpha: 0.12)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 15,
             ),
           ],
@@ -303,7 +343,7 @@ class _TransferScreenState extends State<TransferScreen>
           children: [
             Text(
               'AMOUNT TO SEND',
-              style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.6)).copyWith(
+              style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
                 letterSpacing: 1.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -340,9 +380,9 @@ class _TransferScreenState extends State<TransferScreen>
             Container(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainerHighest.withOpacity(0.3),
+                color: AppColors.surfaceContainerHighest.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppColors.surfaceContainerHighest.withOpacity(0.5)),
+                border: Border.all(color: AppColors.surfaceContainerHighest.withValues(alpha: 0.5)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -391,7 +431,7 @@ class _TransferScreenState extends State<TransferScreen>
                 boxShadow: isFocused
                     ? [
                         BoxShadow(
-                          color: AppColors.primaryFixed.withOpacity(0.08),
+                          color: AppColors.primaryFixed.withValues(alpha: 0.08),
                           blurRadius: 10,
                         ),
                       ]
@@ -435,7 +475,7 @@ class _TransferScreenState extends State<TransferScreen>
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             'RECENT',
-            style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.6)).copyWith(
+            style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
             ),
@@ -477,7 +517,7 @@ class _TransferScreenState extends State<TransferScreen>
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
-                                    color: AppColors.primaryFixed.withOpacity(0.3),
+                                    color: AppColors.primaryFixed.withValues(alpha: 0.3),
                                     blurRadius: 10,
                                   ),
                                 ]
@@ -568,7 +608,7 @@ class _TransferScreenState extends State<TransferScreen>
                 children: [
                   Text(
                     'FROM ACCOUNT',
-                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withOpacity(0.5)).copyWith(
+                    style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                       letterSpacing: 1.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 10,
@@ -606,7 +646,7 @@ class _TransferScreenState extends State<TransferScreen>
           end: Alignment.topCenter,
           colors: [
             Colors.black,
-            Colors.black.withOpacity(0.95),
+            Colors.black.withValues(alpha: 0.95),
             Colors.transparent,
           ],
           stops: const [0.0, 0.7, 1.0],
@@ -630,7 +670,7 @@ class _TransferScreenState extends State<TransferScreen>
                   return InkWell(
                     onTap: () => _onKeyPress(digit),
                     borderRadius: BorderRadius.circular(999),
-                    splashColor: AppColors.primaryFixed.withOpacity(0.1),
+                    splashColor: AppColors.primaryFixed.withValues(alpha: 0.1),
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
@@ -647,7 +687,7 @@ class _TransferScreenState extends State<TransferScreen>
                 InkWell(
                   onTap: _onBackspace,
                   borderRadius: BorderRadius.circular(999),
-                  splashColor: AppColors.primaryFixed.withOpacity(0.1),
+                  splashColor: AppColors.primaryFixed.withValues(alpha: 0.1),
                   child: Container(
                     alignment: Alignment.center,
                     child: const Icon(
@@ -681,8 +721,8 @@ class _TransferScreenState extends State<TransferScreen>
                     boxShadow: [
                       BoxShadow(
                         color: _showSuccessCheck
-                            ? const Color(0xFFD8FF00).withOpacity(0.8)
-                            : AppColors.primaryFixed.withOpacity(0.2),
+                            ? const Color(0xFFD8FF00).withValues(alpha: 0.8)
+                            : AppColors.primaryFixed.withValues(alpha: 0.2),
                         blurRadius: _showSuccessCheck ? 35 : 20,
                         spreadRadius: _showSuccessCheck ? 5 : 0,
                       ),
@@ -739,7 +779,7 @@ class _TransferScreenState extends State<TransferScreen>
                               height: 120,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppColors.primaryFixed.withOpacity(_rippleOpacityAnim.value),
+                                color: AppColors.primaryFixed.withValues(alpha: _rippleOpacityAnim.value),
                               ),
                             ),
                           ),

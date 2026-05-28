@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../auth/login_screen.dart';
 import '../notifications/notifications_screen.dart';
+import '../limits/limits_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -23,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
   // ── Preferences State ─────────────────────────────────────────────────────
   bool _biometricEnabled = true;
   bool _pushNotificationsEnabled = true;
-  bool _darkThemeEnabled = true;
+  final bool _darkThemeEnabled = true;
 
   @override
   void initState() {
@@ -312,7 +313,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.primaryFixed.withOpacity(0.1),
+                color: AppColors.primaryFixed.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(99),
               ),
               child: Text(
@@ -365,7 +366,17 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
               '\$100k / Day',
               style: AppTextStyles.labelSm(color: AppColors.secondary),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => const LimitsScreen(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
             isLast: true,
           ),
         ],
@@ -458,7 +469,7 @@ class _GlassPanel extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF1A1A1A).withOpacity(0.4),
+            color: const Color(0xFF1A1A1A).withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: const Color(0xFF333333), width: 1),
           ),
@@ -548,7 +559,7 @@ class _SectionHeader extends StatelessWidget {
             style: AppTextStyles.labelMd(color: AppColors.secondary)
                 .copyWith(letterSpacing: 1.5),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );

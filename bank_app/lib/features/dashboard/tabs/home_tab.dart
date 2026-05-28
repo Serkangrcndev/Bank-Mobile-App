@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../notifications/notifications_screen.dart';
 import '../../cards/card_details_screen.dart';
 import '../../transfers/transfer_screen.dart';
+import '../../search/global_search_screen.dart';
+import '../spending_insights_screen.dart';
+import '../../lending/lending_dashboard_screen.dart';
+import '../../transfers/qr_scanner_screen.dart';
+import '../../settings/settings_screen.dart';
+import '../../locator/locator_screen.dart';
+import '../../insurance/insurance_screen.dart';
+import '../../exchange/exchange_screen.dart';
+import '../../loans/loan_application_screen.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final ValueChanged<int>? onTabChanged;
+  const HomeTab({super.key, this.onTabChanged});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -111,6 +122,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             ),
           ),
           actions: [
+            const _SearchButton(),
             _NotificationButton(),
             const SizedBox(width: 8),
           ],
@@ -303,6 +315,22 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
                 );
+              } else if (i == 1) {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const QrScannerScreen(initialTab: 1),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
+              } else if (i == 2) {
+                widget.onTabChanged?.call(1); // Switch to SwapTab (Index 1)
+              } else if (i == 3) {
+                _showMoreServicesBottomSheet(context);
               }
             },
             onTapCancel: () => setState(() => _pressedAction = -1),
@@ -388,7 +416,18 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             children: [
               Text('Recent Activity', style: AppTextStyles.headlineMd()),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => const GlobalSearchScreen(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                  );
+                },
                 child: Text(
                   'See All',
                   style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
@@ -486,6 +525,249 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
       ),
     );
   }
+
+  void _showMoreServicesBottomSheet(BuildContext context) {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              decoration: BoxDecoration(
+                color: const Color(0xFF131313).withValues(alpha: 0.85),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.08), width: 1.5),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(99),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'More Services',
+                    style: AppTextStyles.headlineMd(color: Colors.white).copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Access elite features and lending facilities.',
+                    style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.real_estate_agent_outlined,
+                    title: 'Loans & Lending',
+                    description: 'Principal up to 250K USDT • Instant Approval',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const LendingDashboardScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.insights_rounded,
+                    title: 'Spending Insights',
+                    description: 'Analyze expenses, limits, and transactions',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const SpendingInsightsScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.qr_code_scanner_rounded,
+                    title: 'QR Scan & Pay',
+                    description: 'Scan merchant QR codes to settle transactions',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const QrScannerScreen(initialTab: 0),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.settings_outlined,
+                    title: 'App Settings',
+                    description: 'Configure notifications, API keys, and theme',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.map_rounded,
+                    title: 'ATM & Branch Locator',
+                    description: 'Find nearest branches and ATMs on the map',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const LocatorScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.health_and_safety_outlined,
+                    title: 'Insurance Portfolio',
+                    description: 'Manage policies, coverage, and premium payments',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const InsuranceScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.currency_exchange_rounded,
+                    title: 'Exchange & Rates',
+                    description: 'Convert currencies and view live market rates',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const ExchangeScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildBottomSheetItem(
+                    context,
+                    icon: Icons.account_balance_outlined,
+                    title: 'Loan Application',
+                    description: 'Apply for personal, mortgage, or auto loans',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const LoanApplicationScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheetItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String description,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1C1C1C).withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF2A2A2A),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              ),
+              alignment: Alignment.center,
+              child: Icon(icon, color: const Color(0xFFCCFF00), size: 22),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: AppTextStyles.bodyLg(color: Colors.white).copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    description,
+                    style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded, color: Color(0xFFA1A1A1), size: 20),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 // ── Supporting Home Widgets ─────────────────────────────────────────────────
@@ -543,6 +825,53 @@ class _AppBarIconButtonState extends State<_AppBarIconButton> {
             shape: BoxShape.circle,
           ),
           child: Icon(widget.icon,
+              color: AppColors.onSurfaceVariant, size: 24),
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchButton extends StatefulWidget {
+  const _SearchButton();
+
+  @override
+  State<_SearchButton> createState() => _SearchButtonState();
+}
+
+class _SearchButtonState extends State<_SearchButton> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => const GlobalSearchScreen(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+        );
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.92 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        child: Container(
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: _pressed
+                ? AppColors.surfaceContainerHighest
+                : Colors.transparent,
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.search_rounded,
               color: AppColors.onSurfaceVariant, size: 24),
         ),
       ),

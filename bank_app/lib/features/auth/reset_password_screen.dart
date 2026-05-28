@@ -186,7 +186,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primaryFixed.withOpacity(0.04),
+                    AppColors.primaryFixed.withValues(alpha: 0.04),
                     Colors.transparent,
                   ],
                 ),
@@ -223,7 +223,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
         border: Border.all(color: const Color(0xFF333333)), // outline
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 40,
             spreadRadius: 4,
           ),
@@ -340,7 +340,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
             boxShadow: _passFocused
                 ? [
                     BoxShadow(
-                      color: AppColors.primaryFixed.withOpacity(0.15),
+                      color: AppColors.primaryFixed.withValues(alpha: 0.15),
                       blurRadius: 8,
                     )
                   ]
@@ -411,7 +411,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
             boxShadow: _confirmFocused
                 ? [
                     BoxShadow(
-                      color: AppColors.primaryFixed.withOpacity(0.15),
+                      color: AppColors.primaryFixed.withValues(alpha: 0.15),
                       blurRadius: 8,
                     )
                   ]
@@ -553,8 +553,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
               borderRadius: BorderRadius.circular(4),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primaryFixed.withOpacity(
-                    _updateHovered ? 0.20 : 0.10,
+                  color: AppColors.primaryFixed.withValues(
+                    alpha: _updateHovered ? 0.20 : 0.10,
                   ),
                   blurRadius: _updateHovered ? 30 : 20,
                 ),

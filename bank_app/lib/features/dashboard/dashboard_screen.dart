@@ -7,6 +7,15 @@ import 'tabs/swap_tab.dart';
 import 'tabs/assets_tab.dart';
 import 'tabs/profile_tab.dart';
 import '../settings/settings_screen.dart';
+import 'spending_insights_screen.dart';
+import '../lending/lending_dashboard_screen.dart';
+import '../support/support_screen.dart';
+import '../limits/limits_screen.dart';
+import '../locator/locator_screen.dart';
+import '../kyc/kyc_verification_screen.dart';
+import '../insurance/insurance_screen.dart';
+import '../exchange/exchange_screen.dart';
+import '../loans/loan_application_screen.dart';
 import '../../core/theme/app_text_styles.dart';
 
 /// Dashboard Shell Container.
@@ -62,7 +71,11 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget _buildActivePage() {
     switch (_navIndex) {
       case 0:
-        return const HomeTab();
+        return HomeTab(
+          onTabChanged: (index) {
+            setState(() => _navIndex = index);
+          },
+        );
       case 1:
         return const SwapTab();
       case 2:
@@ -70,7 +83,11 @@ class _DashboardScreenState extends State<DashboardScreen>
       case 3:
         return const ProfileTab();
       default:
-        return const HomeTab();
+        return HomeTab(
+          onTabChanged: (index) {
+            setState(() => _navIndex = index);
+          },
+        );
     }
   }
 
@@ -216,12 +233,183 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                       const SizedBox(height: 8),
                       _DrawerItem(
+                        icon: Icons.tune_rounded,
+                        title: 'Limits & Usage',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close drawer
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const LimitsScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _DrawerItem(
+                        icon: Icons.insights_rounded,
+                        title: 'Spending Insights',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close drawer
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const SpendingInsightsScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _DrawerItem(
+                        icon: Icons.real_estate_agent_outlined,
+                        title: 'Loans & Lending',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close drawer
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const LendingDashboardScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _DrawerItem(
+                        icon: Icons.map_rounded,
+                        title: 'ATM & Branch Locator',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close drawer
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const LocatorScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _DrawerItem(
+                        icon: Icons.verified_user_outlined,
+                        title: 'Identity Verification',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const KycVerificationScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
+                        },
+                      ),
+                       const SizedBox(height: 8),
+                       _DrawerItem(
+                         icon: Icons.health_and_safety_outlined,
+                         title: 'Insurance Portfolio',
+                         selected: false,
+                         onTap: () {
+                           Navigator.of(context).pop();
+                           Navigator.of(context).push(
+                             PageRouteBuilder(
+                               pageBuilder: (context, animation, secondaryAnimation) =>
+                                   const InsuranceScreen(),
+                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                 return FadeTransition(opacity: animation, child: child);
+                               },
+                               transitionDuration: const Duration(milliseconds: 300),
+                             ),
+                           );
+                         },
+                       ),
+                       const SizedBox(height: 8),
+                       _DrawerItem(
+                         icon: Icons.currency_exchange_rounded,
+                         title: 'Exchange & Rates',
+                         selected: false,
+                         onTap: () {
+                           Navigator.of(context).pop();
+                           Navigator.of(context).push(
+                             PageRouteBuilder(
+                               pageBuilder: (context, animation, secondaryAnimation) =>
+                                   const ExchangeScreen(),
+                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                 return FadeTransition(opacity: animation, child: child);
+                               },
+                               transitionDuration: const Duration(milliseconds: 300),
+                             ),
+                           );
+                         },
+                       ),
+                       const SizedBox(height: 8),
+                       _DrawerItem(
+                         icon: Icons.account_balance_outlined,
+                         title: 'Loan Application',
+                         selected: false,
+                         onTap: () {
+                           Navigator.of(context).pop();
+                           Navigator.of(context).push(
+                             PageRouteBuilder(
+                               pageBuilder: (context, animation, secondaryAnimation) =>
+                                   const LoanApplicationScreen(),
+                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                 return FadeTransition(opacity: animation, child: child);
+                               },
+                               transitionDuration: const Duration(milliseconds: 300),
+                             ),
+                           );
+                         },
+                       ),
+                       const SizedBox(height: 8),
+                      _DrawerItem(
                         icon: Icons.person_outline_rounded,
                         title: 'Profile Settings',
                         selected: _navIndex == 3,
                         onTap: () {
                           setState(() => _navIndex = 3);
                           Navigator.of(context).pop();
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _DrawerItem(
+                        icon: Icons.help_outline_rounded,
+                        title: 'Help & Support',
+                        selected: false,
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close drawer
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  const SupportScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              transitionDuration: const Duration(milliseconds: 300),
+                            ),
+                          );
                         },
                       ),
                       const SizedBox(height: 8),
@@ -415,7 +603,7 @@ class _DrawerItem extends StatelessWidget {
           color: selected ? const Color(0xFF1A1A1A) : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: selected
-              ? Border.all(color: AppColors.primaryFixed.withOpacity(0.3), width: 1)
+              ? Border.all(color: AppColors.primaryFixed.withValues(alpha: 0.3), width: 1)
               : Border.all(color: Colors.transparent, width: 1),
         ),
         child: Row(
