@@ -17,6 +17,7 @@ import '../insurance/insurance_screen.dart';
 import '../exchange/exchange_screen.dart';
 import '../loans/loan_application_screen.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Dashboard Shell Container.
 ///
@@ -204,7 +205,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     children: [
                       _DrawerItem(
                         icon: Icons.home_rounded,
-                        title: 'Home',
+                        title: LanguageManager.translate('Home', 'Ana Sayfa'),
                         selected: _navIndex == 0,
                         onTap: () {
                           setState(() => _navIndex = 0);
@@ -214,7 +215,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.swap_vert_rounded,
-                        title: 'Trade & Swap',
+                        title: LanguageManager.translate('Trade & Swap', 'Alım-Satım ve Takas'),
                         selected: _navIndex == 1,
                         onTap: () {
                           setState(() => _navIndex = 1);
@@ -224,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.account_balance_wallet_outlined,
-                        title: 'Wealth & Assets',
+                        title: LanguageManager.translate('Wealth & Assets', 'Varlıklar ve Portföy'),
                         selected: _navIndex == 2,
                         onTap: () {
                           setState(() => _navIndex = 2);
@@ -234,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.tune_rounded,
-                        title: 'Limits & Usage',
+                        title: LanguageManager.translate('Limits & Usage', 'Limitler ve Kullanım'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -253,7 +254,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.insights_rounded,
-                        title: 'Spending Insights',
+                        title: LanguageManager.translate('Spending Insights', 'Harcama Analizleri'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -272,7 +273,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.real_estate_agent_outlined,
-                        title: 'Loans & Lending',
+                        title: LanguageManager.translate('Loans & Lending', 'Krediler ve Borç Verme'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -291,7 +292,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.map_rounded,
-                        title: 'ATM & Branch Locator',
+                        title: LanguageManager.translate('ATM & Branch Locator', 'ATM ve Şube Bulucu'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -310,7 +311,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.verified_user_outlined,
-                        title: 'Identity Verification',
+                        title: LanguageManager.translate('Identity Verification', 'Kimlik Doğrulama'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop();
@@ -329,7 +330,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                        const SizedBox(height: 8),
                        _DrawerItem(
                          icon: Icons.health_and_safety_outlined,
-                         title: 'Insurance Portfolio',
+                         title: LanguageManager.translate('Insurance Portfolio', 'Sigorta Portföyü'),
                          selected: false,
                          onTap: () {
                            Navigator.of(context).pop();
@@ -348,7 +349,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                        const SizedBox(height: 8),
                        _DrawerItem(
                          icon: Icons.currency_exchange_rounded,
-                         title: 'Exchange & Rates',
+                         title: LanguageManager.translate('Exchange & Rates', 'Döviz ve Kurlar'),
                          selected: false,
                          onTap: () {
                            Navigator.of(context).pop();
@@ -367,7 +368,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                        const SizedBox(height: 8),
                        _DrawerItem(
                          icon: Icons.account_balance_outlined,
-                         title: 'Loan Application',
+                         title: LanguageManager.translate('Loan Application', 'Kredi Başvurusu'),
                          selected: false,
                          onTap: () {
                            Navigator.of(context).pop();
@@ -386,7 +387,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                        const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.person_outline_rounded,
-                        title: 'Profile Settings',
+                        title: LanguageManager.translate('Profile Settings', 'Profil Ayarları'),
                         selected: _navIndex == 3,
                         onTap: () {
                           setState(() => _navIndex = 3);
@@ -396,7 +397,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.help_outline_rounded,
-                        title: 'Help & Support',
+                        title: LanguageManager.translate('Help & Support', 'Yardım ve Destek'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -417,7 +418,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 8),
                       _DrawerItem(
                         icon: Icons.settings_outlined,
-                        title: 'App Settings',
+                        title: LanguageManager.translate('App Settings', 'Uygulama Ayarları'),
                         selected: false,
                         onTap: () {
                           Navigator.of(context).pop(); // Close drawer
@@ -436,7 +437,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Text(
-                    'FINTECH ELITE v2.4.1',
+                    LanguageManager.translate('FINTECH ELITE v2.4.1', 'SEÇKİN FİNTEK v2.4.1'),
                     style: AppTextStyles.labelSm(color: AppColors.textMuted),
                   ),
                 ),

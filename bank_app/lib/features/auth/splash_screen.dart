@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -194,7 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         child: SlideTransition(
                           position: _subtitleSlide,
                           child: Text(
-                            'INSTITUTIONAL GRADE TRADING',
+                            LanguageManager.translate('INSTITUTIONAL GRADE TRADING', 'KURUMSAL DÜZEYDE TİCARET'),
                             style: AppTextStyles.labelMd(
                               color: AppColors.onSurfaceVariant,
                             ).copyWith(
@@ -223,7 +224,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
                           // Status text
                           _PulseText(
-                            text: 'INITIALIZING SECURE CONNECTION',
+                            text: LanguageManager.translate('INITIALIZING SECURE CONNECTION', 'GÜVENLİ BAĞLANTI BAŞLATILIYOR'),
                             style: AppTextStyles.labelSm(
                               color: AppColors.onSurfaceVariant,
                             ),

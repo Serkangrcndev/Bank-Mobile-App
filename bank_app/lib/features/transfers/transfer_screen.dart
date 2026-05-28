@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 import 'qr_scanner_screen.dart';
 import 'transaction_success_screen.dart';
 
@@ -153,43 +155,64 @@ class _TransferScreenState extends State<TransferScreen>
     });
   }
 
-  // ── Prestige Success Trigger ──────────────────────────────────────────────
   void _onConfirmTransfer() {
-    if (_isProcessing || _amountStr == '0.00') return;
+    if (_isProcessing) return;
 
+    // Validation — no zero amount
+    if (_amountStr == '0.00' || _amountStr == '0') {
+      AppNotification.error(
+        context,
+        title: LanguageManager.translate('Invalid Amount', 'Geçersiz Tutar'),
+        message: LanguageManager.translate('Please enter a transfer amount greater than \$0.', 'Lütfen \$0\'dan büyük bir transfer tutarı girin.'),
+      );
+      return;
+    }
+
+    // Validation — no recipient selected
+    // (soft warning, still allows transfer with default)
     HapticFeedback.heavyImpact();
-    setState(() {
-      _isProcessing = true;
-    });
+    setState(() => _isProcessing = true);
+
+    // Show pending notification
+    AppNotification.pending(
+      context,
+      title: LanguageManager.translate('Processing Transfer', 'Transfer İşleniyor'),
+      message: LanguageManager.translate('Validating your transaction securely...', 'İşleminiz güvenli bir şekilde doğrulanıyor...'),
+      duration: const Duration(seconds: 3),
+    );
 
     // Start ripple
     _rippleCtrl.forward();
 
-    // Simulating checking/validating transfer
     Future.delayed(const Duration(milliseconds: 650), () {
       if (mounted) {
-        setState(() {
-          _showSuccessCheck = true;
-        });
+        setState(() => _showSuccessCheck = true);
       }
 
-      // Success feedback
       HapticFeedback.heavyImpact();
 
-      // Navigate to success screen after check finishes drawing
       Future.delayed(const Duration(milliseconds: 1200), () {
         if (mounted) {
-          final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          final months = LanguageManager.isTurkish
+              ? ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+              : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
           final now = DateTime.now();
           final formattedDate = '${months[now.month - 1]} ${now.day}, ${now.year} • ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-          
           final recipientName = _selectedContact != -1 ? _contacts[_selectedContact].$2 : 'Elena R.';
           final randomRef = 'REF-${(now.millisecondsSinceEpoch ~/ 1000).toRadixString(16).toUpperCase()}';
+
+          // Success notification before navigating
+          AppNotification.success(
+            context,
+            title: LanguageManager.translate('Transfer Successful', 'Transfer Başarılı'),
+            message: LanguageManager.translate('\$$_amountStr sent to $recipientName.', '$recipientName alıcısına \$$_amountStr gönderildi.'),
+            duration: const Duration(seconds: 4),
+          );
 
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => TransactionSuccessScreen(
-                title: 'Transfer Successful',
+                title: LanguageManager.translate('Transfer Successful', 'Transfer Başarılı'),
                 amount: '\$$_amountStr',
                 recipient: recipientName,
                 date: formattedDate,
@@ -224,7 +247,7 @@ class _TransferScreenState extends State<TransferScreen>
           ),
         ),
         title: Text(
-          'Send Money',
+          LanguageManager.translate('Send Money', 'Para Gönder'),
           style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -342,7 +365,7 @@ class _TransferScreenState extends State<TransferScreen>
         child: Column(
           children: [
             Text(
-              'AMOUNT TO SEND',
+              LanguageManager.translate('AMOUNT TO SEND', 'GÖNDERİLECEK TUTAR'),
               style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
                 letterSpacing: 1.5,
                 fontWeight: FontWeight.bold,
@@ -397,7 +420,7 @@ class _TransferScreenState extends State<TransferScreen>
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'USD Balance: \$12,450.00',
+                    LanguageManager.translate('USD Balance: \$12,450.00', 'USD Bakiyesi: \$12.450,00'),
                     style: AppTextStyles.labelSm(color: AppColors.primary).copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -445,15 +468,15 @@ class _TransferScreenState extends State<TransferScreen>
                     size: 22,
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontFamily: 'Inter', fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Inter', fontSize: 16),
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
-                        hintText: 'Name, @username, or phone',
-                        hintStyle: TextStyle(color: Color(0xFF8E8E93), fontFamily: 'Inter', fontSize: 16),
+                        hintText: LanguageManager.translate('Name, @username, or phone', 'Ad, @kullaniciadi veya telefon'),
+                        hintStyle: const TextStyle(color: Color(0xFF8E8E93), fontFamily: 'Inter', fontSize: 16),
                       ),
                     ),
                   ),
@@ -474,7 +497,7 @@ class _TransferScreenState extends State<TransferScreen>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'RECENT',
+            LanguageManager.translate('RECENT', 'SON İŞLEMLER'),
             style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
@@ -607,7 +630,7 @@ class _TransferScreenState extends State<TransferScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'FROM ACCOUNT',
+                    LanguageManager.translate('FROM ACCOUNT', 'GÖNDEREN HESAP'),
                     style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                       letterSpacing: 1.0,
                       fontWeight: FontWeight.bold,
@@ -616,7 +639,7 @@ class _TransferScreenState extends State<TransferScreen>
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Main Checking (...4920)',
+                    LanguageManager.translate('Main Checking (...4920)', 'Ana Vadesiz Hesap (...4920)'),
                     style: AppTextStyles.bodyMd(color: AppColors.primary).copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -746,7 +769,7 @@ class _TransferScreenState extends State<TransferScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Confirm Transfer',
+                              LanguageManager.translate('Confirm Transfer', 'Transferi Onayla'),
                               style: AppTextStyles.headlineMd(color: Colors.black).copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,

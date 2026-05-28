@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -21,13 +22,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
   String _activeFilter = 'All Activity';
 
   // ── Notifications Data ────────────────────────────────────────────────────
-  final List<_NotificationItemData> _allNotifications = [
+  List<_NotificationItemData> get _allNotifications => [
     _NotificationItemData(
       id: '1',
       category: 'Security',
-      title: 'New Login Detected',
-      time: 'Just now',
-      body: 'A login occurred from a new device (MacBook Pro) in London, UK. If this wasn\'t you, secure your account immediately.',
+      title: LanguageManager.translate('New Login Detected', 'Yeni Giriş Tespit Edildi'),
+      time: LanguageManager.translate('Just now', 'Şimdi'),
+      body: LanguageManager.translate(
+        'A login occurred from a new device (MacBook Pro) in London, UK. If this wasn\'t you, secure your account immediately.',
+        'Londra, Birleşik Krallık\'ta yeni bir cihazdan (MacBook Pro) giriş tespit edildi. Bu siz değilseniz, hesabınızı hemen güvenceye alın.',
+      ),
       isUnread: true,
       hasActions: true,
       icon: Icons.security_rounded,
@@ -35,9 +39,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
     _NotificationItemData(
       id: '2',
       category: 'Transactions',
-      title: 'Deposit Confirmed',
-      time: '2h ago',
-      body: 'Your deposit of 2.4500 BTC has been successfully credited to your main trading account.',
+      title: LanguageManager.translate('Deposit Confirmed', 'Yatırım Onaylandı'),
+      time: LanguageManager.translate('2h ago', '2s önce'),
+      body: LanguageManager.translate(
+        'Your deposit of 2.4500 BTC has been successfully credited to your main trading account.',
+        '2.4500 BTC tutarındaki yatırımınız ana işlem hesabınıza başarıyla yatırıldı.',
+      ),
       isUnread: false,
       hasActions: false,
       icon: Icons.swap_horiz_rounded,
@@ -45,9 +52,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
     _NotificationItemData(
       id: '3',
       category: 'Transactions',
-      title: 'Withdrawal Initiated',
-      time: 'Yesterday',
-      body: 'A withdrawal of 10,000.00 USDC is currently processing. Network confirmations pending.',
+      title: LanguageManager.translate('Withdrawal Initiated', 'Çekim Başlatıldı'),
+      time: LanguageManager.translate('Yesterday', 'Dün'),
+      body: LanguageManager.translate(
+        'A withdrawal of 10,000.00 USDC is currently processing. Network confirmations pending.',
+        '10.000,00 USDC tutarındaki çekim işleminiz şu anda işleniyor. Ağ onayları bekleniyor.',
+      ),
       isUnread: false,
       hasActions: false,
       icon: Icons.call_made_rounded,
@@ -55,9 +65,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
     _NotificationItemData(
       id: '4',
       category: 'Promotions',
-      title: 'Zero-Fee Trading Weekend',
-      time: '2d ago',
-      body: 'Enjoy zero maker fees on all Spot pairs this weekend. Elevate your portfolio strategy without the overhead.',
+      title: LanguageManager.translate('Zero-Fee Trading Weekend', 'Komisyonsuz İşlem Hafta Sonu'),
+      time: LanguageManager.translate('2d ago', '2g önce'),
+      body: LanguageManager.translate(
+        'Enjoy zero maker fees on all Spot pairs this weekend. Elevate your portfolio strategy without the overhead.',
+        'Bu hafta sonu tüm Spot çiftlerinde sıfır piyasa yapıcı komisyonunun tadını çıkarın. Portföy stratejinizi ekstra masraf olmadan yükseltin.',
+      ),
       isUnread: false,
       hasActions: false,
       icon: Icons.trending_up_rounded,
@@ -128,8 +141,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
       _notifications.clear();
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('All notifications cleared.'),
+      SnackBar(
+        content: Text(LanguageManager.translate('All notifications cleared.', 'Tüm bildirimler temizlendi.')),
         backgroundColor: AppColors.surfaceContainerHigh,
       ),
     );
@@ -162,7 +175,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
           ),
         ),
         title: Text(
-          'Notifications',
+          LanguageManager.translate('Notifications', 'Bildirimler'),
           style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -177,7 +190,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
             TextButton(
               onPressed: _clearAll,
               child: Text(
-                'Clear All',
+                LanguageManager.translate('Clear All', 'Temizle'),
                 style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -206,6 +219,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
                     children: List.generate(filters.length, (i) {
                       final f = filters[i];
                       final active = f == _activeFilter;
+                      String translatedLabel = f;
+                      if (f == 'All Activity') {
+                        translatedLabel = LanguageManager.translate('All', 'Tümü');
+                      } else if (f == 'Security') {
+                        translatedLabel = LanguageManager.translate('Security', 'Güvenlik');
+                      } else if (f == 'Transactions') {
+                        translatedLabel = LanguageManager.translate('Transactions', 'İşlemler');
+                      } else if (f == 'Promotions') {
+                        translatedLabel = LanguageManager.translate('Promotions', 'Fırsatlar');
+                      }
                       return Expanded(
                         child: GestureDetector(
                           onTap: () {
@@ -222,7 +245,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              f.split(' ')[0], // truncate 'Activity' for space
+                              translatedLabel,
                               style: AppTextStyles.labelSm(
                                 color: active ? Colors.black : AppColors.secondary,
                               ).copyWith(fontWeight: active ? FontWeight.bold : FontWeight.normal),
@@ -298,12 +321,15 @@ class _NotificationsScreenState extends State<NotificationsScreen> with TickerPr
               ),
               const SizedBox(height: 24),
               Text(
-                'No Notifications Found',
+                LanguageManager.translate('No Notifications Found', 'Bildirim Bulunamadı'),
                 style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                'You\'re all caught up! We will notify you here when anything changes.',
+                LanguageManager.translate(
+                  'You\'re all caught up! We will notify you here when anything changes.',
+                  'Her şey güncel! Bir değişiklik olduğunda sizi buradan bilgilendireceğiz.',
+                ),
                 textAlign: TextAlign.center,
                 style: AppTextStyles.bodyMd(color: AppColors.secondary),
               ),
@@ -436,8 +462,8 @@ class _NotificationCardState extends State<_NotificationCard> {
                                       HapticFeedback.mediumImpact();
                                       widget.onMarkRead();
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Reviewing security logs...'),
+                                        SnackBar(
+                                          content: Text(LanguageManager.translate('Reviewing security logs...', 'Güvenlik günlükleri inceleniyor...')),
                                           backgroundColor: AppColors.surfaceContainerHigh,
                                         ),
                                       );
@@ -452,7 +478,7 @@ class _NotificationCardState extends State<_NotificationCard> {
                                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     child: Text(
-                                      'Review',
+                                      LanguageManager.translate('Review', 'İncele'),
                                       style: AppTextStyles.labelSm(color: Colors.black).copyWith(fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -468,7 +494,7 @@ class _NotificationCardState extends State<_NotificationCard> {
                                       foregroundColor: AppColors.primary,
                                     ),
                                     child: Text(
-                                      'Ignore',
+                                      LanguageManager.translate('Ignore', 'Yoksay'),
                                       style: AppTextStyles.labelSm(),
                                     ),
                                   ),

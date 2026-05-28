@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import 'login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -138,13 +139,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
             backgroundColor: const Color(0xFF1F1F1F),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            content: const Row(
+            content: Row(
               children: [
-                Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
-                SizedBox(width: 10),
+                const Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
+                const SizedBox(width: 10),
                 Text(
-                  'Password reset successfully! Please login with your new password.',
-                  style: TextStyle(color: Colors.white, fontFamily: 'Inter'),
+                  LanguageManager.translate(
+                    'Password reset successfully! Please login with your new password.',
+                    'Şifre başarıyla sıfırlandı! Lütfen yeni şifrenizle giriş yapın.',
+                  ),
+                  style: const TextStyle(color: Colors.white, fontFamily: 'Inter'),
                 ),
               ],
             ),
@@ -305,14 +309,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
 
   Widget _buildTitle() {
     return Text(
-      'Reset Password',
+      LanguageManager.translate('Reset Password', 'Şifreyi Sıfırla'),
       style: AppTextStyles.headlineLg(),
     );
   }
 
   Widget _buildSubtitle() {
     return Text(
-      'Enter a new secure password for your account.',
+      LanguageManager.translate('Enter a new secure password for your account.', 'Hesabınız için yeni ve güvenli bir şifre girin.'),
       style: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant),
     );
   }
@@ -323,7 +327,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'New Password',
+          LanguageManager.translate('New Password', 'Yeni Şifre'),
           style: AppTextStyles.labelMd(color: AppColors.onSurface),
         ),
         const SizedBox(height: 8),
@@ -360,13 +364,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                   textInputAction: TextInputAction.next,
                   style: AppTextStyles.labelSm(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Enter new password',
+                    hintText: LanguageManager.translate('Enter new password', 'Yeni şifre girin'),
                     hintStyle: AppTextStyles.labelSm(color: const Color(0xFF474746)),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                   ),
                   validator: (v) => (v == null || v.length < 6)
-                      ? 'Password must be at least 6 characters'
+                      ? LanguageManager.translate('Password must be at least 6 characters', 'Şifre en az 6 karakter olmalıdır')
                       : null,
                 ),
               ),
@@ -394,7 +398,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Confirm New Password',
+          LanguageManager.translate('Confirm New Password', 'Yeni Şifreyi Onayla'),
           style: AppTextStyles.labelMd(color: AppColors.onSurface),
         ),
         const SizedBox(height: 8),
@@ -432,14 +436,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                   style: AppTextStyles.labelSm(color: Colors.white),
                   onFieldSubmitted: (_) => _onSubmit(),
                   decoration: InputDecoration(
-                    hintText: 'Confirm new password',
+                    hintText: LanguageManager.translate('Confirm new password', 'Yeni şifreyi onaylayın'),
                     hintStyle: AppTextStyles.labelSm(color: const Color(0xFF474746)),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) return 'Please confirm your password';
-                    if (v != _passCtrl.text) return 'Passwords do not match';
+                    if (v == null || v.isEmpty) return LanguageManager.translate('Please confirm your password', 'Lütfen şifrenizi onaylayın');
+                    if (v != _passCtrl.text) return LanguageManager.translate('Passwords do not match', 'Şifreler eşleşmiyor');
                     return null;
                   },
                 ),
@@ -472,22 +476,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
         break;
       case PasswordStrength.weak:
         activeBars = 1;
-        label = 'Weak';
+        label = LanguageManager.translate('Weak', 'Zayıf');
         labelColor = AppColors.error;
         break;
       case PasswordStrength.fair:
         activeBars = 2;
-        label = 'Fair';
+        label = LanguageManager.translate('Fair', 'Orta');
         labelColor = AppColors.primaryFixed;
         break;
       case PasswordStrength.good:
         activeBars = 3;
-        label = 'Good';
+        label = LanguageManager.translate('Good', 'İyi');
         labelColor = AppColors.primaryFixed;
         break;
       case PasswordStrength.strong:
         activeBars = 4;
-        label = 'Strong';
+        label = LanguageManager.translate('Strong', 'Güçlü');
         labelColor = AppColors.primaryFixed;
         break;
     }
@@ -576,7 +580,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                     )
                   else ...[
                     Text(
-                      'Update Password',
+                      LanguageManager.translate('Update Password', 'Şifreyi Güncelle'),
                       style: AppTextStyles.headlineMd(color: Colors.black).copyWith(
                         fontWeight: FontWeight.bold,
                       ),

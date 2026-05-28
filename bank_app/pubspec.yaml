@@ -38,6 +38,9 @@ dependencies:
   # Google Fonts - Inter & JetBrains Mono
   google_fonts: ^6.2.1
 
+  # Local Storage for settings persistence
+  shared_preferences: ^2.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

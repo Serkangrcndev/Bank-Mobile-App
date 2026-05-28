@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../notifications/notifications_screen.dart';
 import '../transfers/transaction_success_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class LendingDashboardScreen extends StatefulWidget {
   const LendingDashboardScreen({super.key});
@@ -116,7 +117,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => TransactionSuccessScreen(
-            title: 'Application Approved',
+            title: LanguageManager.translate('Application Approved', 'Başvuru Onaylandı'),
             amount: '${_principalAmount.toStringAsFixed(0)} USDT',
             recipient: 'Lumina Credit Facility',
             date: formattedDate,
@@ -308,7 +309,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Lending Dashboard',
+          LanguageManager.translate('Lending Dashboard', 'Kredi Paneli'),
           style: AppTextStyles.headlineLgMobile(color: Colors.white).copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: -0.5,
@@ -316,7 +317,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
         ),
         const SizedBox(height: 4),
         Text(
-          'Manage facilities and request new capital.',
+          LanguageManager.translate('Manage facilities and request new capital.', 'Kredi imkanlarını yönetin ve yeni sermaye talep edin.'),
           style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
         ),
       ],
@@ -343,7 +344,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Credit Score',
+                    LanguageManager.translate('Credit Score', 'Kredi Skoru'),
                     style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18),
                   ),
                   const Icon(Icons.speed_rounded, color: Color(0xFFCCFF00), size: 20),
@@ -373,7 +374,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                             ),
                           ),
                           Text(
-                            'EXCELLENT',
+                            LanguageManager.translate('EXCELLENT', 'MÜKEMMEL'),
                             style: AppTextStyles.labelSm(color: const Color(0xFFCCFF00)).copyWith(
                               letterSpacing: 1.5,
                               fontWeight: FontWeight.bold,
@@ -394,8 +395,8 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Updated: Today', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
-                    Text('Bureau: Experian', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
+                    Text(LanguageManager.translate('Updated: Today', 'Güncellendi: Bugün'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
+                    Text(LanguageManager.translate('Bureau: Experian', 'Kurum: Experian'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
                   ],
                 ),
               ),
@@ -416,7 +417,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Active Facilities',
+                LanguageManager.translate('Active Facilities', 'Aktif Krediler'),
                 style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18),
               ),
               const SizedBox(height: 24),
@@ -447,7 +448,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Mortgage', style: AppTextStyles.bodyLg(color: Colors.white).copyWith(fontWeight: FontWeight.bold)),
+                                Text(LanguageManager.translate('Mortgage', 'Konut Kredisi'), style: AppTextStyles.bodyLg(color: Colors.white).copyWith(fontWeight: FontWeight.bold)),
                                 Text('ID: #8492', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
                               ],
                             ),
@@ -457,7 +458,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text('\$420,500', style: AppTextStyles.labelMd(color: Colors.white).copyWith(fontWeight: FontWeight.bold)),
-                            Text('Next: \$3,200', style: AppTextStyles.labelSm(color: AppColors.error)),
+                            Text('${LanguageManager.translate('Next', 'Sonraki')}: \$3,200', style: AppTextStyles.labelSm(color: AppColors.error)),
                           ],
                         ),
                       ],
@@ -504,12 +505,12 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'New Application',
+            LanguageManager.translate('New Application', 'Yeni Başvuru'),
             style: AppTextStyles.headlineLgMobile(color: Colors.white).copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure your facility parameters. Instant approval for eligible accounts.',
+            LanguageManager.translate('Configure your facility parameters. Instant approval for eligible accounts.', 'Kredi parametrelerinizi yapılandırın. Uygun hesaplar için anında onay.'),
             style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
           ),
           const SizedBox(height: 32),
@@ -521,7 +522,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Principal Amount', style: AppTextStyles.bodyLg(color: Colors.white)),
+                  Text(LanguageManager.translate('Principal Amount', 'Ana Para Tutarı'), style: AppTextStyles.bodyLg(color: Colors.white)),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
@@ -562,8 +563,8 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('5K MIN', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
-                  Text('250K MAX', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
+                  Text(LanguageManager.translate('5K MIN', '5B MİN'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
+                  Text(LanguageManager.translate('250K MAX', '250B MAKS'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1))),
                 ],
               ),
             ],
@@ -574,7 +575,7 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Term Duration', style: AppTextStyles.bodyLg(color: Colors.white)),
+              Text(LanguageManager.translate('Term Duration', 'Kredi Vadesi'), style: AppTextStyles.bodyLg(color: Colors.white)),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(4),
@@ -640,10 +641,10 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
                 children: [
-                  _buildDataChip('Interest Rate', '${aprRate.toStringAsFixed(1)}% APR'),
-                  _buildDataChip('Est. Payment', getEstPayment(), highlight: true),
-                  _buildDataChip('Origination Fee', '0.50%'),
-                  _buildDataChip('Collateral Req.', 'None'),
+                  _buildDataChip(LanguageManager.translate('Interest Rate', 'Faiz Oranı'), '${aprRate.toStringAsFixed(1)}% APR'),
+                  _buildDataChip(LanguageManager.translate('Est. Payment', 'Tahmini Ödeme'), getEstPayment(), highlight: true),
+                  _buildDataChip(LanguageManager.translate('Origination Fee', 'Tahsis Ücreti'), '0.50%'),
+                  _buildDataChip(LanguageManager.translate('Collateral Req.', 'Teminat Gereksinimi'), LanguageManager.translate('None', 'Yok')),
                 ],
               );
             },
@@ -658,10 +659,10 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'By applying, you agree to the Terms of Service and authorize a hard credit inquiry.',
-                    style: TextStyle(color: Color(0xFFA1A1A1), fontSize: 12, height: 1.5),
+                    LanguageManager.translate('By applying, you agree to the Terms of Service and authorize a hard credit inquiry.', 'Başvurarak, Hizmet Koşullarını kabul etmiş ve resmi kredi sorgulamasına izin vermiş olursunuz.'),
+                    style: const TextStyle(color: Color(0xFFA1A1A1), fontSize: 12, height: 1.5),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -687,13 +688,13 @@ class _LendingDashboardScreenState extends State<LendingDashboardScreen> with Ti
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
+                            children: [
                               Text(
-                                'Apply Now',
-                                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                                LanguageManager.translate('Apply Now', 'Şimdi Başvur'),
+                                style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 8),
-                              Icon(Icons.arrow_forward_rounded, color: Colors.black, size: 18),
+                              const SizedBox(width: 8),
+                              const Icon(Icons.arrow_forward_rounded, color: Colors.black, size: 18),
                             ],
                           ),
                         ),

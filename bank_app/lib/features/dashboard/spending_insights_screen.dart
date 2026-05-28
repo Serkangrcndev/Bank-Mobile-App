@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../notifications/notifications_screen.dart';
 import '../search/global_search_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class SpendingInsightsScreen extends StatefulWidget {
   const SpendingInsightsScreen({super.key});
@@ -237,7 +238,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Insights',
+          LanguageManager.translate('Insights', 'Analizler'),
           style: AppTextStyles.headlineXl(color: Colors.white).copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: -1.0,
@@ -245,7 +246,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
         ),
         const SizedBox(height: 4),
         Text(
-          'Your spending landscape for October',
+          LanguageManager.translate('Your spending landscape for October', 'Ekim ayı harcama durumunuz'),
           style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
         ),
       ],
@@ -265,7 +266,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'TOTAL SPENT',
+            LanguageManager.translate('TOTAL SPENT', 'TOPLAM HARCAMA'),
             style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
@@ -274,13 +275,13 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
           const SizedBox(height: 32),
 
           // Custom Paint Donut Chart
-          const Center(
+          Center(
             child: _DonutChart(
               shoppingValue: 0.45,
               foodValue: 0.30,
               transportValue: 0.15,
               utilitiesValue: 0.10,
-              centerTextTop: 'Oct 1-31',
+              centerTextTop: LanguageManager.translate('Oct 1-31', '1-31 Ekim'),
               centerTextBottom: r'$4,250',
             ),
           ),
@@ -295,10 +296,10 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
             children: [
-              _buildLegendItem(const Color(0xFFCCFF00), 'Shopping (45%)'),
-              _buildLegendItem(const Color(0xFF666666), 'Food (30%)'),
-              _buildLegendItem(const Color(0xFF333333), 'Transport (15%)'),
-              _buildLegendItem(const Color(0xFF1A1A1A), 'Utilities (10%)'),
+              _buildLegendItem(const Color(0xFFCCFF00), LanguageManager.translate('Shopping (45%)', 'Alışveriş (%45)')),
+              _buildLegendItem(const Color(0xFF666666), LanguageManager.translate('Food (30%)', 'Yemek (%30)')),
+              _buildLegendItem(const Color(0xFF333333), LanguageManager.translate('Transport (15%)', 'Ulaşım (%15)')),
+              _buildLegendItem(const Color(0xFF1A1A1A), LanguageManager.translate('Utilities (10%)', 'Faturalar (%10)')),
             ],
           ),
         ],
@@ -348,13 +349,13 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Budget vs Actual',
+                LanguageManager.translate('Budget vs Actual', 'Bütçe ve Fiili'),
                 style: AppTextStyles.bodyMd(color: Colors.white).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                '85% utilized',
+                LanguageManager.translate('85% utilized', '%85 kullanıldı'),
                 style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)),
               ),
             ],
@@ -389,10 +390,10 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
                 TextSpan(
                   text: r'$4,250 ',
                   style: AppTextStyles.labelSm(color: Colors.white).copyWith(fontSize: 13),
-                  children: const [
+                  children: [
                     TextSpan(
-                      text: 'spent',
-                      style: TextStyle(color: Color(0xFFA1A1A1), fontWeight: FontWeight.normal),
+                      text: LanguageManager.translate('spent', 'harcandı'),
+                      style: const TextStyle(color: Color(0xFFA1A1A1), fontWeight: FontWeight.normal),
                     ),
                   ],
                 ),
@@ -401,10 +402,10 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
                 TextSpan(
                   text: r'$5,000 ',
                   style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 13),
-                  children: const [
+                  children: [
                     TextSpan(
-                      text: 'limit',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      text: LanguageManager.translate('limit', 'limit'),
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -421,34 +422,34 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
     final categories = [
       (
         icon: Icons.shopping_bag_outlined,
-        title: 'Shopping',
-        count: '12 Transactions',
+        title: LanguageManager.translate('Shopping', 'Alışveriş'),
+        count: LanguageManager.translate('12 Transactions', '12 İşlem'),
         amount: r'$1,912.50',
-        change: '+12% vs last mo',
+        change: LanguageManager.translate('+12% vs last mo', 'geçen aya göre +%12'),
         accentColor: const Color(0xFFCCFF00)
       ),
       (
         icon: Icons.restaurant_rounded,
-        title: 'Food & Dining',
-        count: '28 Transactions',
+        title: LanguageManager.translate('Food & Dining', 'Yemek ve Restoran'),
+        count: LanguageManager.translate('28 Transactions', '28 İşlem'),
         amount: r'$1,275.00',
-        change: '-5% vs last mo',
+        change: LanguageManager.translate('-5% vs last mo', 'geçen aya göre -%5'),
         accentColor: const Color(0xFF666666)
       ),
       (
         icon: Icons.commute_rounded,
-        title: 'Transport',
-        count: '45 Transactions',
+        title: LanguageManager.translate('Transport', 'Ulaşım'),
+        count: LanguageManager.translate('45 Transactions', '45 İşlem'),
         amount: r'$637.50',
-        change: '-- vs last mo',
+        change: LanguageManager.translate('-- vs last mo', 'geçen aya göre --'),
         accentColor: const Color(0xFF333333)
       ),
       (
         icon: Icons.bolt_rounded,
-        title: 'Utilities',
-        count: '3 Transactions',
+        title: LanguageManager.translate('Utilities', 'Faturalar'),
+        count: LanguageManager.translate('3 Transactions', '3 İşlem'),
         amount: r'$425.00',
-        change: '+2% vs last mo',
+        change: LanguageManager.translate('+2% vs last mo', 'geçen aya göre +%2'),
         accentColor: const Color(0xFF1A1A1A)
       ),
     ];
@@ -464,7 +465,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'TOP CATEGORIES',
+            LanguageManager.translate('TOP CATEGORIES', 'EN ÇOK HARCANANLAR'),
             style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(
               letterSpacing: 2.0,
               fontWeight: FontWeight.bold,
@@ -613,7 +614,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> with Ti
                   border: Border.all(color: const Color(0xFF333333), width: 1),
                 ),
                 child: Text(
-                  'VIEW ALL TRANSACTIONS',
+                  LanguageManager.translate('VIEW ALL TRANSACTIONS', 'TÜM İŞLEMLERİ GÖR'),
                   style: AppTextStyles.labelMd(color: Colors.white).copyWith(
                     fontWeight: FontWeight.bold,
                   ),

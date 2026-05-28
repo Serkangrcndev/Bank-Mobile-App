@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/localization/language_manager.dart';
 import '../../notifications/notifications_screen.dart';
 import '../../assets/asset_detail_screen.dart';
 
@@ -200,7 +201,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Total Wealth',
+                LanguageManager.translate('Total Wealth', 'Toplam Varlık'),
                 style: AppTextStyles.labelMd(color: const Color(0xFFA1A1A1)).copyWith(
                   letterSpacing: 2.0,
                   fontWeight: FontWeight.w600,
@@ -251,7 +252,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '+2.4% (\$2,940.10) Today',
+                      LanguageManager.translate('+2.4% (\$2,940.10) Today', 'Bugün +%2.4 (\$2,940.10)'),
                       style: AppTextStyles.labelSm(color: const Color(0xFFCCFF00)).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -377,7 +378,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Assets',
+          LanguageManager.translate('Assets', 'Varlıklar'),
           style: AppTextStyles.headlineMd(color: Colors.white).copyWith(
             fontWeight: FontWeight.w700,
           ),
@@ -390,7 +391,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'View All',
+                LanguageManager.translate('View All', 'Tümünü Gör'),
                 style: AppTextStyles.labelSm(color: const Color(0xFFCCFF00)).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -409,7 +410,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
       children: [
         _AssetListItem(
           icon: Icons.currency_bitcoin_rounded,
-          title: 'Crypto',
+          title: LanguageManager.translate('Crypto', 'Kripto'),
           subtitle: 'Bitcoin, Ethereum, +4',
           value: r'$85,320.50',
           change: '+5.2%',
@@ -430,7 +431,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
         const SizedBox(height: 12),
         _AssetListItem(
           icon: Icons.show_chart_rounded,
-          title: 'Stocks',
+          title: LanguageManager.translate('Stocks', 'Hisse Senetleri'),
           subtitle: 'AAPL, TSLA, SPY',
           value: r'$28,150.00',
           change: '+1.1%',
@@ -442,7 +443,7 @@ class _AssetsTabState extends State<AssetsTab> with TickerProviderStateMixin {
         const SizedBox(height: 12),
         _AssetListItem(
           icon: Icons.account_balance_wallet_rounded,
-          title: 'Cash',
+          title: LanguageManager.translate('Cash', 'Nakit'),
           subtitle: 'USD, EUR',
           value: r'$11,122.30',
           change: '0.0%',

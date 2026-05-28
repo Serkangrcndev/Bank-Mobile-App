@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/localization/language_manager.dart';
 import '../../notifications/notifications_screen.dart';
 import '../../assets/asset_detail_screen.dart';
 
@@ -283,7 +284,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'GLOBAL PORTFOLIO CAPITAL',
+          LanguageManager.translate('GLOBAL PORTFOLIO CAPITAL', 'KÜRESEL PORTFÖY SERMAYESİ'),
           style: AppTextStyles.labelMd(color: AppColors.secondary).copyWith(letterSpacing: 2.0),
         ),
         const SizedBox(height: 6),
@@ -519,9 +520,9 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
   // ── Bento Grid Category Cards ──────────────────────────────────────────────
   Widget _buildCategoriesGrid() {
     final categories = [
-      ('Equities', '45%', '\$1,106,596.74', Icons.show_chart_rounded),
-      ('Digital Assets', '35%', '\$860,686.35', Icons.currency_bitcoin_rounded),
-      ('Alternative', '20%', '\$491,820.79', Icons.diamond_outlined),
+      (LanguageManager.translate('Equities', 'Hisse Senetleri'), '45%', '\$1,106,596.74', Icons.show_chart_rounded),
+      (LanguageManager.translate('Digital Assets', 'Dijital Varlıklar'), '35%', '\$860,686.35', Icons.currency_bitcoin_rounded),
+      (LanguageManager.translate('Alternative', 'Alternatif'), '20%', '\$491,820.79', Icons.diamond_outlined),
     ];
 
     return Column(
@@ -639,7 +640,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                               style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Text(
-                              'INSTRUMENT: BTC/USD',
+                              LanguageManager.translate('INSTRUMENT: BTC/USD', 'FİNANSAL ARAÇ: BTC/USD'),
                               style: AppTextStyles.labelSm(color: AppColors.secondary).copyWith(fontSize: 10),
                             ),
                           ],
@@ -708,7 +709,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                               const Icon(Icons.add_circle_outline_rounded, color: Colors.black, size: 18),
                               const SizedBox(width: 8),
                               Text(
-                                'BUY',
+                                LanguageManager.translate('BUY', 'AL'),
                                 style: AppTextStyles.labelMd(color: Colors.black).copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -755,7 +756,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
                               const Icon(Icons.remove_circle_outline_rounded, color: AppColors.primaryFixed, size: 18),
                               const SizedBox(width: 8),
                               Text(
-                                'SELL',
+                                LanguageManager.translate('SELL', 'SAT'),
                                 style: AppTextStyles.labelMd(color: AppColors.primaryFixed).copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -768,7 +769,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
               ),
               const SizedBox(height: 12),
               Text(
-                'Estimated spread: 0.002% • Instant Settlement',
+                LanguageManager.translate('Estimated spread: 0.002% • Instant Settlement', 'Tahmini makas: %0.002 • Anında Takas'),
                 style: AppTextStyles.labelSm(color: AppColors.secondary.withValues(alpha: 0.6)).copyWith(fontSize: 10, fontStyle: FontStyle.italic),
               ),
             ],
@@ -781,31 +782,31 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
   // ── Professional Execution Log ─────────────────────────────────────────────
   Widget _buildExecutionLog() {
     final trades = [
-      const _LogItem(
+      _LogItem(
         isBuy: false,
-        title: 'Long AAPL',
+        title: LanguageManager.translate('Long AAPL', 'Uzun AAPL'),
         meta: 'T-ID: 8849-XA • 09:30:12',
         subtitle: '@ \$182.40',
         amount: '-\$14,500.00',
-        state: 'FILLED',
+        state: LanguageManager.translate('FILLED', 'GERÇEKLEŞTİ'),
         isFilled: true,
       ),
-      const _LogItem(
+      _LogItem(
         isBuy: true,
-        title: 'Short ETH',
+        title: LanguageManager.translate('Short ETH', 'Kısa ETH'),
         meta: 'T-ID: 9102-BZ • 14:15:44',
         subtitle: '@ \$3.2k',
         amount: '+\$8,240.50',
-        state: 'SETTLED',
+        state: LanguageManager.translate('SETTLED', 'TAKAS EDİLDİ'),
         isFilled: true,
       ),
-      const _LogItem(
+      _LogItem(
         isBuy: null, // neutral wire
-        title: 'Bank Wire Inbound',
+        title: LanguageManager.translate('Bank Wire Inbound', 'Gelen Banka Havalesi'),
         meta: 'Swift Ref: JPM-0021 • Oct 24',
         subtitle: '',
         amount: '+\$50,000.00',
-        state: 'COMPLETED',
+        state: LanguageManager.translate('COMPLETED', 'TAMAMLANDI'),
         isFilled: true,
       ),
     ];
@@ -830,7 +831,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'EXECUTION LOG',
+                  LanguageManager.translate('EXECUTION LOG', 'İŞLEM LOGU'),
                   style: AppTextStyles.labelMd(color: AppColors.secondary).copyWith(letterSpacing: 1.5),
                 ),
                 const Icon(Icons.history_rounded, color: AppColors.secondary, size: 16),
@@ -924,7 +925,7 @@ class _SwapTabState extends State<SwapTab> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(vertical: 12),
               alignment: Alignment.center,
               child: Text(
-                'VIEW ALL STATEMENTS',
+                LanguageManager.translate('VIEW ALL STATEMENTS', 'TÜM EKSTRELERİ GÖRÜNTÜLE'),
                 style: AppTextStyles.labelSm(color: AppColors.secondary).copyWith(letterSpacing: 1.5, fontSize: 10),
               ),
             ),

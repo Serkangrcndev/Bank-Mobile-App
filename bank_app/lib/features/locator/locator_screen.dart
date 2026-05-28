@@ -4,6 +4,7 @@ import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../notifications/notifications_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class LocatorScreen extends StatefulWidget {
   const LocatorScreen({super.key});
@@ -33,43 +34,50 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
   bool _isCalculatingRoute = false;
 
   // Simulated Locations Database
-  final List<_LocatorLocation> _allLocations = [
-    const _LocatorLocation(
+  List<_LocatorLocation> get _allLocations => [
+    _LocatorLocation(
       id: 'wall_street',
-      title: 'Wall Street Flagship',
+      title: LanguageManager.translate('Wall Street Flagship', 'Wall Street Ana Şubesi'),
       type: 'BRANCH',
-      distance: '0.4 miles away',
+      distance: LanguageManager.translate('0.4 miles away', '0.4 mil uzakta'),
       isOpen: true,
-      openLabel: 'Open',
+      openLabel: LanguageManager.translate('Open', 'Açık'),
       address: '11 Wall St, New York, NY 10005',
-      services: ['Cash Deposit', 'Advisory'],
-      serviceIcons: [Icons.payments_outlined, Icons.support_agent_rounded],
+      services: [
+        LanguageManager.translate('Cash Deposit', 'Nakit Yatırma'),
+        LanguageManager.translate('Advisory', 'Danışmanlık')
+      ],
+      serviceIcons: const [Icons.payments_outlined, Icons.support_agent_rounded],
       x: 400.0,
       y: 350.0,
     ),
-    const _LocatorLocation(
+    _LocatorLocation(
       id: 'broadway_atm',
-      title: 'Broadway Hub ATM',
+      title: LanguageManager.translate('Broadway Hub ATM', 'Broadway ATM Merkezi'),
       type: 'ATM',
-      distance: '1.2 miles away',
+      distance: LanguageManager.translate('1.2 miles away', '1.2 mil uzakta'),
       isOpen: true,
-      openLabel: 'Open 24/7',
+      openLabel: LanguageManager.translate('Open 24/7', '7/24 Açık'),
       address: '120 Broadway, New York, NY 10271',
-      services: ['Multi-Currency'],
-      serviceIcons: [Icons.currency_exchange_rounded],
+      services: [
+        LanguageManager.translate('Multi-Currency', 'Çoklu Para Birimi')
+      ],
+      serviceIcons: const [Icons.currency_exchange_rounded],
       x: 580.0,
       y: 520.0,
     ),
-    const _LocatorLocation(
+    _LocatorLocation(
       id: 'battery_park',
-      title: 'Battery Park Branch',
+      title: LanguageManager.translate('Battery Park Branch', 'Battery Park Şubesi'),
       type: 'BRANCH',
-      distance: '2.8 miles away',
+      distance: LanguageManager.translate('2.8 miles away', '2.8 mil uzakta'),
       isOpen: false,
-      openLabel: 'Closed',
+      openLabel: LanguageManager.translate('Closed', 'Kapalı'),
       address: '17 Battery Pl, New York, NY 10004',
-      services: ['Advisory'],
-      serviceIcons: [Icons.support_agent_rounded],
+      services: [
+        LanguageManager.translate('Advisory', 'Danışmanlık')
+      ],
+      serviceIcons: const [Icons.support_agent_rounded],
       x: 320.0,
       y: 720.0,
     ),
@@ -219,7 +227,10 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Route generated to ${loc.title}. Navigating via Apple/Google Maps...',
+                  LanguageManager.translate(
+                    'Route generated to ${loc.title}. Navigating via Apple/Google Maps...',
+                    '${loc.title} için rota oluşturuldu. Apple/Google Haritalar ile yönlendiriliyor...',
+                  ),
                   style: AppTextStyles.bodyMd(color: Colors.white).copyWith(fontSize: 13),
                 ),
               ),
@@ -302,15 +313,15 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
             Positioned.fill(
               child: Container(
                 color: Colors.black.withValues(alpha: 0.7),
-                child: const Center(
+                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: Color(0xFFCCFF00)),
-                      SizedBox(height: 16),
+                      const CircularProgressIndicator(color: Color(0xFFCCFF00)),
+                      const SizedBox(height: 16),
                       Text(
-                        'CALCULATING ROUTE...',
-                        style: TextStyle(color: Color(0xFFCCFF00), fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                        LanguageManager.translate('CALCULATING ROUTE...', 'ROTA HESAPLANIYOR...'),
+                        style: const TextStyle(color: Color(0xFFCCFF00), fontWeight: FontWeight.bold, letterSpacing: 1.5),
                       ),
                     ],
                   ),
@@ -556,7 +567,7 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
-                    hintText: 'Search city, zip, or branch name...',
+                    hintText: LanguageManager.translate('Search city, zip, or branch name...', 'Şehir, posta kodu veya şube adı arayın...'),
                     hintStyle: AppTextStyles.bodyMd(color: const Color(0xFF474746)),
                   ),
                 ),
@@ -597,7 +608,7 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Centered to your GPS location (New York, NY)',
+                              LanguageManager.translate('Centered to your GPS location (New York, NY)', 'GPS konumunuza odaklanıldı (New York, NY)'),
                               style: AppTextStyles.bodyMd(color: Colors.white).copyWith(fontSize: 13),
                             ),
                           ),
@@ -607,7 +618,7 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
                   );
                 },
                 child: Text(
-                  'NEAR ME',
+                  LanguageManager.translate('NEAR ME', 'YAKINIMDA'),
                   style: AppTextStyles.labelSm(color: const Color(0xFFCCFF00)).copyWith(
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,
@@ -626,10 +637,10 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             children: [
-              _buildFilterChip(id: 'ALL', label: 'All Locations', icon: Icons.tune_rounded),
-              _buildFilterChip(id: 'BRANCH', label: 'Branches'),
-              _buildFilterChip(id: 'ATM', label: 'ATMs'),
-              _buildFilterChip(id: 'OPEN', label: 'Open Now'),
+              _buildFilterChip(id: 'ALL', label: LanguageManager.translate('All Locations', 'Tüm Konumlar'), icon: Icons.tune_rounded),
+              _buildFilterChip(id: 'BRANCH', label: LanguageManager.translate('Branches', 'Şubeler')),
+              _buildFilterChip(id: 'ATM', label: LanguageManager.translate('ATMs', 'ATM\'ler')),
+              _buildFilterChip(id: 'OPEN', label: LanguageManager.translate('Open Now', 'Şimdi Açık')),
             ],
           ),
         ),
@@ -776,7 +787,7 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Nearby Locations',
+            LanguageManager.translate('Nearby Locations', 'Yakındaki Konumlar'),
             style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18),
           ),
           Container(
@@ -786,7 +797,7 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              '$resultsCount Results',
+              LanguageManager.translate('$resultsCount Results', '$resultsCount Sonuç'),
               style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 10),
             ),
           ),
@@ -814,9 +825,9 @@ class _LocatorScreenState extends State<LocatorScreen> with TickerProviderStateM
               _calculateDirections(list.first);
             }
           },
-          child: const Text(
-            'DIRECTIONS TO NEAREST',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+          child: Text(
+            LanguageManager.translate('DIRECTIONS TO NEAREST', 'EN YAKIN ROTA'),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
           ),
         ),
       ),

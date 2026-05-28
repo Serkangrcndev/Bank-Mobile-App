@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import 'otp_verification_screen.dart';
 
 /// Forgot Password screen.
@@ -234,7 +235,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                     ? AppColors.textPrimary
                     : AppColors.textSecondary,
               ).copyWith(letterSpacing: 2.0),
-              child: const Text('BACK TO LOGIN'),
+              child: Text(LanguageManager.translate('BACK TO LOGIN', 'GİRİŞE DÖN')),
             ),
           ],
         ),
@@ -367,14 +368,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
 
   Widget _buildTitle() {
     return Text(
-      'Forgot Password',
+      LanguageManager.translate('Forgot Password', 'Şifremi Unuttum'),
       style: AppTextStyles.headlineXl(),
     );
   }
 
   Widget _buildSubtitle() {
     return Text(
-      'Enter your email to receive reset instructions. Ensure you use the address linked to your account.',
+      LanguageManager.translate(
+        'Enter your email to receive reset instructions. Ensure you use the address linked to your account.',
+        'Sıfırlama talimatlarını almak için e-posta adresinizi girin. Hesabınıza bağlı adresi kullandığınızdan emin olun.',
+      ),
       style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
     );
   }
@@ -385,7 +389,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'EMAIL ADDRESS',
+          LanguageManager.translate('EMAIL ADDRESS', 'E-POSTA ADRESİ'),
           style: AppTextStyles.labelSm(color: AppColors.textSecondary)
               .copyWith(letterSpacing: 1.5),
         ),
@@ -445,7 +449,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   validator: (v) => (v == null ||
                           v.length < 5 ||
                           !v.contains('@'))
-                      ? 'Enter a valid email address'
+                      ? LanguageManager.translate('Enter a valid email address', 'Geçerli bir e-posta adresi girin')
                       : null,
                 ),
               ),
@@ -509,7 +513,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Send Instructions',
+                    LanguageManager.translate('Send Instructions', 'Talimatları Gönder'),
                     style: AppTextStyles.headlineMd(
                       color: const Color(0xFF161E00),
                     ).copyWith(fontWeight: FontWeight.w700),

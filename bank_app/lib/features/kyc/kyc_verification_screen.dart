@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 
 /// KYC Identity Verification Screen
 /// Implements the "Identity Verification | FINTECH ELITE" HTML mockup.
@@ -98,41 +100,52 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
       );
 
   // ── Step label ─────────────────────────────────────────────────────────────
-  static final List<_KycStep> _steps = [
-    _KycStep(icon: Icons.description_outlined, label: 'DOCUMENTS'),
-    _KycStep(icon: Icons.face_outlined, label: 'BIOMETRIC'),
-    _KycStep(icon: Icons.location_on_outlined, label: 'ADDRESS'),
+  List<_KycStep> get _steps => [
+    _KycStep(icon: Icons.description_outlined, label: LanguageManager.translate('DOCUMENTS', 'BELGELER')),
+    _KycStep(icon: Icons.face_outlined, label: LanguageManager.translate('BIOMETRIC', 'BİYOMETRİK')),
+    _KycStep(icon: Icons.location_on_outlined, label: LanguageManager.translate('ADDRESS', 'ADRES')),
   ];
 
   // ── Navigate to next step (simulated) ─────────────────────────────────────
   void _onStartVerification() {
     HapticFeedback.mediumImpact();
     if (_currentStep < 2) {
-      setState(() => _currentStep++);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.surfaceContainerHigh,
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          content: Row(
-            children: [
-              const Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
-              const SizedBox(width: 10),
-              Text(
-                _currentStep == 1
-                    ? 'Documents submitted — proceeding to Biometrics'
-                    : 'Biometrics verified — proceeding to Address',
-                style: AppTextStyles.labelMd(color: AppColors.primary),
-              ),
-            ],
-          ),
-          duration: const Duration(seconds: 3),
-        ),
+      // Show uploading/pending while step transitions
+      final stepNames = [
+        LanguageManager.translate('Documents', 'Belgeler'),
+        LanguageManager.translate('Biometrics', 'Biyometrik'),
+        LanguageManager.translate('Address', 'Adres')
+      ];
+      AppNotification.pending(
+        context,
+        title: '${LanguageManager.translate('Uploading', 'Yükleniyor:')} ${stepNames[_currentStep]}',
+        message: LanguageManager.translate('Please wait while we process your data...', 'Lütfen verilerinizi işlerken bekleyin...'),
+        duration: const Duration(seconds: 2),
       );
+
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) {
+          setState(() => _currentStep++);
+          AppNotification.success(
+            context,
+            title: _currentStep == 1
+                ? LanguageManager.translate('Documents Submitted', 'Belgeler Gönderildi')
+                : LanguageManager.translate('Biometrics Verified', 'Biyometrik Doğrulandı'),
+            message: _currentStep == 1
+                ? LanguageManager.translate('Proceeding to Biometric scan', 'Biyometrik taramaya geçiliyor')
+                : LanguageManager.translate('Proceeding to Address verification', 'Adres doğrulamaya geçiliyor'),
+          );
+        }
+      });
     } else {
       // All done
       HapticFeedback.heavyImpact();
+      AppNotification.success(
+        context,
+        title: LanguageManager.translate('Verification Complete', 'Doğrulama Tamamlandı'),
+        message: LanguageManager.translate('Identity verified. Premium features are now unlocked.', 'Kimlik doğrulandı. Premium özelliklerin kilidi açıldı.'),
+        duration: const Duration(seconds: 5),
+      );
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -142,11 +155,11 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
             children: [
               const Icon(Icons.verified, color: AppColors.primaryFixed, size: 22),
               const SizedBox(width: 8),
-              Text('Verification Complete', style: AppTextStyles.headlineMd()),
+              Text(LanguageManager.translate('Verification Complete', 'Doğrulama Tamamlandı'), style: AppTextStyles.headlineMd()),
             ],
           ),
           content: Text(
-            'Your identity has been verified successfully. Premium trading features are now unlocked.',
+            LanguageManager.translate('Your identity has been verified successfully. Premium trading features are now unlocked.', 'Kimliğiniz başarıyla doğrulandı. Premium işlem özelliklerinin kilidi açıldı.'),
             style: AppTextStyles.bodyMd(color: AppColors.secondary),
           ),
           actions: [
@@ -155,7 +168,7 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                 Navigator.pop(ctx);
                 Navigator.of(context).pop();
               },
-              child: Text('Done', style: AppTextStyles.labelMd(color: AppColors.primaryFixed)),
+              child: Text(LanguageManager.translate('Done', 'Tamam'), style: AppTextStyles.labelMd(color: AppColors.primaryFixed)),
             ),
           ],
         ),
@@ -164,46 +177,46 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
   }
 
   // ── Step instructions per step ─────────────────────────────────────────────
-  static const Map<int, _StepContent> _stepContents = {
+  Map<int, _StepContent> get _stepContents => {
     0: _StepContent(
-      title: 'Document Setup',
+      title: LanguageManager.translate('Document Setup', 'Belge Kurulumu'),
       icon: Icons.verified_user,
       instructions: [
         _Instruction(
-          title: 'Valid ID Card or Passport',
-          subtitle: 'Ensure all four corners are visible in the frame.',
+          title: LanguageManager.translate('Valid ID Card or Passport', 'Geçerli Kimlik Kartı veya Pasaport'),
+          subtitle: LanguageManager.translate('Ensure all four corners are visible in the frame.', 'Çerçevenin içinde dört köşenin de göründüğünden emin olun.'),
         ),
         _Instruction(
-          title: 'High Resolution',
-          subtitle: 'Text must be clear and readable without glare.',
+          title: LanguageManager.translate('High Resolution', 'Yüksek Çözünürlük'),
+          subtitle: LanguageManager.translate('Text must be clear and readable without glare.', 'Yansıma olmadan metin net ve okunabilir olmalıdır.'),
         ),
       ],
     ),
     1: _StepContent(
-      title: 'Biometric Scan',
+      title: LanguageManager.translate('Biometric Scan', 'Biyometrik Tarama'),
       icon: Icons.face_retouching_natural,
       instructions: [
         _Instruction(
-          title: 'Center Your Face',
-          subtitle: 'Position your face within the circular guide.',
+          title: LanguageManager.translate('Center Your Face', 'Yüzünüzü Ortalaın'),
+          subtitle: LanguageManager.translate('Position your face within the circular guide.', 'Yüzünüzü dairesel kılavuzun içine yerleştirin.'),
         ),
         _Instruction(
-          title: 'Good Lighting',
-          subtitle: 'Ensure your face is evenly lit with no shadows.',
+          title: LanguageManager.translate('Good Lighting', 'İyi Işıklandırma'),
+          subtitle: LanguageManager.translate('Ensure your face is evenly lit with no shadows.', 'Yüzünüzün gölgesiz ve eşit şekilde aydınlatıldığından emin olun.'),
         ),
       ],
     ),
     2: _StepContent(
-      title: 'Address Proof',
+      title: LanguageManager.translate('Address Proof', 'Adres Kanıtı'),
       icon: Icons.home_work_outlined,
       instructions: [
         _Instruction(
-          title: 'Utility Bill or Bank Statement',
-          subtitle: 'Must be issued within the last 3 months.',
+          title: LanguageManager.translate('Utility Bill or Bank Statement', 'Fatura veya Banka Hesap Özeti'),
+          subtitle: LanguageManager.translate('Must be issued within the last 3 months.', 'Son 3 ay içinde düzenlenmiş olmalıdır.'),
         ),
         _Instruction(
-          title: 'Full Address Visible',
-          subtitle: 'Your name and address must be clearly legible.',
+          title: LanguageManager.translate('Full Address Visible', 'Tam Adres Görünür'),
+          subtitle: LanguageManager.translate('Your name and address must be clearly legible.', 'Adınız ve adresiniz net bir şekilde okunabilmelidir.'),
         ),
       ],
     ),
@@ -295,7 +308,7 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                         Column(
                           children: [
                             Text(
-                              'Identity Verification',
+                              LanguageManager.translate('Identity Verification', 'Kimlik Doğrulama'),
                               style: AppTextStyles.headlineMd().copyWith(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
@@ -305,7 +318,7 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Complete these steps to unlock premium trading features.',
+                              LanguageManager.translate('Complete these steps to unlock premium trading features.', 'Premium işlem özelliklerinin kilidini açmak için bu adımları tamamlayın.'),
                               style: AppTextStyles.bodyMd(color: AppColors.secondary),
                               textAlign: TextAlign.center,
                             ),
@@ -357,7 +370,9 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      _currentStep < 2 ? 'Start Verification' : 'Submit & Finish',
+                                      _currentStep < 2
+                                          ? LanguageManager.translate('Start Verification', 'Doğrulamayı Başlat')
+                                          : LanguageManager.translate('Submit & Finish', 'Gönder ve Bitir'),
                                       style: AppTextStyles.labelMd(
                                         color: const Color(0xFF161E00),
                                       ).copyWith(
@@ -397,7 +412,7 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Continue Later',
+                                    LanguageManager.translate('Continue Later', 'Sonra Devam Et'),
                                     style: AppTextStyles.bodyMd(color: AppColors.secondary)
                                         .copyWith(fontWeight: FontWeight.w500),
                                   ),
@@ -683,7 +698,7 @@ class _KycVerificationScreenState extends State<KycVerificationScreen>
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              'SYSTEM READY',
+                              LanguageManager.translate('SYSTEM READY', 'SİSTEM HAZIR'),
                               style: AppTextStyles.labelSm(
                                       color: AppColors.primaryFixed)
                                   .copyWith(

@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'dart:math' as math;
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
 import '../notifications/notifications_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class LimitsScreen extends StatefulWidget {
   const LimitsScreen({super.key});
@@ -223,7 +225,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
       children: [
         const SizedBox(height: 12),
         Text(
-          'Limits & Usage',
+          LanguageManager.translate('Limits & Usage', 'Limitler ve Kullanım'),
           style: AppTextStyles.headlineLgMobile(color: Colors.white).copyWith(
             fontSize: 32,
             fontWeight: FontWeight.bold,
@@ -231,7 +233,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
         ),
         const SizedBox(height: 8),
         Text(
-          'Monitor your spending power and manage transaction thresholds across your Elite accounts.',
+          LanguageManager.translate('Monitor your spending power and manage transaction thresholds across your Elite accounts.', 'Seçkin hesaplarınızdaki harcama gücünüzü takip edin ve işlem limitlerini yönetin.'),
           style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
         ),
       ],
@@ -300,7 +302,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'USED',
+                          LanguageManager.translate('USED', 'KULLANILAN'),
                           style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(
                             fontSize: 10,
                             letterSpacing: 1.0,
@@ -333,7 +335,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                     crossAxisAlignment: isCompact ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Monthly Spending Power',
+                        LanguageManager.translate('Monthly Spending Power', 'Aylık Harcama Gücü'),
                         style: AppTextStyles.headlineMd(color: Colors.white).copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -342,7 +344,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'PREMIUM TIER ACTIVE',
+                        LanguageManager.translate('PREMIUM TIER ACTIVE', 'PREMIUM SEVİYE AKTİF'),
                         style: AppTextStyles.labelSm(color: const Color(0xFFCCFF00)).copyWith(
                           letterSpacing: 1.5,
                           fontSize: 10,
@@ -366,7 +368,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'USED',
+                                LanguageManager.translate('USED', 'KULLANILAN'),
                                 style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 9),
                               ),
                               const SizedBox(height: 2),
@@ -391,7 +393,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'REMAINING',
+                                LanguageManager.translate('REMAINING', 'KALAN'),
                                 style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 9),
                               ),
                               const SizedBox(height: 2),
@@ -419,9 +421,9 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                         elevation: 0,
                       ),
                       onPressed: _showLimitIncreaseBottomSheet,
-                      child: const Text(
-                        'REQUEST LIMIT INCREASE',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
+                      child: Text(
+                        LanguageManager.translate('REQUEST LIMIT INCREASE', 'LİMİT ARTIŞI TALEP ET'),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 0.5),
                       ),
                     ),
                   ),
@@ -511,12 +513,12 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Security Health',
+                        LanguageManager.translate('Security Health', 'Güvenlik Durumu'),
                         style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Your account limits are protected by multi-factor hardware keys.',
+                        LanguageManager.translate('Your account limits are protected by multi-factor hardware keys.', 'Hesap limitleriniz çok faktörlü donanım anahtarları ile korunmaktadır.'),
                         style: AppTextStyles.bodyMd(color: const Color(0xFFC8C6C5)).copyWith(fontSize: 13, height: 1.3),
                       ),
                     ],
@@ -539,7 +541,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Daily Category Limits',
+              LanguageManager.translate('Daily Category Limits', 'Günlük Kategori Limitleri'),
               style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18),
             ),
             Container(
@@ -564,7 +566,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        'DAILY',
+                        LanguageManager.translate('DAILY', 'GÜNLÜK'),
                         style: TextStyle(
                           color: _isDailySelected ? Colors.black : const Color(0xFFA1A1A1),
                           fontSize: 11,
@@ -587,7 +589,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        'MONTHLY',
+                        LanguageManager.translate('MONTHLY', 'AYLIK'),
                         style: TextStyle(
                           color: !_isDailySelected ? Colors.black : const Color(0xFFA1A1A1),
                           fontSize: 11,
@@ -609,31 +611,41 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
               return Row(
                 children: [
                   Expanded(child: _buildLimitCategoryCard(
-                    category: 'TRANSFERS',
-                    limit: _isDailySelected ? '\$25,000.00 Limit' : '\$500,000.00 Limit',
+                    category: LanguageManager.translate('TRANSFERS', 'TRANSFERLER'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$25,000.00 Limit', '\$25.000,00 Limit')
+                        : LanguageManager.translate('\$500,000.00 Limit', '\$500.000,00 Limit'),
                     used: _isDailySelected ? '\$12,400' : '\$320,000',
                     percent: _isDailySelected ? 0.496 : 0.64,
                     icon: Icons.swap_horiz_rounded,
-                    footerText: _isDailySelected ? 'Reset in 14h 22m' : 'Resets on June 1st',
+                    footerText: _isDailySelected
+                        ? LanguageManager.translate('Reset in 14h 22m', '14s 22dk içinde sıfırlanacak')
+                        : LanguageManager.translate('Resets on June 1st', '1 Haziran\'da sıfırlanacak'),
                   )),
                   const SizedBox(width: 16),
                   Expanded(child: _buildLimitCategoryCard(
-                    category: 'ATM CASH',
-                    limit: _isDailySelected ? '\$2,500.00 Limit' : '\$50,000.00 Limit',
+                    category: LanguageManager.translate('ATM CASH', 'ATM NAKİT'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$2,500.00 Limit', '\$2.500,00 Limit')
+                        : LanguageManager.translate('\$50,000.00 Limit', '\$50.000,00 Limit'),
                     used: _isDailySelected ? '\$2,100' : '\$12,000',
                     percent: _isDailySelected ? 0.84 : 0.24,
                     icon: Icons.account_balance_wallet_outlined,
                     isWarning: _isDailySelected, // Warning only in Daily ATM
-                    footerText: _isDailySelected ? 'Approaching limit' : 'Healthy Status',
+                    footerText: _isDailySelected
+                        ? LanguageManager.translate('Approaching limit', 'Limite yaklaşıyor')
+                        : LanguageManager.translate('Healthy Status', 'Güvenli Durum'),
                   )),
                   const SizedBox(width: 16),
                   Expanded(child: _buildLimitCategoryCard(
-                    category: 'CARD SPEND',
-                    limit: _isDailySelected ? '\$15,000.00 Limit' : '\$300,000.00 Limit',
+                    category: LanguageManager.translate('CARD SPEND', 'KART HARCAMA'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$15,000.00 Limit', '\$15.000,00 Limit')
+                        : LanguageManager.translate('\$300,000.00 Limit', '\$300.000,00 Limit'),
                     used: _isDailySelected ? '\$3,200' : '\$84,000',
                     percent: _isDailySelected ? 0.213 : 0.28,
                     icon: Icons.credit_card_rounded,
-                    footerText: 'Status: Healthy',
+                    footerText: LanguageManager.translate('Status: Healthy', 'Durum: Güvenli'),
                   )),
                 ],
               );
@@ -641,31 +653,41 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
               return Column(
                 children: [
                   _buildLimitCategoryCard(
-                    category: 'TRANSFERS',
-                    limit: _isDailySelected ? '\$25,000.00 Limit' : '\$500,000.00 Limit',
+                    category: LanguageManager.translate('TRANSFERS', 'TRANSFERLER'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$25,000.00 Limit', '\$25.000,00 Limit')
+                        : LanguageManager.translate('\$500,000.00 Limit', '\$500.000,00 Limit'),
                     used: _isDailySelected ? '\$12,400' : '\$320,000',
                     percent: _isDailySelected ? 0.496 : 0.64,
                     icon: Icons.swap_horiz_rounded,
-                    footerText: _isDailySelected ? 'Reset in 14h 22m' : 'Resets on June 1st',
+                    footerText: _isDailySelected
+                        ? LanguageManager.translate('Reset in 14h 22m', '14s 22dk içinde sıfırlanacak')
+                        : LanguageManager.translate('Resets on June 1st', '1 Haziran\'da sıfırlanacak'),
                   ),
                   const SizedBox(height: 16),
                   _buildLimitCategoryCard(
-                    category: 'ATM CASH',
-                    limit: _isDailySelected ? '\$2,500.00 Limit' : '\$50,000.00 Limit',
+                    category: LanguageManager.translate('ATM CASH', 'ATM NAKİT'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$2,500.00 Limit', '\$2.500,00 Limit')
+                        : LanguageManager.translate('\$50,000.00 Limit', '\$50.000,00 Limit'),
                     used: _isDailySelected ? '\$2,100' : '\$12,000',
                     percent: _isDailySelected ? 0.84 : 0.24,
                     icon: Icons.account_balance_wallet_outlined,
                     isWarning: _isDailySelected,
-                    footerText: _isDailySelected ? 'Approaching limit' : 'Healthy Status',
+                    footerText: _isDailySelected
+                        ? LanguageManager.translate('Approaching limit', 'Limite yaklaşıyor')
+                        : LanguageManager.translate('Healthy Status', 'Güvenli Durum'),
                   ),
                   const SizedBox(height: 16),
                   _buildLimitCategoryCard(
-                    category: 'CARD SPEND',
-                    limit: _isDailySelected ? '\$15,000.00 Limit' : '\$300,000.00 Limit',
+                    category: LanguageManager.translate('CARD SPEND', 'KART HARCAMA'),
+                    limit: _isDailySelected
+                        ? LanguageManager.translate('\$15,000.00 Limit', '\$15.000,00 Limit')
+                        : LanguageManager.translate('\$300,000.00 Limit', '\$300.000,00 Limit'),
                     used: _isDailySelected ? '\$3,200' : '\$84,000',
                     percent: _isDailySelected ? 0.213 : 0.28,
                     icon: Icons.credit_card_rounded,
-                    footerText: 'Status: Healthy',
+                    footerText: LanguageManager.translate('Status: Healthy', 'Durum: Güvenli'),
                   ),
                 ],
               );
@@ -732,7 +754,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Used: $used',
+                '${LanguageManager.translate('Used', 'Kullanılan')}: $used',
                 style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)),
               ),
               Text(
@@ -810,7 +832,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Limit History & Activity',
+                  LanguageManager.translate('Limit History & Activity', 'Limit Geçmişi ve Hareketleri'),
                   style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontSize: 18),
                 ),
                 GestureDetector(
@@ -824,27 +846,27 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
 
           // Items list
           _buildActivityItem(
-            title: 'Monthly Limit Increased',
-            subtitle: 'Oct 12, 2023 • Auto-approved',
+            title: LanguageManager.translate('Monthly Limit Increased', 'Aylık Limit Artırıldı'),
+            subtitle: LanguageManager.translate('Oct 12, 2023 • Auto-approved', '12 Eki 2023 • Otomatik Onaylandı'),
             value: '+\$10,000.00',
-            valueSubtitle: 'New: \$50k',
+            valueSubtitle: LanguageManager.translate('New: \$50k', 'Yeni: \$50k'),
             icon: Icons.trending_up_rounded,
             isGreenValue: true,
           ),
           const Divider(color: Color(0xFF151515), height: 1),
           _buildActivityItem(
-            title: 'ATM Limit Alert',
-            subtitle: 'Today, 10:45 AM',
-            value: '84% Used',
+            title: LanguageManager.translate('ATM Limit Alert', 'ATM Limit Uyarısı'),
+            subtitle: LanguageManager.translate('Today, 10:45 AM', 'Bugün, 10:45'),
+            value: LanguageManager.translate('84% Used', '%84 Kullanıldı'),
             icon: Icons.notifications_active_outlined,
-            tag: 'HIGH',
+            tag: LanguageManager.translate('HIGH', 'YÜKSEK'),
           ),
           const Divider(color: Color(0xFF151515), height: 1),
           _buildActivityItem(
-            title: 'Temporary Travel Limit',
-            subtitle: 'Expires in 3 days',
-            value: 'Active',
-            valueSubtitle: 'Tokyo, JP',
+            title: LanguageManager.translate('Temporary Travel Limit', 'Geçici Seyahat Limiti'),
+            subtitle: LanguageManager.translate('Expires in 3 days', '3 gün içinde sona eriyor'),
+            value: LanguageManager.translate('Active', 'Aktif'),
+            valueSubtitle: LanguageManager.translate('Tokyo, JP', 'Tokyo, Japonya'),
             icon: Icons.lock_open_rounded,
           ),
           const SizedBox(height: 12),
@@ -871,8 +893,8 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
             Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1B1B1B),
+              decoration: const BoxDecoration(
+                color: Color(0xFF1B1B1B),
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -985,14 +1007,17 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Request Limit Increase',
+                            LanguageManager.translate('Request Limit Increase', 'Limit Artışı Talep Et'),
                             style: AppTextStyles.headlineMd(color: Colors.white).copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Requesting an increase to your monthly spending power. Auto-approval runs for requests up to \$100k.',
+                        LanguageManager.translate(
+                          'Requesting an increase to your monthly spending power. Auto-approval runs for requests up to \$100k.',
+                          'Aylık harcama gücünüz için artış talebi. \$100k\'a kadar olan talepler için otomatik onay çalışır.',
+                        ),
                         style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 14, height: 1.4),
                       ),
                       const SizedBox(height: 28),
@@ -1002,7 +1027,7 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Requested Limit:',
+                            LanguageManager.translate('Requested Limit:', 'Talep Edilen Limit:'),
                             style: AppTextStyles.bodyLg(color: Colors.white),
                           ),
                           Text(
@@ -1041,8 +1066,8 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('\$15K min', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 10)),
-                          Text('\$150K max', style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 10)),
+                          Text(LanguageManager.translate('\$15K min', 'En az \$15K'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 10)),
+                          Text(LanguageManager.translate('\$150K max', 'En çok \$150K'), style: AppTextStyles.labelSm(color: const Color(0xFFA1A1A1)).copyWith(fontSize: 10)),
                         ],
                       ),
                       const SizedBox(height: 32),
@@ -1070,8 +1095,16 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                                     _isSubmittingRequest = true;
                                   });
 
+                                  final overlay = Overlay.of(context, rootOverlay: true);
                                   final navigator = Navigator.of(context);
-                                  final messenger = ScaffoldMessenger.of(context);
+
+                                  // Show pending immediately (sync — before any await)
+                                  AppNotification.pending(
+                                    context,
+                                    title: LanguageManager.translate('Reviewing Request', 'Talep İnceleniyor'),
+                                    message: LanguageManager.translate('Running auto-approval check...', 'Otomatik onay kontrolü yapılıyor...'),
+                                    duration: const Duration(seconds: 3),
+                                  );
 
                                   // Simulate API Approval
                                   Future.delayed(const Duration(milliseconds: 1500), () {
@@ -1082,35 +1115,22 @@ class _LimitsScreenState extends State<LimitsScreen> with TickerProviderStateMix
                                     });
                                     HapticFeedback.heavyImpact();
 
-                                    // Show success snackbar
-                                    messenger.showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: const Color(0xFF0C0C0C),
-                                        behavior: SnackBarBehavior.floating,
-                                        margin: const EdgeInsets.all(20),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          side: const BorderSide(color: Color(0xFFCCFF00), width: 1.0),
-                                        ),
-                                        content: Row(
-                                          children: [
-                                            const Icon(Icons.check_circle_rounded, color: Color(0xFFCCFF00)),
-                                            const SizedBox(width: 12),
-                                            Expanded(
-                                              child: Text(
-                                                'Limit increase approved. Monthly spending power set to \$${_requestedIncrease.toStringAsFixed(0)}.',
-                                                style: AppTextStyles.bodyMd(color: Colors.white).copyWith(fontSize: 13),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                    // Directly use captured overlay — no BuildContext post-async
+                                    AppNotification.showOnOverlay(
+                                      overlay,
+                                      type: AppNotificationType.success,
+                                      title: LanguageManager.translate('Limit Increase Approved', 'Limit Artışı Onaylandı'),
+                                      message: LanguageManager.translate(
+                                        'Monthly spending power set to \$${_requestedIncrease.toStringAsFixed(0)}.',
+                                        'Aylık harcama gücü \$${_requestedIncrease.toStringAsFixed(0)} olarak ayarlandı.',
                                       ),
+                                      duration: const Duration(seconds: 5),
                                     );
                                   });
                                 },
-                                child: const Text(
-                                  'SUBMIT REQUEST',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                child: Text(
+                                  LanguageManager.translate('SUBMIT REQUEST', 'TALEBİ GÖNDER'),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                                 ),
                               ),
                             ),

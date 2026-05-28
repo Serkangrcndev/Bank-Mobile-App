@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/localization/language_manager.dart';
 import 'features/auth/splash_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load language preference from SharedPreferences
+  await LanguageManager.init();
 
   // Allow google_fonts to fetch Inter & JetBrains Mono from network.
   // Falls back gracefully if offline.
@@ -28,11 +32,17 @@ class BankApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fintech',
-      debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
-      home: const SplashScreen(),
+    return ValueListenableBuilder<Locale>(
+      valueListenable: LanguageManager.localeNotifier,
+      builder: (context, locale, child) {
+        return MaterialApp(
+          title: 'Fintech',
+          locale: locale,
+          debugShowCheckedModeBanner: false,
+          theme: buildAppTheme(),
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/localization/language_manager.dart';
 import '../../notifications/notifications_screen.dart';
 import '../../settings/settings_screen.dart';
 import '../../auth/login_screen.dart';
@@ -108,15 +109,18 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBg,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Sign Out', style: AppTextStyles.headlineMd()),
+        title: Text(LanguageManager.translate('Sign Out', 'Çıkış Yap'), style: AppTextStyles.headlineMd()),
         content: Text(
-          'Are you sure you want to log out of your elite session?',
+          LanguageManager.translate(
+            'Are you sure you want to log out of your elite session?',
+            'Seçkin oturumunuzu kapatmak istediğinizden emin misiniz?',
+          ),
           style: AppTextStyles.bodyMd(color: AppColors.secondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: AppTextStyles.labelMd(color: AppColors.secondary)),
+            child: Text(LanguageManager.translate('Cancel', 'İptal'), style: AppTextStyles.labelMd(color: AppColors.secondary)),
           ),
           TextButton(
             onPressed: () {
@@ -132,7 +136,7 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
                 (route) => false,
               );
             },
-            child: Text('Sign Out', style: AppTextStyles.labelMd(color: AppColors.error)),
+            child: Text(LanguageManager.translate('Sign Out', 'Çıkış Yap'), style: AppTextStyles.labelMd(color: AppColors.error)),
           ),
         ],
       ),
@@ -184,7 +188,7 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
                 ),
               ),
               title: Text(
-                'FINTECH ELITE',
+                LanguageManager.translate('FINTECH ELITE', 'ELİT FİNTEK'),
                 style: AppTextStyles.headlineMd().copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1.0,
@@ -276,7 +280,7 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
               ),
               const SizedBox(width: 8),
               Text(
-                'ELITE MEMBER',
+                LanguageManager.translate('ELITE MEMBER', 'ELİT ÜYE'),
                 style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
@@ -339,13 +343,13 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'CURRENT TIER',
+                            LanguageManager.translate('CURRENT TIER', 'MEVCUT SEVİYE'),
                             style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6))
                                 .copyWith(letterSpacing: 1.0, fontSize: 11),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Volume Alpha',
+                            LanguageManager.translate('Volume Alpha', 'Hacim Alfa'),
                             style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -379,7 +383,7 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Trading Fee Discount',
+                            LanguageManager.translate('Trading Fee Discount', 'İşlem Ücreti İndirimi'),
                             style: AppTextStyles.labelSm(color: AppColors.secondary).copyWith(fontSize: 12),
                           ),
                           Text(
@@ -428,11 +432,11 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Next Tier: Omega',
+                        LanguageManager.translate('Next Tier: Omega', 'Sonraki Seviye: Omega'),
                         style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.8)).copyWith(fontSize: 12),
                       ),
                       Text(
-                        '\$124K Vol Required',
+                        LanguageManager.translate('\$124K Vol Required', '\$124K Hacim Gerekli'),
                         style: AppTextStyles.labelSm(color: AppColors.primary.withValues(alpha: 0.9)).copyWith(
                           fontWeight: FontWeight.w600,
                           fontSize: 12,
@@ -457,7 +461,7 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'PREFERENCES',
+            LanguageManager.translate('PREFERENCES', 'TERCİHLER'),
             style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
@@ -467,36 +471,36 @@ class _ProfileTabState extends State<ProfileTab> with TickerProviderStateMixin {
         const SizedBox(height: 12),
         _PreferenceTile(
           icon: Icons.person_outline_rounded,
-          title: 'Personal Information',
-          subtitle: 'Update identity & contact details',
+          title: LanguageManager.translate('Personal Information', 'Kişisel Bilgiler'),
+          subtitle: LanguageManager.translate('Update identity & contact details', 'Kimlik ve iletişim bilgilerini güncelle'),
           onTap: _navigateToSettings,
         ),
         const SizedBox(height: 8),
         _PreferenceTile(
           icon: Icons.verified_user_outlined,
-          title: 'Identity Verification',
-          subtitle: 'KYC — Unlock premium trading features',
+          title: LanguageManager.translate('Identity Verification', 'Kimlik Doğrulama'),
+          subtitle: LanguageManager.translate('KYC — Unlock premium trading features', 'KYC — Ayrıcalıklı işlem özelliklerini açın'),
           onTap: _navigateToKyc,
         ),
         const SizedBox(height: 8),
         _PreferenceTile(
           icon: Icons.lock_outline_rounded,
-          title: 'Security & Biometrics',
-          subtitle: '2FA, Passkeys, Login history',
+          title: LanguageManager.translate('Security & Biometrics', 'Güvenlik ve Biyometri'),
+          subtitle: LanguageManager.translate('2FA, Passkeys, Login history', '2FA, Geçiş Anahtarları, Giriş Geçmişi'),
           onTap: _navigateToSettings,
         ),
         const SizedBox(height: 8),
         _PreferenceTile(
           icon: Icons.notifications_active_outlined,
-          title: 'Notification Preferences',
-          subtitle: 'Alerts, Marketing, Price updates',
+          title: LanguageManager.translate('Notification Preferences', 'Bildirim Tercihleri'),
+          subtitle: LanguageManager.translate('Alerts, Marketing, Price updates', 'Uyarılar, Pazarlama, Fiyat güncellemeleri'),
           onTap: _navigateToSettings,
         ),
         const SizedBox(height: 8),
         _PreferenceTile(
           icon: Icons.help_outline_rounded,
-          title: 'Help & Support',
-          subtitle: 'FAQ, Contact Elite Desk',
+          title: LanguageManager.translate('Help & Support', 'Yardım ve Destek'),
+          subtitle: LanguageManager.translate('FAQ, Contact Elite Desk', 'SSS, Elit Destek Masası ile İletişim'),
           onTap: _navigateToSupport,
         ),
       ],
@@ -819,7 +823,7 @@ class _LogoutButtonState extends State<_LogoutButton> {
               ),
               const SizedBox(width: 8),
               Text(
-                'LOGOUT',
+                LanguageManager.translate('LOGOUT', 'ÇIKIŞ YAP'),
                 style: AppTextStyles.labelMd(color: AppColors.error).copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,

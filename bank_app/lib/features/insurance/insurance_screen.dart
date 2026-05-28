@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Insurance Portfolio Screen
 /// Implements "Fintech Elite | Insurance Portfolio" HTML mockup.
@@ -68,8 +70,23 @@ class _InsuranceScreenState extends State<InsuranceScreen>
     if (_isQuoteLoading) return;
     HapticFeedback.mediumImpact();
     setState(() => _isQuoteLoading = true);
+
+    AppNotification.pending(
+      context,
+      title: LanguageManager.translate('Fetching Quote', 'Teklif Alınyor'),
+      message: LanguageManager.translate('Calculating your personalized premium...', 'Kişiselleştirilmiş priminiz hesaplanıyor...'),
+      duration: const Duration(seconds: 3),
+    );
+
     await Future.delayed(const Duration(milliseconds: 1500));
-    if (mounted) setState(() => _isQuoteLoading = false);
+    if (mounted) {
+      setState(() => _isQuoteLoading = false);
+      AppNotification.success(
+        context,
+        title: LanguageManager.translate('Quote Ready', 'Teklif Hazır'),
+        message: LanguageManager.translate('Your updated insurance quote has been generated.', 'Güncel sigorta teklifiniz oluşturuldu.'),
+      );
+    }
   }
 
   @override
@@ -159,14 +176,14 @@ class _InsuranceScreenState extends State<InsuranceScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Insurance Portfolio',
+                                LanguageManager.translate('Insurance Portfolio', 'Sigorta Portföyü'),
                                 style: AppTextStyles.headlineXl().copyWith(
                                   letterSpacing: -1.2,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Manage your premium protection and coverage assets.',
+                                LanguageManager.translate('Manage your premium protection and coverage assets.', 'Premium koruma ve teminat varlıklarınızı yönetin.'),
                                 style:
                                     AppTextStyles.bodyLg(color: AppColors.onSurfaceVariant),
                               ),
@@ -218,7 +235,7 @@ class _InsuranceScreenState extends State<InsuranceScreen>
                                   const Icon(Icons.history_rounded,
                                       color: AppColors.primaryFixed, size: 18),
                                   const SizedBox(width: 10),
-                                  Text('Full history coming soon',
+                                  Text(LanguageManager.translate('Full history coming soon', 'Tüm geçmiş yakında eklenecek'),
                                       style: AppTextStyles.labelMd(
                                           color: AppColors.primary)),
                                 ],
@@ -231,7 +248,7 @@ class _InsuranceScreenState extends State<InsuranceScreen>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'View Full Transaction History',
+                              LanguageManager.translate('View Full Transaction History', 'Tüm İşlem Geçmişini Görüntüle'),
                               style: AppTextStyles.labelMd(
                                       color: AppColors.onSurfaceVariant)
                                   .copyWith(letterSpacing: 0.3),
@@ -260,10 +277,10 @@ class _InsuranceScreenState extends State<InsuranceScreen>
     return Column(
       children: [
         _StatCard(
-          label: 'TOTAL ANNUAL PREMIUM',
+          label: LanguageManager.translate('TOTAL ANNUAL PREMIUM', 'TOPLAM YILLIK PRİM'),
           icon: Icons.payments_outlined,
           value: '\$12,450.00',
-          sub: '2.4% vs last year',
+          sub: LanguageManager.translate('2.4% vs last year', 'geçen yıla göre %2.4'),
           subIcon: Icons.trending_up_rounded,
           subColor: AppColors.primaryFixed,
           useMono: true,
@@ -273,10 +290,10 @@ class _InsuranceScreenState extends State<InsuranceScreen>
           children: [
             Expanded(
               child: _StatCard(
-                label: 'ACTIVE POLICIES',
+                label: LanguageManager.translate('ACTIVE POLICIES', 'AKTİF POLİÇELER'),
                 icon: Icons.verified_outlined,
                 value: '04',
-                sub: 'All systems functional',
+                sub: LanguageManager.translate('All systems functional', 'Tüm sistemler aktif'),
                 subIcon: null,
                 subColor: AppColors.onSurfaceVariant,
                 useMono: true,
@@ -285,10 +302,10 @@ class _InsuranceScreenState extends State<InsuranceScreen>
             const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
-                label: 'NEXT PAYMENT',
+                label: LanguageManager.translate('NEXT PAYMENT', 'SONRAKİ ÖDEME'),
                 icon: Icons.calendar_today_outlined,
-                value: 'OCT 24',
-                sub: '6 days remaining',
+                value: LanguageManager.translate('OCT 24', '24 EKİM'),
+                sub: LanguageManager.translate('6 days remaining', '6 gün kaldı'),
                 subIcon: Icons.warning_amber_rounded,
                 subColor: AppColors.error,
                 useMono: true,
@@ -314,44 +331,44 @@ class _InsuranceScreenState extends State<InsuranceScreen>
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
           childAspectRatio: 0.72,
-          children: const [
+          children: [
             _PolicyCard(
               imageUrl:
                   'https://lh3.googleusercontent.com/aida-public/AB6AXuD_BtjLoXfVSO2dOm1vn_PDZQblDYvZQHh5Blm6AdgNpheclxB82_42xoQfuJ5rjRpjXmghtkz_98RcyFTkdhHFPLAcYPvSSnUhHMdDbkXIhiCxVa3U0r_uT21d5yCOFEP98UUdQNo8pXi4ljMZxxbCvZZnpMU_sbGyXyX7_yvjIEQrt5cIurtTNRbS4t50UmJ4XI_3YuxxnD6H19r64zVCoe_rRLH18Yzt4scxdj-Z6Yx1-ZOGE-37djgKhprgEU8t4Hgiw3BUH4Ks',
               categoryIcon: Icons.medical_services_outlined,
-              categoryLabel: 'Health',
-              policyNumber: 'Policy #HE-9920',
+              categoryLabel: LanguageManager.translate('Health', 'Sağlık'),
+              policyNumber: '${LanguageManager.translate('Policy', 'Poliçe')} #HE-9920',
               isActive: true,
-              coverageLabel: 'Coverage',
+              coverageLabel: LanguageManager.translate('Coverage', 'Teminat'),
               coverageValue: '\$2,000,000',
-              periodLabel: 'Monthly',
+              periodLabel: LanguageManager.translate('Monthly', 'Aylık'),
               periodValue: '\$420.00',
             ),
             _PolicyCard(
               imageUrl:
                   'https://lh3.googleusercontent.com/aida-public/AB6AXuA1wQnNlCpu3m05fnPeQspyRCF3WsnXkcQs0Dx75G6hYGIBuUxD0L6-oxiWYaxBXi057rG5ukXQIdTCrQzvFvU0jDgyKGMbXHOp7uyne5eGeUL119zXWemP0xBaWgyqq86ZvYhxoKV02_5j-qQDJLfvqgsfgc_t0MwGGs7VOt7dw4bOAkQzmatW9B2LffUf_Hs_YkwzVmHI5eiUQorEIaYaNgZUoV7turUSjJSOIED6O2giT6Y2ZorcBoiZuw9NMPq0tfa5WlO0yLvL',
               categoryIcon: Icons.family_restroom_outlined,
-              categoryLabel: 'Life',
-              policyNumber: 'Policy #LI-4412',
+              categoryLabel: LanguageManager.translate('Life', 'Hayat'),
+              policyNumber: '${LanguageManager.translate('Policy', 'Poliçe')} #LI-4412',
               isActive: true,
-              coverageLabel: 'Coverage',
+              coverageLabel: LanguageManager.translate('Coverage', 'Teminat'),
               coverageValue: '\$5,000,000',
-              periodLabel: 'Quarterly',
+              periodLabel: LanguageManager.translate('Quarterly', 'Üç Aylık'),
               periodValue: '\$1,150.00',
             ),
             _PolicyCard(
               imageUrl:
                   'https://lh3.googleusercontent.com/aida-public/AB6AXuA8jpjMabghJut3B8j2q7DrUmVjse8St08EOblyVXTzosQxLV6vFvc_k9GHdFo5rx_GpEnLyT9yR98xbmjgvOFGTlXtG8JPBemQdMy9uHpepjayxqrv6B3KcqfDJSLIhOlPRorHOXSMKi56sv3EoeKD3RJ1jhvbK0iUtDki1Cgs5mvEmJSm1AR87AZXwzploLILk-Tz5vsDAoGS-30398ztesx0NCnecPfQ5XOdah7HOkgVrIQAWhNMjX8XSboKs4dM5Af7QXNRJEEV',
               categoryIcon: Icons.home_work_outlined,
-              categoryLabel: 'Home',
-              policyNumber: 'Policy #HO-3301',
+              categoryLabel: LanguageManager.translate('Home', 'Konut'),
+              policyNumber: '${LanguageManager.translate('Policy', 'Poliçe')} #HO-3301',
               isActive: true,
-              coverageLabel: 'Coverage',
+              coverageLabel: LanguageManager.translate('Coverage', 'Teminat'),
               coverageValue: '\$1,200,000',
-              periodLabel: 'Annual',
+              periodLabel: LanguageManager.translate('Annual', 'Yıllık'),
               periodValue: '\$3,400.00',
             ),
-            _TravelPolicyCard(),
+            const _TravelPolicyCard(),
           ],
         ),
       ],
@@ -360,34 +377,34 @@ class _InsuranceScreenState extends State<InsuranceScreen>
 
   // ── Payment History ─────────────────────────────────────────────────────
   Widget _buildPaymentHistory() {
-    const payments = [
+    final payments = [
       _Payment(
         icon: Icons.health_and_safety_outlined,
-        title: 'Monthly Premium: Health',
-        subtitle: 'Sep 24, 2023 • VISA **** 9012',
+        title: LanguageManager.translate('Monthly Premium: Health', 'Aylık Prim: Sağlık'),
+        subtitle: '${LanguageManager.translate('Sep 24, 2023', '24 Eyl 2023')} • VISA **** 9012',
         amount: '\$420.00',
-        status: 'Processed',
+        status: LanguageManager.translate('Processed', 'Gerçekleşti'),
       ),
       _Payment(
         icon: Icons.favorite_outline_rounded,
-        title: 'Quarterly Premium: Life',
-        subtitle: 'Aug 15, 2023 • AMEX **** 0005',
+        title: LanguageManager.translate('Quarterly Premium: Life', 'Üç Aylık Prim: Hayat'),
+        subtitle: '${LanguageManager.translate('Aug 15, 2023', '15 Ağu 2023')} • AMEX **** 0005',
         amount: '\$1,150.00',
-        status: 'Processed',
+        status: LanguageManager.translate('Processed', 'Gerçekleşti'),
       ),
       _Payment(
         icon: Icons.home_outlined,
-        title: 'Annual Premium: Home',
-        subtitle: 'Jan 02, 2023 • Bank Transfer',
+        title: LanguageManager.translate('Annual Premium: Home', 'Yıllık Prim: Konut'),
+        subtitle: '${LanguageManager.translate('Jan 02, 2023', '02 Oca 2023')} • ${LanguageManager.translate('Bank Transfer', 'Banka Havalesi')}',
         amount: '\$3,400.00',
-        status: 'Processed',
+        status: LanguageManager.translate('Processed', 'Gerçekleşti'),
       ),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Payment History', style: AppTextStyles.headlineMd()),
+        Text(LanguageManager.translate('Payment History', 'Ödeme Geçmişi'), style: AppTextStyles.headlineMd()),
         const SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(
@@ -449,7 +466,7 @@ class _GetQuoteButton extends StatelessWidget {
                     color: Color(0xFF161E00), size: 18),
             const SizedBox(width: 8),
             Text(
-              isLoading ? 'Requesting...' : 'Get New Quote',
+              isLoading ? LanguageManager.translate('Requesting...', 'İsteniyor...') : LanguageManager.translate('Get New Quote', 'Yeni Teklif Al'),
               style: AppTextStyles.labelMd(color: const Color(0xFF161E00))
                   .copyWith(fontWeight: FontWeight.w700),
             ),
@@ -706,7 +723,7 @@ class _PolicyCardState extends State<_PolicyCard> {
                       ),
                       child: Center(
                         child: Text(
-                          'View Details',
+                          LanguageManager.translate('View Details', 'Detayları Gör'),
                           style: AppTextStyles.labelMd(
                             color: _hovered
                                 ? AppColors.primaryFixed
@@ -761,7 +778,7 @@ class _TravelPolicyCard extends StatelessWidget {
                             AppColors.onSurfaceVariant.withValues(alpha: 0.3)),
                     const SizedBox(height: 6),
                     Text(
-                      'No active travel plan',
+                      LanguageManager.translate('No active travel plan', 'Aktif seyahat planı yok'),
                       style: AppTextStyles.labelSm(
                               color: AppColors.onSurfaceVariant)
                           .copyWith(letterSpacing: 0.3),
@@ -784,7 +801,7 @@ class _TravelPolicyCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        'Coverage: Global',
+                        '${LanguageManager.translate('Coverage', 'Teminat')}: Global',
                         style: AppTextStyles.labelSm(
                                 color: AppColors.onSurfaceVariant)
                             .copyWith(letterSpacing: 0.3),
@@ -800,7 +817,7 @@ class _TravelPolicyCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
-                        'EXPIRED',
+                        LanguageManager.translate('EXPIRED', 'SÜRESİ DOLDU'),
                         style: AppTextStyles.labelSm(
                                 color: AppColors.onSurfaceVariant)
                             .copyWith(fontSize: 10, letterSpacing: 0.5),
@@ -810,7 +827,7 @@ class _TravelPolicyCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Secure your next international journey in minutes.',
+                  LanguageManager.translate('Secure your next international journey in minutes.', 'Bir sonraki yurt dışı seyahatinizi dakikalar içinde güvenceye alın.'),
                   style: AppTextStyles.labelSm(
                           color: AppColors.onSurfaceVariant)
                       .copyWith(
@@ -831,7 +848,7 @@ class _TravelPolicyCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Renew Protection',
+                        LanguageManager.translate('Renew Protection', 'Korumayı Yenile'),
                         style: AppTextStyles.labelMd(
                                 color: AppColors.primaryFixed)
                             .copyWith(letterSpacing: 0.5),
@@ -875,7 +892,7 @@ class _StatusBadge extends StatelessWidget {
             : null,
       ),
       child: Text(
-        isActive ? 'ACTIVE' : 'EXPIRED',
+        isActive ? LanguageManager.translate('ACTIVE', 'AKTİF') : LanguageManager.translate('EXPIRED', 'SÜRESİ DOLDU'),
         style: AppTextStyles.labelSm(
           color: isActive ? AppColors.primaryFixed : AppColors.onSurfaceVariant,
         ).copyWith(fontSize: 10, letterSpacing: 0.8),
@@ -907,9 +924,9 @@ class _DetailRow extends StatelessWidget {
         Text(
           value,
           style: (mono
-                  ? AppTextStyles.labelSm(color: AppColors.primary)
-                      .copyWith(fontFamily: 'JetBrains Mono', letterSpacing: 0.2)
-                  : AppTextStyles.labelSm(color: AppColors.primary)),
+              ? AppTextStyles.labelSm(color: AppColors.primary)
+                  .copyWith(fontFamily: 'JetBrains Mono', letterSpacing: 0.2)
+              : AppTextStyles.labelSm(color: AppColors.primary)),
         ),
       ],
     );

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import 'reset_password_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -155,8 +156,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
     if (code.length < _otpLength) {
       HapticFeedback.heavyImpact();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a 6-digit code.'),
+        SnackBar(
+          content: Text(LanguageManager.translate('Please enter a 6-digit code.', 'Lütfen 6 haneli kodu girin.')),
           backgroundColor: AppColors.surfaceContainerHigh,
         ),
       );
@@ -181,13 +182,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
           backgroundColor: const Color(0xFF1F1F1F),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
-              SizedBox(width: 10),
+              const Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
+              const SizedBox(width: 10),
               Text(
-                'Identity verified successfully!',
-                style: TextStyle(color: Colors.white, fontFamily: 'Inter'),
+                LanguageManager.translate('Identity verified successfully!', 'Kimlik başarıyla doğrulandı!'),
+                style: const TextStyle(color: Colors.white, fontFamily: 'Inter'),
               ),
             ],
           ),
@@ -214,8 +215,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
     if (!_canResend) return;
     HapticFeedback.mediumImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('New verification code sent to your email.'),
+      SnackBar(
+        content: Text(LanguageManager.translate('New verification code sent to your email.', 'Yeni doğrulama kodu e-postanıza gönderildi.')),
         backgroundColor: AppColors.surfaceContainerHigh,
       ),
     );
@@ -312,7 +313,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
               style: AppTextStyles.labelMd(
                 color: _backHovered ? AppColors.primary : AppColors.secondary,
               ).copyWith(letterSpacing: 2.0),
-              child: const Text('BACK'),
+              child: Text(LanguageManager.translate('BACK', 'GERİ')),
             ),
           ],
         ),
@@ -447,7 +448,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
 
   Widget _buildTitle() {
     return Text(
-      'Verify Identity',
+      LanguageManager.translate('Verify Identity', 'Kimliği Doğrula'),
       style: AppTextStyles.headlineXl(),
       textAlign: TextAlign.center,
     );
@@ -457,7 +458,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
     return Column(
       children: [
         Text(
-          'We sent a code to your email',
+          LanguageManager.translate('We sent a code to your email', 'E-posta adresinize bir kod gönderdik'),
           style: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant),
           textAlign: TextAlign.center,
         ),
@@ -551,13 +552,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Didn't receive code? ",
+          LanguageManager.translate("Didn't receive code? ", "Kod gelmedi mi? "),
           style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant),
         ),
         GestureDetector(
           onTap: _canResend ? _onResend : null,
           child: Text(
-            _canResend ? 'Resend Code' : 'Resend in ${_timerSeconds}s',
+            _canResend 
+                ? LanguageManager.translate('Resend Code', 'Kodu Tekrar Gönder')
+                : LanguageManager.translate('Resend in ${_timerSeconds}s', '$_timerSeconds sn içinde tekrar gönder'),
             style: AppTextStyles.labelSm(
               color: _canResend ? AppColors.primaryFixed : AppColors.onSurfaceVariant.withValues(alpha: 0.5),
             ).copyWith(
@@ -613,7 +616,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
                         ),
                       )
                     : Text(
-                        'Verify',
+                        LanguageManager.translate('Verify', 'Doğrula'),
                         style: AppTextStyles.headlineMd(color: Colors.black).copyWith(
                           fontWeight: FontWeight.bold,
                         ),

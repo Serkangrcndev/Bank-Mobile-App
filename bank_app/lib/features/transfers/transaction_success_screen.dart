@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 class TransactionSuccessScreen extends StatefulWidget {
   const TransactionSuccessScreen({
@@ -124,11 +125,11 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
   String _getSubtitle() {
     final titleLower = widget.title.toLowerCase();
     if (titleLower.contains('buy')) {
-      return 'BOUGHT ${widget.recipient.toUpperCase()}';
+      return '${LanguageManager.translate('BOUGHT', 'ALINDI')} ${widget.recipient.toUpperCase()}';
     } else if (titleLower.contains('sell')) {
-      return 'SOLD ${widget.recipient.toUpperCase()}';
+      return '${LanguageManager.translate('SOLD', 'SATILDI')} ${widget.recipient.toUpperCase()}';
     } else {
-      return 'SENT TO ${widget.recipient.toUpperCase()}';
+      return '${LanguageManager.translate('SENT TO', 'GÖNDERİLDİ:')} ${widget.recipient.toUpperCase()}';
     }
   }
 
@@ -291,11 +292,11 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildDetailRow('Date', widget.date),
+              _buildDetailRow(LanguageManager.translate('Date', 'Tarih'), widget.date),
               const Divider(color: Color(0xFF1A1A1A), height: 2),
-              _buildDetailRow('Reference', widget.referenceId, isMono: true),
+              _buildDetailRow(LanguageManager.translate('Reference', 'Referans'), widget.referenceId, isMono: true),
               const Divider(color: Color(0xFF1A1A1A), height: 2),
-              _buildDetailRow('Fee', widget.transactionFee),
+              _buildDetailRow(LanguageManager.translate('Fee', 'Ücret'), widget.transactionFee),
               const Divider(color: Color(0xFF1A1A1A), height: 2),
               _buildNetworkRow(),
             ],
@@ -333,7 +334,7 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Network',
+            LanguageManager.translate('Network', 'Ağ'),
             style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
           ),
           Row(
@@ -368,7 +369,7 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
       children: [
         // Solid Shimmering 'Back to Dashboard' Button
         _ShimmerButton(
-          label: 'Back to Dashboard',
+          label: LanguageManager.translate('Back to Dashboard', 'Panele Geri Dön'),
           onTap: () {
             // Navigate back to the dashboard home screen
             Navigator.of(context).popUntil((route) => route.isFirst);
@@ -389,12 +390,12 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
-              children: const [
-                Icon(Icons.check_circle_rounded, color: Color(0xFFCCFF00)),
-                SizedBox(width: 12),
+              children: [
+                const Icon(Icons.check_circle_rounded, color: Color(0xFFCCFF00)),
+                const SizedBox(width: 12),
                 Text(
-                  'Receipt downloaded successfully!',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  LanguageManager.translate('Receipt downloaded successfully!', 'Dekont başarıyla indirildi!'),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -423,7 +424,7 @@ class _TransactionSuccessScreenState extends State<TransactionSuccessScreen> wit
             const Icon(Icons.download_rounded, color: Color(0xFFCCFF00), size: 20),
             const SizedBox(width: 8),
             Text(
-              'Download Receipt',
+              LanguageManager.translate('Download Receipt', 'Dekontu İndir'),
               style: AppTextStyles.headlineMd(color: const Color(0xFFCCFF00)).copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,

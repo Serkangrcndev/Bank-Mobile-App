@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 class QrScannerScreen extends StatefulWidget {
   final int initialTab;
@@ -113,13 +114,13 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  'QR Code Scanned',
+                 Text(
+                  LanguageManager.translate('QR Code Scanned', 'QR Kod Tarandı'),
                   style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Selected: $contactName',
+                  LanguageManager.translate('Selected: $contactName', 'Seçilen: $contactName'),
                   style: AppTextStyles.bodyMd(color: AppColors.secondary),
                   textAlign: TextAlign.center,
                 ),
@@ -169,7 +170,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Analyzing image...',
+                  LanguageManager.translate('Analyzing image...', 'Görsel analiz ediliyor...'),
                   style: AppTextStyles.bodyMd(color: AppColors.primary),
                 ),
               ],
@@ -319,7 +320,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                             ),
                             const SizedBox(height: 24),
                             Text(
-                              'ALIGN QR CODE WITHIN FRAME',
+                              LanguageManager.translate('ALIGN QR CODE WITHIN FRAME', 'QR KODU ÇERÇEVE İÇİNE HİZALAYIN'),
                               style: AppTextStyles.labelSm(color: AppColors.primaryFixed.withValues(alpha: 0.8)).copyWith(
                                 letterSpacing: 1.5,
                               ),
@@ -399,7 +400,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Main Checking Account',
+                                        LanguageManager.translate('Main Checking Account', 'Ana Vadesiz Hesap'),
                                         style: AppTextStyles.bodyMd(color: AppColors.secondary),
                                       ),
                                       const SizedBox(height: 12),
@@ -411,7 +412,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                                           border: Border.all(color: AppColors.surfaceContainerHighest),
                                         ),
                                         child: Text(
-                                          'Scan to pay instantly',
+                                          LanguageManager.translate('Scan to pay instantly', 'Anında ödemek için tarayın'),
                                           style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
                                         ),
                                       ),
@@ -509,7 +510,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                   behavior: HitTestBehavior.opaque,
                   child: Center(
                     child: Text(
-                      'Scan',
+                      LanguageManager.translate('Scan', 'Tara'),
                       style: AppTextStyles.labelMd(
                         color: _activeTab == 0 ? Colors.black : AppColors.secondary,
                       ).copyWith(fontWeight: FontWeight.bold),
@@ -523,7 +524,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
                   behavior: HitTestBehavior.opaque,
                   child: Center(
                     child: Text(
-                      'My QR',
+                      LanguageManager.translate('My QR', 'QR Kodum'),
                       style: AppTextStyles.labelMd(
                         color: _activeTab == 1 ? Colors.black : AppColors.secondary,
                       ).copyWith(fontWeight: FontWeight.bold),
@@ -546,7 +547,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
         Expanded(
           child: _buildBentoButton(
             icon: Icons.send_rounded,
-            label: 'Send',
+            label: LanguageManager.translate('Send', 'Gönder'),
             isActive: true,
             onTap: () {
               HapticFeedback.lightImpact();
@@ -560,7 +561,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
         Expanded(
           child: _buildBentoButton(
             icon: Icons.download_rounded,
-            label: 'Receive',
+            label: LanguageManager.translate('Receive', 'Al'),
             isActive: true,
             onTap: () => _switchTab(1),
           ),
@@ -571,7 +572,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
         Expanded(
           child: _buildBentoButton(
             icon: Icons.flashlight_on_rounded,
-            label: 'Flashlight',
+            label: LanguageManager.translate('Flashlight', 'Fener'),
             isActive: _flashlightOn,
             onTap: () {
               HapticFeedback.lightImpact();
@@ -587,7 +588,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> with TickerProviderSt
         Expanded(
           child: _buildBentoButton(
             icon: Icons.image_rounded,
-            label: 'Gallery',
+            label: LanguageManager.translate('Gallery', 'Galeri'),
             isActive: false,
             onTap: _simulateGalleryPick,
           ),

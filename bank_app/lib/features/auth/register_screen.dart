@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Register / Sign Up screen — glassmorphism card with animated inputs.
 ///
@@ -192,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   Widget _buildSubtitle() {
     return Text(
-      'Create Account',
+      LanguageManager.translate('Create Account', 'Hesap Oluştur'),
       textAlign: TextAlign.center,
       style: AppTextStyles.headlineLgMobile(
         color: const Color(0xFFE2E2E2),
@@ -229,7 +230,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 _staggered(
                   2,
                   _buildField(
-                    label: 'Full Name',
+                    label: LanguageManager.translate('Full Name', 'Ad Soyad'),
                     hint: 'John Doe',
                     icon: Icons.person_outline_rounded,
                     controller: _nameCtrl,
@@ -238,7 +239,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     keyboardType: TextInputType.name,
                     textInputAction: TextInputAction.next,
                     validator: (v) =>
-                        (v == null || v.trim().isEmpty) ? 'Enter your name' : null,
+                        (v == null || v.trim().isEmpty) ? LanguageManager.translate('Enter your name', 'Adınızı girin') : null,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -247,7 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 _staggered(
                   3,
                   _buildField(
-                    label: 'Email Address',
+                    label: LanguageManager.translate('Email Address', 'E-posta Adresi'),
                     hint: 'john@example.com',
                     icon: Icons.mail_outline_rounded,
                     controller: _emailCtrl,
@@ -256,7 +257,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (v) =>
-                        (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
+                        (v == null || !v.contains('@')) ? LanguageManager.translate('Enter a valid email', 'Geçerli bir e-posta girin') : null,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -265,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 _staggered(
                   4,
                   _buildField(
-                    label: 'Phone Number',
+                    label: LanguageManager.translate('Phone Number', 'Telefon Numarası'),
                     hint: '+1 (555) 000-0000',
                     icon: Icons.call_outlined,
                     controller: _phoneCtrl,
@@ -275,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     textInputAction: TextInputAction.next,
                     useMonoFont: true,
                     validator: (v) =>
-                        (v == null || v.length < 6) ? 'Enter a valid phone' : null,
+                        (v == null || v.length < 6) ? LanguageManager.translate('Enter a valid phone', 'Geçerli bir telefon numarası girin') : null,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -284,7 +285,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 _staggered(
                   5,
                   _buildField(
-                    label: 'Password',
+                    label: LanguageManager.translate('Password', 'Şifre'),
                     hint: '••••••••',
                     icon: Icons.lock_outline_rounded,
                     controller: _passCtrl,
@@ -297,7 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       onTap: () => setState(() => _obscurePass = !_obscurePass),
                     ),
                     validator: (v) =>
-                        (v == null || v.length < 6) ? 'Min. 6 characters' : null,
+                        (v == null || v.length < 6) ? LanguageManager.translate('Min. 6 characters', 'En az 6 karakter') : null,
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -428,7 +429,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Sign Up',
+                  LanguageManager.translate('Sign Up', 'Kayıt Ol'),
                   style: AppTextStyles.headlineMd(
                     color: Colors.black,
                   ).copyWith(fontWeight: FontWeight.w700),
@@ -453,13 +454,13 @@ class _RegisterScreenState extends State<RegisterScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Already have an account? ',
+          LanguageManager.translate('Already have an account? ', 'Zaten bir hesabınız var mı? '),
           style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
         ),
         GestureDetector(
           onTap: () => Navigator.of(context).pop(),
           child: Text(
-            'Login',
+            LanguageManager.translate('Login', 'Giriş Yap'),
             style: AppTextStyles.bodyMd(color: AppColors.brandLime).copyWith(
               decoration: TextDecoration.none,
             ),

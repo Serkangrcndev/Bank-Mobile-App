@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import '../auth/login_screen.dart';
 import '../notifications/notifications_screen.dart';
 import '../limits/limits_screen.dart';
@@ -85,10 +86,13 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Change Password', style: AppTextStyles.headlineMd()),
+            Text(LanguageManager.translate('Change Password', 'Şifre Değiştir'), style: AppTextStyles.headlineMd()),
             const SizedBox(height: 8),
             Text(
-              'A password reset link will be sent to your primary email address: a.mercer@fintech-elite.io',
+              LanguageManager.translate(
+                'A password reset link will be sent to your primary email address: a.mercer@fintech-elite.io',
+                'Şifre sıfırlama bağlantısı birincil e-posta adresinize gönderilecektir: a.mercer@fintech-elite.io'
+              ),
               style: AppTextStyles.bodyMd(color: AppColors.secondary),
             ),
             const SizedBox(height: 24),
@@ -97,15 +101,15 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel', style: AppTextStyles.labelMd(color: AppColors.secondary)),
+                  child: Text(LanguageManager.translate('Cancel', 'İptal'), style: AppTextStyles.labelMd(color: AppColors.secondary)),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Password reset link sent!'),
+                      SnackBar(
+                        content: Text(LanguageManager.translate('Password reset link sent!', 'Şifre sıfırlama bağlantısı gönderildi!')),
                         backgroundColor: AppColors.surfaceContainerHigh,
                       ),
                     );
@@ -115,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Send Link', style: AppTextStyles.labelMd(color: Colors.black).copyWith(fontWeight: FontWeight.bold)),
+                  child: Text(LanguageManager.translate('Send Link', 'Bağlantı Gönder'), style: AppTextStyles.labelMd(color: Colors.black).copyWith(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -131,15 +135,19 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBg,
-        title: Text('Sign Out', style: AppTextStyles.headlineMd()),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(LanguageManager.translate('Sign Out', 'Çıkış Yap'), style: AppTextStyles.headlineMd()),
         content: Text(
-          'Are you sure you want to log out of your elite session?',
+          LanguageManager.translate(
+            'Are you sure you want to log out of your elite session?',
+            'Seçkin oturumunuzu kapatmak istediğinizden emin misiniz?'
+          ),
           style: AppTextStyles.bodyMd(color: AppColors.secondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: AppTextStyles.labelMd(color: AppColors.secondary)),
+            child: Text(LanguageManager.translate('Cancel', 'İptal'), style: AppTextStyles.labelMd(color: AppColors.secondary)),
           ),
           TextButton(
             onPressed: () {
@@ -149,9 +157,92 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
                 (route) => false,
               );
             },
-            child: Text('Sign Out', style: AppTextStyles.labelMd(color: AppColors.error)),
+            child: Text(LanguageManager.translate('Sign Out', 'Çıkış Yap'), style: AppTextStyles.labelMd(color: AppColors.error)),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showLanguageSelectionDialog() {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.cardBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              LanguageManager.translate('Select Language', 'Dil Seçin'),
+              style: AppTextStyles.headlineMd(),
+            ),
+            const SizedBox(height: 16),
+            _buildLanguageOption(
+              label: 'English (US)',
+              isSelected: !LanguageManager.isTurkish,
+              onTap: () {
+                LanguageManager.setLanguage('en');
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildLanguageOption(
+              label: 'Türkçe (TR)',
+              isSelected: LanguageManager.isTurkish,
+              onTap: () {
+                LanguageManager.setLanguage('tr');
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primaryFixed.withValues(alpha: 0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected ? AppColors.primaryFixed : const Color(0xFF333333),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: AppTextStyles.bodyMd(
+                color: isSelected ? AppColors.primaryFixed : AppColors.primary,
+              ).copyWith(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.primaryFixed,
+                size: 20,
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -173,7 +264,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           ),
         ),
         title: Text(
-          'FINTECH ELITE',
+          LanguageManager.translate('FINTECH ELITE', 'SEÇKİN FİNTEK'),
           style: AppTextStyles.headlineMd().copyWith(
             fontWeight: FontWeight.bold,
             letterSpacing: -1.0,
@@ -199,7 +290,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
             _staggered(0, _buildHeaderSection()),
             const SizedBox(height: 32),
 
-            // Bento Content Column (or Row on large tablets, but stacked for mobile layout)
+            // Bento Content Column
             Column(
               children: [
                 // 1. Account Security
@@ -230,7 +321,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
                       foregroundColor: AppColors.error,
                     ),
                     child: Text(
-                      'Sign Out',
+                      LanguageManager.translate('Sign Out', 'Çıkış Yap'),
                       style: AppTextStyles.headlineMd(color: AppColors.error),
                     ),
                   ),
@@ -252,10 +343,10 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Settings', style: AppTextStyles.headlineXl()),
+              Text(LanguageManager.translate('Settings', 'Ayarlar'), style: AppTextStyles.headlineXl()),
               const SizedBox(height: 4),
               Text(
-                'Manage your elite account preferences.',
+                LanguageManager.translate('Manage your elite account preferences.', 'Seçkin hesap tercihlerinizi yönetin.'),
                 style: AppTextStyles.bodyMd(color: AppColors.secondary),
               ),
             ],
@@ -278,7 +369,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
               ),
               const SizedBox(width: 8),
               Text(
-                'Elite Member',
+                LanguageManager.translate('Elite Member', 'Seçkin Üye'),
                 style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
               ),
             ],
@@ -292,15 +383,15 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
     return _GlassPanel(
       child: Column(
         children: [
-          const _SectionHeader(title: 'Account Security'),
+          _SectionHeader(title: LanguageManager.translate('Account Security', 'Hesap Güvenliği')),
           _SettingsTile(
             icon: Icons.password_rounded,
-            title: 'Change Password',
+            title: LanguageManager.translate('Change Password', 'Şifre Değiştir'),
             onTap: _showChangePasswordDialog,
           ),
           _SettingsTile(
             icon: Icons.fingerprint_rounded,
-            title: 'Biometric Login',
+            title: LanguageManager.translate('Biometric Login', 'Biyometrik Giriş'),
             trailing: _StitchSwitch(
               value: _biometricEnabled,
               onChanged: (val) => setState(() => _biometricEnabled = val),
@@ -309,7 +400,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           ),
           _SettingsTile(
             icon: Icons.verified_user_rounded,
-            title: 'Two-Factor Authentication',
+            title: LanguageManager.translate('Two-Factor Authentication', 'İki Adımlı Doğrulama'),
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
@@ -317,7 +408,7 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
                 borderRadius: BorderRadius.circular(99),
               ),
               child: Text(
-                'Enabled',
+                LanguageManager.translate('Enabled', 'Aktif'),
                 style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
               ),
             ),
@@ -333,24 +424,24 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
     return _GlassPanel(
       child: Column(
         children: [
-          const _SectionHeader(
-            title: 'Payment Settings',
-            trailing: Icon(Icons.bolt_rounded, color: AppColors.primaryFixed, size: 16),
+          _SectionHeader(
+            title: LanguageManager.translate('Payment Settings', 'Ödeme Ayarları'),
+            trailing: const Icon(Icons.bolt_rounded, color: AppColors.primaryFixed, size: 16),
           ),
           _SettingsTile(
             icon: Icons.account_balance_rounded,
-            title: 'Linked Bank Accounts',
-            subtitle: '2 Active',
+            title: LanguageManager.translate('Linked Bank Accounts', 'Bağlı Banka Hesapları'),
+            subtitle: LanguageManager.translate('2 Active', '2 Aktif'),
             onTap: () {},
           ),
           _SettingsTile(
             icon: Icons.credit_card_rounded,
-            title: 'Default Payment Method',
+            title: LanguageManager.translate('Default Payment Method', 'Varsayılan Ödeme Yöntemi'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Visa ending in 4242',
+                  LanguageManager.translate('Visa ending in 4242', '4242 ile biten Visa'),
                   style: AppTextStyles.labelSm(color: AppColors.secondary),
                 ),
                 const SizedBox(width: 8),
@@ -361,9 +452,9 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           ),
           _SettingsTile(
             icon: Icons.tune_rounded,
-            title: 'Transaction Limits',
+            title: LanguageManager.translate('Transaction Limits', 'İşlem Limitleri'),
             trailing: Text(
-              '\$100k / Day',
+              LanguageManager.translate('\$100k / Day', '100 bin \$ / Gün'),
               style: AppTextStyles.labelSm(color: AppColors.secondary),
             ),
             onTap: () {
@@ -388,10 +479,10 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
     return _GlassPanel(
       child: Column(
         children: [
-          const _SectionHeader(title: 'App Preferences'),
+          _SectionHeader(title: LanguageManager.translate('App Preferences', 'Uygulama Tercihleri')),
           _SettingsTile(
             icon: Icons.dark_mode_rounded,
-            title: 'Dark Theme',
+            title: LanguageManager.translate('Dark Theme', 'Karanlık Tema'),
             trailing: _StitchSwitch(
               value: _darkThemeEnabled,
               onChanged: (val) {},
@@ -401,16 +492,16 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
           ),
           _SettingsTile(
             icon: Icons.language_rounded,
-            title: 'Language',
+            title: LanguageManager.translate('Language', 'Dil'),
             trailing: Text(
-              'English (US)',
+              LanguageManager.translate('English (US)', 'Türkçe (TR)'),
               style: AppTextStyles.labelSm(color: AppColors.secondary),
             ),
-            onTap: () {},
+            onTap: _showLanguageSelectionDialog,
           ),
           _SettingsTile(
             icon: Icons.notifications_active_rounded,
-            title: 'Push Notifications',
+            title: LanguageManager.translate('Push Notifications', 'Anlık Bildirimler'),
             trailing: _StitchSwitch(
               value: _pushNotificationsEnabled,
               onChanged: (val) => setState(() => _pushNotificationsEnabled = val),
@@ -427,22 +518,22 @@ class _SettingsScreenState extends State<SettingsScreen> with TickerProviderStat
     return _GlassPanel(
       child: Column(
         children: [
-          const _SectionHeader(title: 'Legal & Support'),
+          _SectionHeader(title: LanguageManager.translate('Legal & Support', 'Yasal ve Destek')),
           _SettingsTile(
             icon: Icons.policy_rounded,
-            title: 'Privacy Policy',
+            title: LanguageManager.translate('Privacy Policy', 'Gizlilik Politikası'),
             trailing: const Icon(Icons.open_in_new_rounded, color: AppColors.secondary, size: 16),
             onTap: () {},
           ),
           _SettingsTile(
             icon: Icons.gavel_rounded,
-            title: 'Terms of Service',
+            title: LanguageManager.translate('Terms of Service', 'Kullanım Koşulları'),
             trailing: const Icon(Icons.open_in_new_rounded, color: AppColors.secondary, size: 16),
             onTap: () {},
           ),
           _SettingsTile(
             icon: Icons.info_rounded,
-            title: 'About FINTECH ELITE',
+            title: LanguageManager.translate('About FINTECH ELITE', 'SEÇKİN FİNTEK Hakkında'),
             trailing: Text(
               'v2.4.1',
               style: AppTextStyles.labelSm(color: AppColors.secondary),

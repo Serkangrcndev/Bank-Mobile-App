@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/localization/language_manager.dart';
 import '../../notifications/notifications_screen.dart';
 import '../../cards/card_details_screen.dart';
 import '../../transfers/transfer_screen.dart';
@@ -163,7 +164,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     return Column(
       children: [
         Text(
-          'TOTAL BALANCE',
+          LanguageManager.translate('TOTAL BALANCE', 'TOPLAM BAKİYE'),
           style: AppTextStyles.labelMd(
             color: AppColors.onSurfaceVariant,
           ).copyWith(letterSpacing: 2.0),
@@ -236,7 +237,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '+2.4% Today',
+                    LanguageManager.translate('+2.4% Today', 'Bugün +%2.4'),
                     style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
                   ),
                 ],
@@ -256,19 +257,19 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          const _BankCard(
-            type: 'Debit',
+          _BankCard(
+            type: LanguageManager.translate('Debit', 'Banka Kartı'),
             last4: '4092',
-            balanceLabel: 'Available Balance',
+            balanceLabel: LanguageManager.translate('Available Balance', 'Kullanılabilir Bakiye'),
             balance: r'$45,200.50',
             icon: Icons.contactless_rounded,
             isPrimary: true,
           ),
           const SizedBox(width: 16),
-          const _BankCard(
-            type: 'Credit',
+          _BankCard(
+            type: LanguageManager.translate('Credit', 'Kredi Kartı'),
             last4: '8821',
-            balanceLabel: 'Current Balance',
+            balanceLabel: LanguageManager.translate('Current Balance', 'Güncel Bakiye'),
             balance: r'$3,400.00',
             icon: Icons.credit_card_rounded,
             isPrimary: false,
@@ -285,10 +286,10 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
 
   Widget _buildQuickActions() {
     final actions = [
-      (Icons.send_rounded, 'Send'),
-      (Icons.arrow_downward_rounded, 'Receive'),
-      (Icons.swap_horiz_rounded, 'Swap'),
-      (Icons.more_horiz_rounded, 'More'),
+      (Icons.send_rounded, LanguageManager.translate('Send', 'Gönder')),
+      (Icons.arrow_downward_rounded, LanguageManager.translate('Receive', 'Al')),
+      (Icons.swap_horiz_rounded, LanguageManager.translate('Swap', 'Takas')),
+      (Icons.more_horiz_rounded, LanguageManager.translate('More', 'Daha Fazla')),
     ];
 
     return Padding(
@@ -376,25 +377,25 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
 
   Widget _buildRecentActivity() {
     final transactions = [
-      const _TxData(
+      _TxData(
         icon: Icons.storefront_outlined,
         name: 'Apple Store',
-        date: 'Today, 2:45 PM',
+        date: LanguageManager.translate('Today, 2:45 PM', 'Bugün, 14:45'),
         amount: r'- $999.00',
         amountColor: AppColors.primary,
         iconColor: AppColors.onSurface,
         hasBorder: true,
       ),
-      const _TxData(
+      _TxData(
         icon: Icons.south_west_rounded,
         name: 'Salary Deposit',
-        date: 'Yesterday',
+        date: LanguageManager.translate('Yesterday', 'Dün'),
         amount: r'+ $4,250.00',
         amountColor: AppColors.primaryFixed,
         iconColor: AppColors.primaryFixed,
         hasBorder: true,
       ),
-      const _TxData(
+      _TxData(
         icon: Icons.coffee_outlined,
         name: 'Starbucks',
         date: 'Oct 12',
@@ -414,7 +415,10 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Recent Activity', style: AppTextStyles.headlineMd()),
+              Text(
+                LanguageManager.translate('Recent Activity', 'Son İşlemler'),
+                style: AppTextStyles.headlineMd(),
+              ),
               GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
@@ -429,7 +433,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   );
                 },
                 child: Text(
-                  'See All',
+                  LanguageManager.translate('See All', 'Tümünü Gör'),
                   style: AppTextStyles.labelSm(color: AppColors.primaryFixed),
                 ),
               ),
@@ -560,7 +564,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'More Services',
+                    LanguageManager.translate('More Services', 'Daha Fazla Hizmet'),
                     style: AppTextStyles.headlineMd(color: Colors.white).copyWith(
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
@@ -568,15 +572,21 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Access elite features and lending facilities.',
+                    LanguageManager.translate(
+                      'Access elite features and lending facilities.',
+                      'Seçkin özelliklere ve kredi imkanlarına erişin.'
+                    ),
                     style: AppTextStyles.bodyMd(color: const Color(0xFFA1A1A1)),
                   ),
                   const SizedBox(height: 24),
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.real_estate_agent_outlined,
-                    title: 'Loans & Lending',
-                    description: 'Principal up to 250K USDT • Instant Approval',
+                    title: LanguageManager.translate('Loans & Lending', 'Krediler ve Borç Verme'),
+                    description: LanguageManager.translate(
+                      'Principal up to 250K USDT • Instant Approval',
+                      '250 Bin USDT\'ye kadar anapara • Anında Onay'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -592,8 +602,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.insights_rounded,
-                    title: 'Spending Insights',
-                    description: 'Analyze expenses, limits, and transactions',
+                    title: LanguageManager.translate('Spending Insights', 'Harcama Analizleri'),
+                    description: LanguageManager.translate(
+                      'Analyze expenses, limits, and transactions',
+                      'Giderleri, limitleri ve işlemleri analiz edin'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -609,8 +622,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.qr_code_scanner_rounded,
-                    title: 'QR Scan & Pay',
-                    description: 'Scan merchant QR codes to settle transactions',
+                    title: LanguageManager.translate('QR Scan & Pay', 'QR Tarat ve Öde'),
+                    description: LanguageManager.translate(
+                      'Scan merchant QR codes to settle transactions',
+                      'Ödeme yapmak için üye işyeri QR kodlarını tarayın'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -626,8 +642,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.settings_outlined,
-                    title: 'App Settings',
-                    description: 'Configure notifications, API keys, and theme',
+                    title: LanguageManager.translate('App Settings', 'Uygulama Ayarları'),
+                    description: LanguageManager.translate(
+                      'Configure notifications, API keys, and theme',
+                      'Bildirimleri, API anahtarlarını ve temayı yapılandırın'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -639,8 +658,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.map_rounded,
-                    title: 'ATM & Branch Locator',
-                    description: 'Find nearest branches and ATMs on the map',
+                    title: LanguageManager.translate('ATM & Branch Locator', 'ATM ve Şube Bulucu'),
+                    description: LanguageManager.translate(
+                      'Find nearest branches and ATMs on the map',
+                      'Haritada en yakın şubeleri ve ATM\'leri bulun'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -656,8 +678,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.health_and_safety_outlined,
-                    title: 'Insurance Portfolio',
-                    description: 'Manage policies, coverage, and premium payments',
+                    title: LanguageManager.translate('Insurance Portfolio', 'Sigorta Portföyü'),
+                    description: LanguageManager.translate(
+                      'Manage policies, coverage, and premium payments',
+                      'Poliçeleri, kapsamları ve prim ödemelerini yönetin'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -673,8 +698,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.currency_exchange_rounded,
-                    title: 'Exchange & Rates',
-                    description: 'Convert currencies and view live market rates',
+                    title: LanguageManager.translate('Exchange & Rates', 'Döviz ve Kurlar'),
+                    description: LanguageManager.translate(
+                      'Convert currencies and view live market rates',
+                      'Para birimlerini dönüştürün ve canlı piyasa kurlarını görüntüleyin'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -690,8 +718,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   _buildBottomSheetItem(
                     context,
                     icon: Icons.account_balance_outlined,
-                    title: 'Loan Application',
-                    description: 'Apply for personal, mortgage, or auto loans',
+                    title: LanguageManager.translate('Loan Application', 'Kredi Başvurusu'),
+                    description: LanguageManager.translate(
+                      'Apply for personal, mortgage, or auto loans',
+                      'Bireysel, konut veya taşıt kredilerine başvurun'
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(
@@ -1124,7 +1155,7 @@ class _AddCardButtonState extends State<_AddCardButton> {
             ),
             const SizedBox(height: 6),
             Text(
-              'Add',
+              LanguageManager.translate('Add', 'Ekle'),
               style: AppTextStyles.labelSm(
                 color: _hovered ? AppColors.primaryFixed : AppColors.onSurfaceVariant,
               ),

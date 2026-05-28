@@ -4,6 +4,7 @@ import 'dart:ui';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../transfers/transaction_success_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class AssetDetailScreen extends StatefulWidget {
   const AssetDetailScreen({super.key, required this.coin, this.isBuy});
@@ -151,7 +152,9 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
   void _onTradeAction(bool isBuy) {
     HapticFeedback.heavyImpact();
     
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final months = LanguageManager.isTurkish
+        ? ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara']
+        : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     final now = DateTime.now();
     final formattedDate = '${months[now.month - 1]} ${now.day}, ${now.year} • ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
     final randomRef = 'ORD-${(now.millisecondsSinceEpoch ~/ 1000).toRadixString(16).toUpperCase()}';
@@ -159,9 +162,9 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => TransactionSuccessScreen(
-          title: isBuy ? 'Buy Order Executed' : 'Sell Order Executed',
+          title: isBuy ? LanguageManager.translate('Buy Order Executed', 'Alış Emri Gerçekleşti') : LanguageManager.translate('Sell Order Executed', 'Satış Emri Gerçekleşti'),
           amount: isBuy ? '0.0194 BTC' : '\$1,250.00',
-          recipient: isBuy ? 'Bitcoin (BTC)' : 'Cash Balance (USD)',
+          recipient: isBuy ? LanguageManager.translate('Bitcoin (BTC)', 'Bitcoin (BTC)') : LanguageManager.translate('Cash Balance (USD)', 'Nakit Bakiyesi (USD)'),
           date: formattedDate,
           referenceId: randomRef,
           transactionFee: isBuy ? '0.00004 BTC' : '\$1.50',
@@ -312,7 +315,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
             ),
             const SizedBox(width: 6),
             Text(
-              'Past 24h',
+              LanguageManager.translate('Past 24h', 'Son 24s'),
               style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant),
             ),
           ],
@@ -525,10 +528,10 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
   // ── Bento Stats Grid ───────────────────────────────────────────────────────
   Widget _buildStatsGrid() {
     final stats = [
-      ('Market Cap', '\$1.2T'),
-      ('Volume (24h)', '\$34.5B'),
-      ('24h High', '\$65,100.00'),
-      ('24h Low', '\$62,800.00'),
+      (LanguageManager.translate('Market Cap', 'Piyasa Değeri'), '\$1.2T'),
+      (LanguageManager.translate('Volume (24h)', 'Hacim (24s)'), '\$34.5B'),
+      (LanguageManager.translate('24h High', '24s En Yüksek'), '\$65,100.00'),
+      (LanguageManager.translate('24h Low', '24s En Düşük'), '\$62,800.00'),
     ];
 
     return GridView.builder(
@@ -575,8 +578,16 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
   // ── Key Events Section ─────────────────────────────────────────────────────
   Widget _buildEventsSection() {
     final events = [
-      ('ETF Inflow Reaches Record High', '2 hours ago • News', Icons.article_outlined),
-      ('Resistance Broken at \$63,500', '5 hours ago • Analysis', Icons.show_chart_rounded),
+      (
+        LanguageManager.translate('ETF Inflow Reaches Record High', 'ETF Girişi Rekor Seviyeye Ulaştı'),
+        '${LanguageManager.translate('2 hours ago', '2 saat önce')} • ${LanguageManager.translate('News', 'Haberler')}',
+        Icons.article_outlined
+      ),
+      (
+        LanguageManager.translate('Resistance Broken at \$63,500', '\$63.500 Seviyesindeki Direnç Kırıldı'),
+        '${LanguageManager.translate('5 hours ago', '5 saat önce')} • ${LanguageManager.translate('Analysis', 'Analiz')}',
+        Icons.show_chart_rounded
+      ),
     ];
 
     return Column(
@@ -586,13 +597,13 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Key Events',
+              LanguageManager.translate('Key Events', 'Önemli Gelişmeler'),
               style: AppTextStyles.headlineMd(color: AppColors.primary),
             ),
             GestureDetector(
               onTap: () {},
               child: Text(
-                'SEE ALL',
+                LanguageManager.translate('SEE ALL', 'TÜMÜNÜ GÖR'),
                 style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
@@ -686,7 +697,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
                       border: Border.all(color: AppColors.primaryFixed),
                     ),
                     child: Text(
-                      'Sell',
+                      LanguageManager.translate('Sell', 'Sat'),
                       style: AppTextStyles.headlineMd(color: AppColors.primaryFixed).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -708,7 +719,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen>
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      'Buy',
+                      LanguageManager.translate('Buy', 'Al'),
                       style: AppTextStyles.headlineMd(color: Colors.black).copyWith(
                         fontWeight: FontWeight.bold,
                       ),

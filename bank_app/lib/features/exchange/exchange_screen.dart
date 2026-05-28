@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Exchange Rates & Converter Screen
 /// Implements "Exchange Rates & Converter" HTML mockup.
@@ -93,10 +95,38 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   Future<void> _exchange() async {
     if (_isExchanging) return;
+
+    // Validate amount
+    final inputVal = double.tryParse(_inputAmount.replaceAll(',', '')) ?? 0.0;
+    if (inputVal <= 0) {
+      AppNotification.error(
+        context,
+        title: LanguageManager.translate('Invalid Amount', 'Geçersiz Tutar'),
+        message: LanguageManager.translate('Please enter an amount to convert.', 'Lütfen dönüştürülecek bir tutar girin.'),
+      );
+      return;
+    }
+
     HapticFeedback.heavyImpact();
     setState(() => _isExchanging = true);
+
+    AppNotification.pending(
+      context,
+      title: LanguageManager.translate('Processing Exchange', 'İşlem Gerçekleştiriliyor'),
+      message: '${LanguageManager.translate('Converting', 'Dönüştürülüyor')} $_fromCcy -> $_toCcy ${LanguageManager.translate('at live rates...', 'canlı kurlar üzerinden...')}',
+      duration: const Duration(seconds: 3),
+    );
+
     await Future.delayed(const Duration(milliseconds: 1600));
-    if (mounted) setState(() => _isExchanging = false);
+
+    if (mounted) {
+      setState(() => _isExchanging = false);
+      AppNotification.success(
+        context,
+        title: LanguageManager.translate('Exchange Successful', 'Döviz Çevrimi Başarılı'),
+        message: '$_inputAmount $_fromCcy → $_convertedFormatted $_toCcy',
+      );
+    }
   }
 
   void _pickCurrency(bool isFrom) {
@@ -277,7 +307,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
             children: [
               Expanded(
                 child: _AmountField(
-                  label: 'YOU SEND',
+                  label: LanguageManager.translate('YOU SEND', 'GÖNDERDİĞİNİZ'),
                   value: _inputAmount,
                   currency: _fromCcy,
                   isOutput: false,
@@ -302,7 +332,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
               const SizedBox(width: 12),
               Expanded(
                 child: _AmountField(
-                  label: 'THEY RECEIVE',
+                  label: LanguageManager.translate('THEY RECEIVE', 'ALICIYA ULAŞAN'),
                   value: _convertedFormatted,
                   currency: _toCcy,
                   isOutput: true,
@@ -352,7 +382,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                         ),
                       )
                     : Text(
-                        'Exchange Now',
+                        LanguageManager.translate('Exchange Now', 'Şimdi Dönüştür'),
                         style: AppTextStyles.headlineMd().copyWith(
                           color: const Color(0xFF161E00),
                           fontSize: 16,
@@ -389,13 +419,13 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Live Markets',
+        Text(LanguageManager.translate('Live Markets', 'Canlı Piyasalar'),
             style: AppTextStyles.headlineLg().copyWith(fontSize: 24, letterSpacing: -0.5)),
         GestureDetector(
           onTap: () => HapticFeedback.lightImpact(),
           child: Row(
             children: [
-              Text('View Analytics',
+              Text(LanguageManager.translate('View Analytics', 'Analizleri Gör'),
                   style: AppTextStyles.labelMd(color: AppColors.primaryFixed)
                       .copyWith(letterSpacing: 0.3)),
               const SizedBox(width: 4),
@@ -410,42 +440,42 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   // ── Market Grid ─────────────────────────────────────────────────────────────
   Widget _buildMarketGrid() {
-    const markets = [
+    final markets = [
       _MarketData(
         icon: Icons.euro_rounded,
         pair: 'EUR / USD',
-        name: 'Euro',
+        name: LanguageManager.translate('Euro', 'Euro'),
         price: '1.0854',
         change: '+0.42%',
         isPositive: true,
-        points: [35.0, 30.0, 32.0, 20.0, 25.0, 10.0, 5.0],
+        points: const [35.0, 30.0, 32.0, 20.0, 25.0, 10.0, 5.0],
       ),
       _MarketData(
         icon: Icons.currency_bitcoin_rounded,
         pair: 'BTC / USD',
-        name: 'Bitcoin',
+        name: LanguageManager.translate('Bitcoin', 'Bitcoin'),
         price: '64,281.00',
         change: '+2.84%',
         isPositive: true,
-        points: [38.0, 30.0, 28.0, 20.0, 22.0, 12.0, 15.0, 5.0, 8.0],
+        points: const [38.0, 30.0, 28.0, 20.0, 22.0, 12.0, 15.0, 5.0, 8.0],
       ),
       _MarketData(
         icon: Icons.currency_pound_rounded,
         pair: 'GBP / USD',
-        name: 'British Pound',
+        name: LanguageManager.translate('British Pound', 'İngiliz Sterlini'),
         price: '1.2642',
         change: '-0.15%',
         isPositive: false,
-        points: [5.0, 8.0, 15.0, 12.0, 25.0, 30.0, 35.0],
+        points: const [5.0, 8.0, 15.0, 12.0, 25.0, 30.0, 35.0],
       ),
       _MarketData(
         icon: Icons.currency_exchange_rounded,
         pair: 'ETH / USD',
-        name: 'Ethereum',
+        name: LanguageManager.translate('Ethereum', 'Eteryum'),
         price: '3,456.12',
         change: '+1.12%',
         isPositive: true,
-        points: [30.0, 32.0, 28.0, 15.0, 18.0, 5.0, 8.0],
+        points: const [30.0, 32.0, 28.0, 15.0, 18.0, 5.0, 8.0],
       ),
     ];
 
@@ -479,7 +509,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'PRICE ALERTS',
+                  LanguageManager.translate('PRICE ALERTS', 'FİYAT UYARILARI'),
                   style: AppTextStyles.labelMd(color: AppColors.secondary)
                       .copyWith(letterSpacing: 1.2),
                 ),
@@ -490,14 +520,14 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           ),
           const Divider(height: 1, color: Color(0xFF1F1F1F)),
           _AlertRow(
-            label: 'BTC Above 65,000 USD',
-            sub: 'Triggered 2h ago',
+            label: LanguageManager.translate('BTC Above 65,000 USD', 'BTC 65.000 USD Üzerinde'),
+            sub: LanguageManager.translate('Triggered 2h ago', '2 saat önce tetiklendi'),
             isActive: true,
           ),
           const Divider(height: 1, color: Color(0xFF1F1F1F)),
           _AlertRow(
-            label: 'EUR/USD Drop Below 1.05',
-            sub: 'Inactive',
+            label: LanguageManager.translate('EUR/USD Drop Below 1.05', 'EUR/USD 1.05 Altına Düştü'),
+            sub: LanguageManager.translate('Inactive', 'Aktif Değil'),
             isActive: false,
           ),
         ],
@@ -1021,7 +1051,7 @@ class _CurrencyPickerSheet extends StatelessWidget {
             ),
           ),
           Text(
-            'SELECT CURRENCY',
+            LanguageManager.translate('SELECT CURRENCY', 'PARA BİRİMİ SEÇİN'),
             style: AppTextStyles.labelMd(color: AppColors.secondary)
                 .copyWith(letterSpacing: 1.5),
           ),

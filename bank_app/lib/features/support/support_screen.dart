@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Support Center Screen
 /// Implements "Fintech Elite | Support Center" HTML mockup.
@@ -27,19 +29,28 @@ class _SupportScreenState extends State<SupportScreen>
   // ── Chat state ───────────────────────────────────────────────────────────
   final TextEditingController _msgCtrl = TextEditingController();
   final ScrollController _chatScroll = ScrollController();
-  final List<_ChatMsg> _messages = const [
+  List<_ChatMsg> get _initialMessages => [
     _ChatMsg(
-      text: 'Welcome back, Arthur. I see your last trade was processed successfully. How may I assist your portfolio today?',
+      text: LanguageManager.translate(
+        'Welcome back, Arthur. I see your last trade was processed successfully. How may I assist your portfolio today?',
+        'Tekrar hoş geldiniz, Arthur. Son işleminizin başarıyla gerçekleştiğini görüyorum. Bugün portföyünüz konusunda size nasıl yardımcı olabilirim?',
+      ),
       isUser: false,
       time: '10:42 AM',
     ),
     _ChatMsg(
-      text: 'I need to verify my recent wire transfer to the Singapore branch.',
+      text: LanguageManager.translate(
+        'I need to verify my recent wire transfer to the Singapore branch.',
+        'Singapur şubesine yaptığım son havale işlemini doğrulamam gerekiyor.',
+      ),
       isUser: true,
       time: '10:43 AM',
     ),
     _ChatMsg(
-      text: 'Tracking transaction ID #FE-9921-SGP. The funds are currently in clearing and expected to settle within 2 hours. Would you like a detailed receipt?',
+      text: LanguageManager.translate(
+        'Tracking transaction ID #FE-9921-SGP. The funds are currently in clearing and expected to settle within 2 hours. Would you like a detailed receipt?',
+        '#FE-9921-SGP numaralı işlem takip ediliyor. Fonlar şu anda takasta ve 2 saat içinde yerleşmesi bekleniyor. Detaylı bir makbuz ister misiniz?',
+      ),
       isUser: false,
       time: '10:43 AM',
     ),
@@ -53,7 +64,7 @@ class _SupportScreenState extends State<SupportScreen>
   @override
   void initState() {
     super.initState();
-    _mutableMessages = List.of(_messages);
+    _mutableMessages = _initialMessages;
 
     _entranceCtrl = AnimationController(
       vsync: this,
@@ -113,12 +124,22 @@ class _SupportScreenState extends State<SupportScreen>
     });
     _scrollToBottom();
 
+    AppNotification.info(
+      context,
+      title: LanguageManager.translate('Message Sent', 'Mesaj Gönderildi'),
+      message: LanguageManager.translate('End-to-end encrypted via Protocol v2.4', 'Protokol v2.4 ile uçtan uca şifrelendi'),
+      duration: const Duration(seconds: 2),
+    );
+
     await Future.delayed(const Duration(milliseconds: 1500));
     if (mounted) {
       setState(() {
         _isTyping = false;
-        _mutableMessages.add(const _ChatMsg(
-          text: 'I\'m processing your request. Our team will have a response shortly. Is there anything else you need assistance with?',
+        _mutableMessages.add(_ChatMsg(
+          text: LanguageManager.translate(
+            'I\'m processing your request. Our team will have a response shortly. Is there anything else you need assistance with?',
+            'Talebinizi işleme alıyorum. Ekibimiz kısa süre içinde yanıt verecektir. Yardımcı olabileceğimiz başka bir konu var mı?',
+          ),
           isUser: false,
           time: '',
         ));
@@ -247,12 +268,15 @@ class _SupportScreenState extends State<SupportScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Premium Support',
+          LanguageManager.translate('Premium Support', 'Ayrıcalıklı Destek'),
           style: AppTextStyles.headlineXl().copyWith(letterSpacing: -1.5),
         ),
         const SizedBox(height: 8),
         Text(
-          'Connect with our elite concierge team through our high-security communication channels. Priority assistance is active for your account.',
+          LanguageManager.translate(
+            'Connect with our elite concierge team through our high-security communication channels. Priority assistance is active for your account.',
+            'Yüksek güvenlikli iletişim kanallarımız aracılığıyla elit destek ekibimizle bağlantı kurun. Hesabınız için öncelikli destek etkindir.',
+          ),
           style: AppTextStyles.bodyLg(color: AppColors.onSurfaceVariant),
         ),
       ],
@@ -269,8 +293,23 @@ class _SupportScreenState extends State<SupportScreen>
           onStart: () async {
             HapticFeedback.heavyImpact();
             setState(() => _isStartingCall = true);
+
+            AppNotification.pending(
+              context,
+              title: LanguageManager.translate('Connecting to Banker', 'Müşteri Temsilcisine Bağlanıyor'),
+              message: LanguageManager.translate('Establishing encrypted video link...', 'Şifreli video bağlantısı kuruluyor...'),
+              duration: const Duration(seconds: 3),
+            );
+
             await Future.delayed(const Duration(milliseconds: 1600));
-            if (mounted) setState(() => _isStartingCall = false);
+            if (mounted) {
+              setState(() => _isStartingCall = false);
+              AppNotification.success(
+                context,
+                title: LanguageManager.translate('Session Ready', 'Görüşme Hazır'),
+                message: LanguageManager.translate('Your private banker is waiting.', 'Özel bankacınız sizi bekliyor.'),
+              );
+            }
           },
         ),
         const SizedBox(height: 12),
@@ -341,13 +380,13 @@ class _SupportScreenState extends State<SupportScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Elite AI Concierge',
+                        LanguageManager.translate('Elite AI Concierge', 'Elite Yapay Zeka Asistanı'),
                         style: AppTextStyles.labelMd(
                                 color: AppColors.primaryFixed)
                             .copyWith(letterSpacing: 0.3),
                       ),
                       Text(
-                        'ENCRYPTED PROTOCOL V2.4',
+                        LanguageManager.translate('ENCRYPTED PROTOCOL V2.4', 'ŞİFRELİ PROTOKOL V2.4'),
                         style: AppTextStyles.labelSm(
                                 color: AppColors.onSurfaceVariant)
                             .copyWith(fontSize: 9, letterSpacing: 1.0),
@@ -392,7 +431,7 @@ class _SupportScreenState extends State<SupportScreen>
                     style: AppTextStyles.bodyMd(color: AppColors.primary)
                         .copyWith(fontSize: 14),
                     decoration: InputDecoration(
-                      hintText: 'Type a message...',
+                      hintText: LanguageManager.translate('Type a message...', 'Bir mesaj yazın...'),
                       hintStyle: AppTextStyles.bodyMd(
                               color: AppColors.onSurfaceVariant)
                           .copyWith(fontSize: 14),
@@ -448,11 +487,11 @@ class _SupportScreenState extends State<SupportScreen>
 
   // ── Quick Solutions ────────────────────────────────────────────────────────
   Widget _buildQuickSolutions() {
-    const items = [
-      _QuickItem(icon: Icons.security_outlined, label: 'Reset Security Key'),
-      _QuickItem(icon: Icons.account_balance_outlined, label: 'International Limits'),
-      _QuickItem(icon: Icons.token_outlined, label: 'Crypto Whitelist'),
-      _QuickItem(icon: Icons.receipt_long_outlined, label: 'Tax Statements'),
+    final items = [
+      _QuickItem(icon: Icons.security_outlined, label: LanguageManager.translate('Reset Security Key', 'Güvenlik Anahtarını Sıfırla')),
+      _QuickItem(icon: Icons.account_balance_outlined, label: LanguageManager.translate('International Limits', 'Uluslararası Limitler')),
+      _QuickItem(icon: Icons.token_outlined, label: LanguageManager.translate('Crypto Whitelist', 'Kripto Beyaz Listesi')),
+      _QuickItem(icon: Icons.receipt_long_outlined, label: LanguageManager.translate('Tax Statements', 'Vergi Beyannameleri')),
     ];
 
     return Column(
@@ -461,11 +500,11 @@ class _SupportScreenState extends State<SupportScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Quick Solutions', style: AppTextStyles.headlineMd()),
+            Text(LanguageManager.translate('Quick Solutions', 'Hızlı Çözümler'), style: AppTextStyles.headlineMd()),
             GestureDetector(
               onTap: () => HapticFeedback.lightImpact(),
               child: Text(
-                'VIEW ALL RESOURCES',
+                LanguageManager.translate('VIEW ALL RESOURCES', 'TÜM KAYNAKLARI GÖR'),
                 style: AppTextStyles.labelMd(color: AppColors.primaryFixed)
                     .copyWith(letterSpacing: 0.8),
               ),
@@ -519,7 +558,7 @@ class _SupportScreenState extends State<SupportScreen>
                 _PulsingDot(),
                 const SizedBox(width: 10),
                 Text(
-                  'Secure Connection Established',
+                  LanguageManager.translate('Secure Connection Established', 'Güvenli Bağlantı Kuruldu'),
                   style: AppTextStyles.labelMd(color: AppColors.primary)
                       .copyWith(letterSpacing: 0.3),
                 ),
@@ -626,7 +665,7 @@ class _VideoCallCardState extends State<_VideoCallCard>
                           _PulsingDot(),
                           const SizedBox(width: 6),
                           Text(
-                            'AVAILABLE NOW',
+                            LanguageManager.translate('AVAILABLE NOW', 'ŞİMDİ MÜSAİT'),
                             style: AppTextStyles.labelSm(
                                     color: AppColors.primaryFixed)
                                 .copyWith(letterSpacing: 1.0),
@@ -642,14 +681,17 @@ class _VideoCallCardState extends State<_VideoCallCard>
                 const SizedBox(height: 16),
 
                 Text(
-                  'Private Banker\nVideo Call',
+                  LanguageManager.translate('Private Banker\nVideo Call', 'Özel Bankacı\nGörüntülü Arama'),
                   style: AppTextStyles.headlineLg()
                       .copyWith(fontSize: 26, letterSpacing: -0.8, height: 1.2),
                 ),
                 const SizedBox(height: 10),
 
                 Text(
-                  'Direct access to your dedicated wealth manager for portfolio reviews or strategic advice via encrypted UHD link.',
+                  LanguageManager.translate(
+                    'Direct access to your dedicated wealth manager for portfolio reviews or strategic advice via encrypted UHD link.',
+                    'Portföy incelemeleri veya stratejik tavsiyeler için şifreli UHD bağlantısıyla özel varlık yöneticinize doğrudan erişim.',
+                  ),
                   style: AppTextStyles.bodyMd(
                           color: AppColors.onSurfaceVariant)
                       .copyWith(fontSize: 14),
@@ -682,7 +724,7 @@ class _VideoCallCardState extends State<_VideoCallCard>
                           )
                         else ...[
                           Text(
-                            'START SESSION',
+                            LanguageManager.translate('START SESSION', 'GÖRÜŞMEYİ BAŞLAT'),
                             style: AppTextStyles.labelMd(
                                     color: const Color(0xFF161E00))
                                 .copyWith(fontWeight: FontWeight.w700),
@@ -740,16 +782,19 @@ class _PhoneCardState extends State<_PhoneCard> {
             const Icon(Icons.call_outlined,
                 color: AppColors.primaryFixed, size: 28),
             const SizedBox(height: 10),
-            Text('Direct Phone Line', style: AppTextStyles.headlineMd()),
+            Text(LanguageManager.translate('Direct Phone Line', 'Doğrudan Telefon Hattı'), style: AppTextStyles.headlineMd()),
             const SizedBox(height: 6),
             Text(
-              'Call our global 24/7 dedicated elite hotline for immediate assistance.',
+              LanguageManager.translate(
+                'Call our global 24/7 dedicated elite hotline for immediate assistance.',
+                'Hızlı destek için 7/24 hizmet veren küresel özel elite yardım hattımızı arayın.',
+              ),
               style: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant)
                   .copyWith(fontSize: 14),
             ),
             const SizedBox(height: 16),
             Text(
-              'International Toll-Free',
+              LanguageManager.translate('International Toll-Free', 'Uluslararası Ücretsiz'),
               style: AppTextStyles.labelMd(color: AppColors.primary)
                   .copyWith(letterSpacing: 0.3),
             ),
@@ -787,7 +832,7 @@ class _LocationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'GLOBAL HEADQUARTERS',
+            LanguageManager.translate('GLOBAL HEADQUARTERS', 'KÜRESEL GENEL MERKEZ'),
             style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant)
                 .copyWith(letterSpacing: 1.5),
           ),
@@ -808,7 +853,7 @@ class _LocationCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('London, UK', style: AppTextStyles.headlineMd()),
+                  Text(LanguageManager.translate('London, UK', 'Londra, İngiltere'), style: AppTextStyles.headlineMd()),
                   const SizedBox(height: 2),
                   Text(
                     'One Canary Wharf, Floor 82\nLondon, E14 5AB',
@@ -878,19 +923,19 @@ class _EmailSupportCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'DIGITAL CORRESPONDENCE',
+            LanguageManager.translate('DIGITAL CORRESPONDENCE', 'DİJİTAL YAZIŞMA'),
             style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant)
                 .copyWith(letterSpacing: 1.5),
           ),
           const SizedBox(height: 12),
           _EmailRow(
-            label: 'General Inquiry',
+            label: LanguageManager.translate('General Inquiry', 'Genel Bilgi Talebi'),
             email: 'concierge@fintechelite.com',
             icon: Icons.mail_outline_rounded,
           ),
           const SizedBox(height: 8),
           _EmailRow(
-            label: 'Private Wealth',
+            label: LanguageManager.translate('Private Wealth', 'Özel Varlık Yönetimi'),
             email: 'private@fintechelite.com',
             icon: Icons.lock_outline_rounded,
           ),

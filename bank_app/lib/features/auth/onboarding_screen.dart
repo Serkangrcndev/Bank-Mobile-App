@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import 'login_screen.dart';
 
 /// Onboarding Screen — "Fintech Elite | Onboarding"
@@ -226,7 +227,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       GestureDetector(
                         onTap: _enterTheApp,
                         child: Text(
-                          'SKIP',
+                          LanguageManager.translate('SKIP', 'GEÇ'),
                           style: AppTextStyles.labelMd(
                                   color: AppColors.onSurfaceVariant)
                               .copyWith(letterSpacing: 1.0),
@@ -297,12 +298,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           child: isLastPage
                               ? _buildCtaButton(
                                   key: const ValueKey('enter'),
-                                  label: 'ENTER THE ELITE',
+                                  label: LanguageManager.translate('ENTER THE ELITE', 'SEÇKİNLERE KATIL'),
                                   onTap: _enterTheApp,
                                 )
                               : _buildCtaButton(
                                   key: const ValueKey('continue'),
-                                  label: 'CONTINUE',
+                                  label: LanguageManager.translate('CONTINUE', 'DEVAM ET'),
                                   onTap: _nextPage,
                                 ),
                         ),
@@ -321,6 +322,17 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   // ── Individual onboarding page ─────────────────────────────────────────────
   Widget _buildPage(int index) {
     final page = _pages[index];
+    final String title = index == 0 
+        ? LanguageManager.translate('Elite Wealth', 'Elit Servet')
+        : index == 1
+            ? LanguageManager.translate('Steel-Clad Security', 'Çelik Zırhlı Güvenlik')
+            : LanguageManager.translate('Global Access', 'Küresel Erişim');
+    final String description = index == 0
+        ? LanguageManager.translate('Institutional-grade investment tools designed for the modern high-net-worth individual.', 'Modern yüksek net değerli bireyler için tasarlanmış kurumsal düzeyde yatırım araçları.')
+        : index == 1
+            ? LanguageManager.translate('Multi-sig biometric authentication and military-grade encryption for your peace of mind.', 'İçinizin rahat etmesi için çoklu imzalı biyometrik kimlik doğrulama ve askeri düzeyde şifreleme.')
+            : LanguageManager.translate('Transact seamlessly across borders with instant settlement and zero-fee FX conversions.', 'Anında takas ve sıfır ücretli döviz çevrimi ile sınırlar ötesinde sorunsuz işlem yapın.');
+
     return FadeTransition(
       opacity: _fadeAnim,
       child: SlideTransition(
@@ -385,7 +397,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
               // ── Title ─────────────────────────────────────────────────
               Text(
-                page.title,
+                title,
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 40,
@@ -402,7 +414,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 340),
                 child: Text(
-                  page.description,
+                  description,
                   style: AppTextStyles.bodyLg(color: AppColors.onSurfaceVariant),
                   textAlign: TextAlign.center,
                 ),

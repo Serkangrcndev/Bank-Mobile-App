@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'dart:math' as math;
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 
 class CardDetailsScreen extends StatefulWidget {
   const CardDetailsScreen({
@@ -82,7 +83,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
             const Icon(Icons.check_circle_outline, color: AppColors.primaryFixed, size: 18),
             const SizedBox(width: 10),
             Text(
-              'PIN change instructions sent to your email',
+              LanguageManager.translate('PIN change instructions sent to your email', 'PIN değiştirme talimatları e-postanıza gönderildi'),
               style: AppTextStyles.bodyMd(color: Colors.white).copyWith(fontSize: 14),
             ),
           ],
@@ -335,10 +336,9 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                         children: [
                           Text(
                             '4920  ••••  ••••  ${widget.last4}',
-                            style: AppTextStyles.labelMd(color: AppColors.primary).copyWith(
-                              fontSize: 16,
-                              letterSpacing: 2.0,
-                              fontWeight: FontWeight.w600,
+                            style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
+                              letterSpacing: 2.5,
+                              fontFamily: 'JetBrains Mono',
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -349,7 +349,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'CARD HOLDER',
+                                    LanguageManager.translate('CARD HOLDER', 'KART SAHİBİ'),
                                     style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                                       fontSize: 8,
                                       letterSpacing: 1.0,
@@ -357,7 +357,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    'ELITE MEMBER',
+                                    LanguageManager.translate('ELITE MEMBER', 'ELİT ÜYE'),
                                     style: AppTextStyles.labelSm(color: AppColors.primary).copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 11,
@@ -369,7 +369,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'EXPIRY',
+                                    LanguageManager.translate('EXPIRY', 'SON KULLANMA'),
                                     style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)).copyWith(
                                       fontSize: 8,
                                       letterSpacing: 1.0,
@@ -497,8 +497,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
         _buildBentoControlTile(
           index: 0,
           icon: Icons.lock_rounded,
-          title: 'Lock Card',
-          subtitle: 'Instantly freeze all activity',
+          title: LanguageManager.translate('Lock Card', 'Kartı Kilitle'),
+          subtitle: LanguageManager.translate('Instantly freeze all activity', 'Tüm işlemleri anında dondur'),
           value: _isLocked,
           onChanged: (val) => _isLocked = val,
           iconColor: AppColors.primaryFixed,
@@ -509,8 +509,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
         _buildBentoControlTile(
           index: 1,
           icon: Icons.wifi_tethering_rounded,
-          title: 'Contactless',
-          subtitle: 'Tap to pay enabled',
+          title: LanguageManager.translate('Contactless', 'Temassız'),
+          subtitle: LanguageManager.translate('Tap to pay enabled', 'Temassız ödeme aktif'),
           value: _contactlessEnabled,
           onChanged: (val) => _contactlessEnabled = val,
           iconColor: Colors.white,
@@ -521,8 +521,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
         _buildBentoControlTile(
           index: 2,
           icon: Icons.language_rounded,
-          title: 'Online Use',
-          subtitle: 'Web and app purchases',
+          title: LanguageManager.translate('Online Use', 'İnternet Alışverişi'),
+          subtitle: LanguageManager.translate('Web and app purchases', 'Web ve uygulama içi harcamalar'),
           value: _onlineUseEnabled,
           onChanged: (val) => _onlineUseEnabled = val,
           iconColor: Colors.white,
@@ -564,7 +564,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                   const Icon(Icons.password_rounded, color: Colors.black, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'Change Card PIN',
+                    LanguageManager.translate('Change Card PIN', 'Kart Şifresini Değiştir'),
                     style: AppTextStyles.headlineMd(color: Colors.black).copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -721,7 +721,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'MONTHLY LIMIT',
+                    LanguageManager.translate('MONTHLY LIMIT', 'AYLIK LİMİT'),
                     style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
                       letterSpacing: 1.5,
                       fontWeight: FontWeight.bold,
@@ -830,9 +830,9 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
   // ── Recent Activity Section ────────────────────────────────────────────────
   Widget _buildRecentActivity() {
     final activities = [
-      ('Nobu Downtown', 'Dining • Today, 20:45', '-\$340.50', Icons.restaurant_rounded, true),
-      ('Apple Store', 'Electronics • Yesterday, 14:20', '-\$1,299.00', Icons.shopping_bag_rounded, false),
-      ('Uber Trip', 'Transport • Oct 24, 09:15', '-\$42.10', Icons.local_taxi_rounded, false),
+      ('Nobu Downtown', LanguageManager.translate('Dining • Today, 20:45', 'Yemek • Bugün, 20:45'), '-\$340.50', Icons.restaurant_rounded, true),
+      ('Apple Store', LanguageManager.translate('Electronics • Yesterday, 14:20', 'Elektronik • Dün, 14:20'), '-\$1,299.00', Icons.shopping_bag_rounded, false),
+      ('Uber Trip', LanguageManager.translate('Transport • Oct 24, 09:15', 'Ulaşım • 24 Eki, 09:15'), '-\$42.10', Icons.local_taxi_rounded, false),
     ];
 
     return Column(
@@ -843,13 +843,13 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Recent Activity',
+              LanguageManager.translate('Recent Activity', 'Son Harcamalar'),
               style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'See All',
+              LanguageManager.translate('See All', 'Tümünü Gör'),
               style: AppTextStyles.labelMd(color: AppColors.primaryFixed).copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -938,7 +938,7 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'APPROVED',
+                                LanguageManager.translate('APPROVED', 'ONAYLANDI'),
                                 style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.4)).copyWith(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w600,

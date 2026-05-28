@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/localization/language_manager.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
@@ -218,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildTitle() {
     return Text(
-      'Welcome Back',
+      LanguageManager.translate('Welcome Back', 'Tekrar Hoş Geldiniz'),
       textAlign: TextAlign.center,
       style: AppTextStyles.headlineXl(),
     );
@@ -226,7 +227,10 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildSubtitle() {
     return Text(
-      'Enter your credentials to access your terminal.',
+      LanguageManager.translate(
+        'Enter your credentials to access your terminal.',
+        'Terminalinize erişmek için bilgilerinizi girin.'
+      ),
       textAlign: TextAlign.center,
       style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
     );
@@ -239,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen>
         Padding(
           padding: const EdgeInsets.only(left: 8, bottom: 4),
           child: Text(
-            'Email Address',
+            LanguageManager.translate('Email Address', 'E-posta Adresi'),
             style: AppTextStyles.labelMd(color: AppColors.textSecondary),
           ),
         ),
@@ -266,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
             ),
             validator: (v) =>
-                (v == null || !v.contains('@')) ? 'Enter a valid email' : null,
+                (v == null || !v.contains('@')) ? LanguageManager.translate('Enter a valid email', 'Geçerli bir e-posta girin') : null,
           ),
         ),
       ],
@@ -280,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen>
         Padding(
           padding: const EdgeInsets.only(left: 8, bottom: 4),
           child: Text(
-            'Passcode',
+            LanguageManager.translate('Passcode', 'Şifre'),
             style: AppTextStyles.labelMd(color: AppColors.textSecondary),
           ),
         ),
@@ -313,7 +317,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
             ),
             validator: (v) =>
-                (v == null || v.length < 6) ? 'Enter at least 6 characters' : null,
+                (v == null || v.length < 6) ? LanguageManager.translate('Enter at least 6 characters', 'En az 6 karakter girin') : null,
           ),
         ),
       ],
@@ -350,7 +354,7 @@ class _LoginScreenState extends State<LoginScreen>
         child: Padding(
           padding: const EdgeInsets.only(top: 6, right: 4),
           child: Text(
-            'Forgot passcode?',
+            LanguageManager.translate('Forgot passcode?', 'Şifrenizi mi unuttunuz?'),
             style: AppTextStyles.labelSm(color: AppColors.brandLime),
           ),
         ),
@@ -367,7 +371,7 @@ class _LoginScreenState extends State<LoginScreen>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'OR',
+              LanguageManager.translate('OR', 'VEYA'),
               style: AppTextStyles.labelSm(color: AppColors.textMuted),
             ),
           ),
@@ -459,7 +463,7 @@ class _LoginScreenState extends State<LoginScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Login',
+                  LanguageManager.translate('Login', 'Giriş Yap'),
                   style: AppTextStyles.headlineMd(
                     color: const Color(0xFF283500),
                   ),
@@ -483,7 +487,7 @@ class _LoginScreenState extends State<LoginScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'New to the terminal? ',
+          LanguageManager.translate('New to the terminal? ', 'Terminalde yeni misiniz? '),
           style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
         ),
         GestureDetector(
@@ -511,7 +515,7 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
           child: Text(
-            'Create account',
+            LanguageManager.translate('Create account', 'Hesap oluştur'),
             style: AppTextStyles.bodyMd().copyWith(
               fontWeight: FontWeight.w600,
               decoration: TextDecoration.none,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/notifications/app_notification.dart';
+import '../../core/localization/language_manager.dart';
 
 /// Loan Application Screen
 /// Implements "Loan Application | Fintech Elite" HTML mockup.
@@ -56,24 +58,39 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
 
   double get _totalInterest => _loanAmount * _effectiveApr;
 
+  String _translateLoanType(_LoanType type) {
+    switch (type) {
+      case _LoanType.personal:
+        return 'Bireysel';
+      case _LoanType.mortgage:
+        return 'Konut';
+      case _LoanType.auto:
+        return 'Taşıt';
+    }
+  }
+
   String _formatMoney(double v) {
     if (v >= 1000) {
       final parts = v.toStringAsFixed(2).split('.');
       final intPart = int.parse(parts[0]);
+      final separator = LanguageManager.translate(',', '.');
+      final decimalSeparator = LanguageManager.translate('.', ',');
       final formatted = intPart.toString().replaceAllMapped(
             RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (m) => '${m[1]},',
+            (m) => '${m[1]}$separator',
           );
-      return '\$$formatted.${parts[1]}';
+      return '\$$formatted$decimalSeparator${parts[1]}';
     }
-    return '\$${v.toStringAsFixed(2)}';
+    final decimalSeparator = LanguageManager.translate('.', ',');
+    return '\$${v.toStringAsFixed(2).replaceAll('.', decimalSeparator)}';
   }
 
   String _formatAmount(double v) {
     final intPart = v.round();
+    final separator = LanguageManager.translate(',', '.');
     return intPart.toString().replaceAllMapped(
           RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]},',
+          (m) => '${m[1]}$separator',
         );
   }
 
@@ -232,13 +249,13 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Loan Application',
+          LanguageManager.translate('Loan Application', 'Kredi Başvurusu'),
           style: AppTextStyles.headlineXl()
               .copyWith(color: AppColors.primary, letterSpacing: -1.5),
         ),
         const SizedBox(height: 6),
         Text(
-          'Select your preferred credit facility and customize your terms.',
+          LanguageManager.translate('Select your preferred credit facility and customize your terms.', 'Tercih ettiğiniz kredi imkanını seçin ve şartlarınızı özelleştirin.'),
           style: AppTextStyles.bodyLg(color: AppColors.onSurfaceVariant),
         ),
       ],
@@ -286,7 +303,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                'LOAN AMOUNT',
+                LanguageManager.translate('LOAN AMOUNT', 'KREDİ TUTARI'),
                 style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant)
                     .copyWith(letterSpacing: 0.8),
               ),
@@ -342,11 +359,11 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('\$5,000',
+              Text(LanguageManager.translate('\$5,000', '\$5.000'),
                   style: AppTextStyles.labelSm(
                           color: AppColors.onSurfaceVariant)
                       .copyWith(letterSpacing: 0.2)),
-              Text('\$500,000',
+              Text(LanguageManager.translate('\$500,000', '\$500.000'),
                   style: AppTextStyles.labelSm(
                           color: AppColors.onSurfaceVariant)
                       .copyWith(letterSpacing: 0.2)),
@@ -357,7 +374,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
 
           // ── Tenure chips ───────────────────────────────────────────
           Text(
-            'TENURE (MONTHS)',
+            LanguageManager.translate('TENURE (MONTHS)', 'VADE (AY)'),
             style: AppTextStyles.labelMd(color: AppColors.onSurfaceVariant)
                 .copyWith(letterSpacing: 0.8),
           ),
@@ -389,7 +406,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                     ),
                   ),
                   child: Text(
-                    '${m}m',
+                    LanguageManager.translate('${m}m', '$m Ay'),
                     style: AppTextStyles.labelMd(
                       color: isSelected
                           ? AppColors.primaryFixed
@@ -412,16 +429,16 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
         Expanded(
           child: _FeatureCard(
             icon: Icons.speed_rounded,
-            title: 'Instant Approval',
-            sub: 'Get a decision in under 60 seconds.',
+            title: LanguageManager.translate('Instant Approval', 'Anında Onay'),
+            sub: LanguageManager.translate('Get a decision in under 60 seconds.', '60 saniyeden kısa sürede karar alın.'),
           ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: _FeatureCard(
             icon: Icons.lock_outline_rounded,
-            title: 'Fixed Rates',
-            sub: 'Transparent pricing with no hidden fees.',
+            title: LanguageManager.translate('Fixed Rates', 'Sabit Oranlar'),
+            sub: LanguageManager.translate('Transparent pricing with no hidden fees.', 'Gizli ücret içermeyen şeffaf fiyatlandırma.'),
           ),
         ),
       ],
@@ -446,27 +463,29 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Application Summary',
+                Text(LanguageManager.translate('Application Summary', 'Başvuru Özeti'),
                     style: AppTextStyles.headlineMd()
                         .copyWith(color: AppColors.primary)),
                 const SizedBox(height: 20),
                 _SummaryRow(
-                  label: 'Interest Rate',
-                  value:
-                      '${(_effectiveApr * 100).toStringAsFixed(2)}% APR',
+                  label: LanguageManager.translate('Interest Rate', 'Faiz Oranı'),
+                  value: LanguageManager.translate(
+                    '${(_effectiveApr * 100).toStringAsFixed(2)}% APR',
+                    '%${(_effectiveApr * 100).toStringAsFixed(2)} Yıllık Faiz',
+                  ),
                   valueColor: AppColors.primaryFixed,
                   isMono: true,
                 ),
                 const SizedBox(height: 14),
                 _SummaryRow(
-                  label: 'Monthly Payment',
+                  label: LanguageManager.translate('Monthly Payment', 'Aylık Ödeme'),
                   value: _formatMoney(_monthlyPayment),
                   valueColor: AppColors.primary,
                   isMono: true,
                 ),
                 const SizedBox(height: 14),
                 _SummaryRow(
-                  label: 'Total Interest',
+                  label: LanguageManager.translate('Total Interest', 'Toplam Faiz'),
                   value: _formatMoney(_totalInterest),
                   valueColor: AppColors.primary,
                   isMono: false,
@@ -505,7 +524,10 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'I agree to the terms and conditions and authorize Fintech Elite to perform a soft credit check.',
+                        LanguageManager.translate(
+                          'I agree to the terms and conditions and authorize Fintech Elite to perform a soft credit check.',
+                          'Şart ve koşulları kabul ediyorum ve Fintech Elite\'e ön kredi kontrolü yapma yetkisi veriyorum.',
+                        ),
                         style: AppTextStyles.labelSm(
                                 color: AppColors.onSurfaceVariant)
                             .copyWith(height: 1.5),
@@ -521,14 +543,40 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                       ? () async {
                           HapticFeedback.heavyImpact();
                           setState(() => _isApplying = true);
+
+                          AppNotification.pending(
+                            context,
+                            title: LanguageManager.translate('Reviewing Application', 'Başvuru İnceleniyor'),
+                            message: LanguageManager.translate('Running soft credit check...', 'Ön kredi kontrolü yapılıyor...'),
+                            duration: const Duration(seconds: 3),
+                          );
+
                           await Future.delayed(
                               const Duration(milliseconds: 1800));
                           if (mounted) {
                             setState(() => _isApplying = false);
-                            _showSuccessSnack();
+                            AppNotification.success(
+                              context,
+                              title: LanguageManager.translate('Application Submitted', 'Başvuru Gönderildi'),
+                              message: LanguageManager.translate(
+                                'Your ${_configs[_selectedType]!.label} loan application is under review.',
+                                'Seçtiğiniz ${_translateLoanType(_selectedType)} kredi başvurunuz inceleme altında.',
+                              ),
+                            );
                           }
                         }
-                      : null,
+                      : !_termsAccepted
+                          ? () {
+                              AppNotification.error(
+                                context,
+                                title: LanguageManager.translate('Terms Required', 'Şartlar Gerekli'),
+                                message: LanguageManager.translate(
+                                  'Please accept the terms and conditions to proceed.',
+                                  'Devam etmek için lütfen şart ve koşulları kabul edin.',
+                                ),
+                              );
+                            }
+                          : null,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     height: 54,
@@ -561,7 +609,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                               ),
                             )
                           : Text(
-                              'APPLY NOW',
+                              LanguageManager.translate('APPLY NOW', 'ŞİMDİ BAŞVUR'),
                               style: AppTextStyles.headlineMd().copyWith(
                                 color: _termsAccepted
                                     ? const Color(0xFF161E00)
@@ -579,10 +627,23 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.lightImpact();
+                    AppNotification.info(
+                      context,
+                      title: LanguageManager.translate('Preparing Quote', 'Teklif Hazırlanıyor'),
+                      message: LanguageManager.translate('Generating your loan quote PDF...', 'Kredi teklifi PDF\'i oluşturuluyor...'),
+                      duration: const Duration(seconds: 2),
+                    );
                     setState(() => _isDownloading = true);
                     await Future.delayed(
                         const Duration(milliseconds: 1200));
-                    if (mounted) setState(() => _isDownloading = false);
+                    if (mounted) {
+                      setState(() => _isDownloading = false);
+                      AppNotification.success(
+                        context,
+                        title: LanguageManager.translate('Quote Ready', 'Teklif Hazır'),
+                        message: LanguageManager.translate('Your loan quote has been prepared.', 'Kredi teklifiniz hazırlandı.'),
+                      );
+                    }
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -607,7 +668,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                               ),
                             )
                           : Text(
-                              'DOWNLOAD QUOTE',
+                              LanguageManager.translate('DOWNLOAD QUOTE', 'TEKLİFİ İNDİR'),
                               style: AppTextStyles.labelMd(
                                       color: AppColors.primaryFixed)
                                   .copyWith(letterSpacing: 0.8),
@@ -677,13 +738,16 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'ENTERPRISE SECURITY',
+                    LanguageManager.translate('ENTERPRISE SECURITY', 'KURUMSAL GÜVENLİK'),
                     style: AppTextStyles.labelSm(color: AppColors.primaryFixed)
                         .copyWith(letterSpacing: 1.5),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Your data is encrypted with AES-256 bank-grade security protocols.',
+                    LanguageManager.translate(
+                      'Your data is encrypted with AES-256 bank-grade security protocols.',
+                      'Verileriniz AES-256 banka düzeyinde güvenlik protokolleri ile şifrelenir.',
+                    ),
                     style: AppTextStyles.bodyMd(color: AppColors.primary)
                         .copyWith(fontSize: 13),
                   ),
@@ -696,26 +760,8 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen>
     );
   }
 
-  void _showSuccessSnack() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: AppColors.surfaceContainerHigh,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle_outline_rounded,
-                color: AppColors.primaryFixed, size: 18),
-            const SizedBox(width: 10),
-            Text('Application submitted successfully!',
-                style: AppTextStyles.labelMd(color: AppColors.primary)),
-          ],
-        ),
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
+  // _showSuccessSnack is now handled by AppNotification.success()
+  // Kept for reference only.
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -756,6 +802,17 @@ class _LoanTypeCard extends StatefulWidget {
 class _LoanTypeCardState extends State<_LoanTypeCard>
     with SingleTickerProviderStateMixin {
   bool _hovered = false;
+
+  String _translateLoanType(_LoanType type) {
+    switch (type) {
+      case _LoanType.personal:
+        return 'Bireysel';
+      case _LoanType.mortgage:
+        return 'Konut';
+      case _LoanType.auto:
+        return 'Taşıt';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -800,7 +857,7 @@ class _LoanTypeCardState extends State<_LoanTypeCard>
               ),
               const SizedBox(height: 10),
               Text(
-                'TYPE',
+                LanguageManager.translate('TYPE', 'TÜR'),
                 style: AppTextStyles.labelSm(
                   color: widget.isSelected
                       ? const Color(0xFF161E00).withValues(alpha: 0.6)
@@ -809,7 +866,7 @@ class _LoanTypeCardState extends State<_LoanTypeCard>
               ),
               const SizedBox(height: 2),
               Text(
-                widget.config.label,
+                LanguageManager.translate(widget.config.label, _translateLoanType(widget.type)),
                 style: AppTextStyles.headlineMd().copyWith(
                   color: widget.isSelected
                       ? const Color(0xFF161E00)

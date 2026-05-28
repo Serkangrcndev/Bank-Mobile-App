@@ -14,6 +14,7 @@ import '../kyc/kyc_verification_screen.dart';
 import '../insurance/insurance_screen.dart';
 import '../exchange/exchange_screen.dart';
 import '../loans/loan_application_screen.dart';
+import '../../core/localization/language_manager.dart';
 
 class GlobalSearchScreen extends StatefulWidget {
   const GlobalSearchScreen({super.key, this.initialQuery = ''});
@@ -31,54 +32,54 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
   String _query = '';
   
   // Simulated Transactions Database
-  final List<_SearchTxData> _allTransactions = [
-    const _SearchTxData(
+  List<_SearchTxData> get _allTransactions => [
+    _SearchTxData(
       name: 'Starbucks Reserve',
-      date: 'Today, 08:42 AM',
-      account: 'Checking ...4921',
+      date: LanguageManager.translate('Today, 08:42 AM', 'Bugün, 08:42'),
+      account: LanguageManager.translate('Checking ...4921', 'Vadesiz ...4921'),
       amount: '- \$14.50',
       icon: Icons.coffee_rounded,
     ),
-    const _SearchTxData(
+    _SearchTxData(
       name: 'Apple Store',
-      date: 'Today, 2:45 PM',
-      account: 'Credit ...8821',
+      date: LanguageManager.translate('Today, 2:45 PM', 'Bugün, 14:45'),
+      account: LanguageManager.translate('Credit ...8821', 'Kredi Kartı ...8821'),
       amount: '- \$999.00',
       icon: Icons.storefront_rounded,
     ),
-    const _SearchTxData(
+    _SearchTxData(
       name: 'Starbucks Corp',
-      date: 'Oct 12, 2023',
-      account: 'Card Reload',
+      date: LanguageManager.translate('Oct 12, 2023', '12 Eki 2023'),
+      account: LanguageManager.translate('Card Reload', 'Karta Yükleme'),
       amount: '- \$50.00',
       icon: Icons.coffee_outlined,
     ),
-    const _SearchTxData(
+    _SearchTxData(
       name: 'Starbucks Store #4092',
-      date: 'Sep 28, 2023',
-      account: 'Credit ...8821',
+      date: LanguageManager.translate('Sep 28, 2023', '28 Eyl 2023'),
+      account: LanguageManager.translate('Credit ...8821', 'Kredi Kartı ...8821'),
       amount: '- \$8.25',
       icon: Icons.coffee_rounded,
     ),
-    const _SearchTxData(
-      name: 'Salary Deposit',
-      date: 'Yesterday',
-      account: 'Checking ...4920',
+    _SearchTxData(
+      name: LanguageManager.translate('Salary Deposit', 'Maaş Ödemesi'),
+      date: LanguageManager.translate('Yesterday', 'Dün'),
+      account: LanguageManager.translate('Checking ...4920', 'Vadesiz ...4920'),
       amount: '+ \$4,250.00',
       icon: Icons.south_west_rounded,
       isCredit: true,
     ),
-    const _SearchTxData(
+    _SearchTxData(
       name: 'Starbucks',
-      date: 'Oct 12, 2023',
-      account: 'Debit Card',
+      date: LanguageManager.translate('Oct 12, 2023', '12 Eki 2023'),
+      account: LanguageManager.translate('Debit Card', 'Banka Kartı'),
       amount: '- \$6.50',
       icon: Icons.coffee_rounded,
     ),
-    const _SearchTxData(
+    _SearchTxData(
       name: 'Whole Foods Market',
-      date: 'Oct 10, 2023',
-      account: 'Checking ...4921',
+      date: LanguageManager.translate('Oct 10, 2023', '10 Eki 2023'),
+      account: LanguageManager.translate('Checking ...4921', 'Vadesiz ...4921'),
       amount: '- \$124.30',
       icon: Icons.shopping_basket_rounded,
     ),
@@ -282,7 +283,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
                               isDense: true,
                               contentPadding: EdgeInsets.zero,
                               border: InputBorder.none,
-                              hintText: 'Search transactions, contacts, actions...',
+                              hintText: LanguageManager.translate('Search transactions, contacts, actions...', 'İşlemleri, kişileri, eylemleri arayın...'),
                               hintStyle: AppTextStyles.bodyMd(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)),
                             ),
                           ),
@@ -324,7 +325,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'SUGGESTED ACTIONS',
+            LanguageManager.translate('SUGGESTED ACTIONS', 'ÖNERİLEN EYLEMLER'),
             style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
@@ -338,17 +339,17 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
           children: [
             _buildActionChip(
               icon: Icons.send_rounded,
-              label: 'Pay a Bill',
+              label: LanguageManager.translate('Pay a Bill', 'Fatura Öde'),
               onTap: _navigateToTransfer,
             ),
             _buildActionChip(
               icon: Icons.swap_horiz_rounded,
-              label: 'Transfer Funds',
+              label: LanguageManager.translate('Transfer Funds', 'Para Transferi'),
               onTap: _navigateToTransfer,
             ),
             _buildActionChip(
               icon: Icons.credit_card_rounded,
-              label: 'Lock Card',
+              label: LanguageManager.translate('Lock Card', 'Kartı Kilitle'),
               onTap: _navigateToCardDetails,
             ),
           ],
@@ -398,7 +399,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'RECENT SEARCHES',
+            LanguageManager.translate('RECENT SEARCHES', 'SON ARAMALAR'),
             style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
@@ -471,14 +472,14 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'TRANSACTIONS',
+              LanguageManager.translate('TRANSACTIONS', 'İŞLEMLER'),
               style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
                 letterSpacing: 1.5,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'See All (${list.length})',
+              LanguageManager.translate('See All (${list.length})', 'Tümünü Gör (${list.length})'),
               style: AppTextStyles.labelSm(color: AppColors.primaryFixed).copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -491,7 +492,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Text(
-              'No transactions matching "$_query"',
+              LanguageManager.translate('No transactions matching "$_query"', '"$_query" ile eşleşen işlem bulunamadı'),
               style: AppTextStyles.bodyMd(color: AppColors.secondary),
               textAlign: TextAlign.center,
             ),
@@ -521,7 +522,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'CONTACTS',
+          LanguageManager.translate('CONTACTS', 'KİŞİLER'),
           style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
             letterSpacing: 1.5,
             fontWeight: FontWeight.bold,
@@ -548,7 +549,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'No contacts matching "$_query"',
+                  LanguageManager.translate('No contacts matching "$_query"', '"$_query" ile eşleşen kişi bulunamadı'),
                   style: AppTextStyles.labelSm(color: AppColors.secondary),
                   textAlign: TextAlign.center,
                 ),
@@ -589,7 +590,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
                         style: AppTextStyles.bodyMd(color: AppColors.primary).copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Elite Account Verified',
+                        LanguageManager.translate('Elite Account Verified', 'Elite Hesap Doğrulandı'),
                         style: AppTextStyles.labelSm(color: AppColors.secondary),
                       ),
                     ],
@@ -689,7 +690,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'FEATURES',
+          LanguageManager.translate('FEATURES', 'ÖZELLİKLER'),
           style: AppTextStyles.labelSm(color: AppColors.onSurfaceVariant.withValues(alpha: 0.6)).copyWith(
             letterSpacing: 1.5,
             fontWeight: FontWeight.bold,
@@ -700,8 +701,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         const SizedBox(height: 8),
         if (showInsights) ...[
           _buildFeatureCard(
-            title: 'Spending Insights',
-            subtitle: 'Analyze coffee expenses',
+            title: LanguageManager.translate('Spending Insights', 'Harcama Analizleri'),
+            subtitle: LanguageManager.translate('Analyze coffee expenses', 'Kahve masraflarını analiz et'),
             icon: Icons.insights_rounded,
             onTap: () {
               Navigator.of(context).push(
@@ -719,8 +720,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showLending) ...[
           _buildFeatureCard(
-            title: 'Lending Dashboard',
-            subtitle: 'Manage loans and facilities',
+            title: LanguageManager.translate('Lending Dashboard', 'Borçlanma Paneli'),
+            subtitle: LanguageManager.translate('Manage loans and facilities', 'Kredileri ve imkanları yönet'),
             icon: Icons.real_estate_agent_outlined,
             onTap: () {
               Navigator.of(context).push(
@@ -738,8 +739,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showSupport) ...[
           _buildFeatureCard(
-            title: 'Lumina Support Desk',
-            subtitle: 'Search FAQ & chat with support team',
+            title: LanguageManager.translate('Lumina Support Desk', 'Lumina Destek Merkezi'),
+            subtitle: LanguageManager.translate('Search FAQ & chat with support team', 'SSS ara ve destek ekibiyle sohbet et'),
             icon: Icons.support_agent_rounded,
             onTap: () {
               Navigator.of(context).push(
@@ -757,8 +758,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showLimits) ...[
           _buildFeatureCard(
-            title: 'Limits & Usage',
-            subtitle: 'Monitor your spending power & thresholds',
+            title: LanguageManager.translate('Limits & Usage', 'Limitler ve Kullanım'),
+            subtitle: LanguageManager.translate('Monitor your spending power & thresholds', 'Harcama gücünü ve eşikleri takip et'),
             icon: Icons.tune_rounded,
             onTap: () {
               Navigator.of(context).push(
@@ -776,8 +777,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showLocator) ...[
           _buildFeatureCard(
-            title: 'ATM & Branch Locator',
-            subtitle: 'Find nearest ATMs and premium branches on map',
+            title: LanguageManager.translate('ATM & Branch Locator', 'ATM ve Şube Bulucu'),
+            subtitle: LanguageManager.translate('Find nearest ATMs and premium branches on map', 'Haritada en yakın ATM ve seçkin şubeleri bul'),
             icon: Icons.map_rounded,
             onTap: () {
               Navigator.of(context).push(
@@ -795,8 +796,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showKyc) ...[
           _buildFeatureCard(
-            title: 'Identity Verification',
-            subtitle: 'KYC — Unlock premium trading features',
+            title: LanguageManager.translate('Identity Verification', 'Kimlik Doğrulama'),
+            subtitle: LanguageManager.translate('KYC — Unlock premium trading features', 'KYC — Seçkin işlem özelliklerini aç'),
             icon: Icons.verified_user_outlined,
             onTap: () {
               Navigator.of(context).push(
@@ -814,8 +815,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showInsurance) ...[
           _buildFeatureCard(
-            title: 'Insurance Portfolio',
-            subtitle: 'Manage policies, coverage, and premium payments',
+            title: LanguageManager.translate('Insurance Portfolio', 'Sigorta Portföyü'),
+            subtitle: LanguageManager.translate('Manage policies, coverage, and premium payments', 'Poliçeleri, kapsamı ve prim ödemelerini yönet'),
             icon: Icons.health_and_safety_outlined,
             onTap: () {
               Navigator.of(context).push(
@@ -833,8 +834,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showExchange) ...[
           _buildFeatureCard(
-            title: 'Exchange & Rates',
-            subtitle: 'Convert currencies and view live market rates',
+            title: LanguageManager.translate('Exchange & Rates', 'Döviz ve Kurlar'),
+            subtitle: LanguageManager.translate('Convert currencies and view live market rates', 'Para birimlerini dönüştür ve canlı piyasa kurlarını gör'),
             icon: Icons.currency_exchange_rounded,
             onTap: () {
               Navigator.of(context).push(
@@ -852,8 +853,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with TickerProv
         ],
         if (showLoan) ...[
           _buildFeatureCard(
-            title: 'Loan Application',
-            subtitle: 'Apply for personal, mortgage, or auto loans',
+            title: LanguageManager.translate('Loan Application', 'Kredi Başvurusu'),
+            subtitle: LanguageManager.translate('Apply for personal, mortgage, or auto loans', 'Bireysel, konut veya taşıt kredisine başvur'),
             icon: Icons.account_balance_outlined,
             onTap: () {
               Navigator.of(context).push(
@@ -1104,12 +1105,12 @@ class _VoiceSearchDialogState extends State<_VoiceSearchDialog> with SingleTicke
             ),
             const SizedBox(height: 28),
             Text(
-              'Listening...',
+              LanguageManager.translate('Listening...', 'Dinleniyor...'),
               style: AppTextStyles.headlineMd(color: AppColors.primary).copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try saying "Starbucks" or "Whole Foods"',
+              LanguageManager.translate('Try saying "Starbucks" or "Whole Foods"', 'Şunu söylemeyi deneyin: "Starbucks" veya "Whole Foods"'),
               style: AppTextStyles.bodyMd(color: AppColors.secondary),
               textAlign: TextAlign.center,
             ),
